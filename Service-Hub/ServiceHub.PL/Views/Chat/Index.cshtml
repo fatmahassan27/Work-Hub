@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <input type="text" id="txt"/>
+    <input type="button" value="send" onclick="send()"/> 
+    <br />
+</body>
+    //download client side library
+     @section Script{
+         <script src="/library/"></script>
+         <script> 
+             //define connection 
+             var connection = new signalR.HubConnectionBuilder().withUrl("complete URL");
+
+             //start connection
+             connection.start();
+
+             //define callback func
+            connection.on("newmessage",function(name , message)
+            {
+                $("#id").append("<div> "+message +" </div>")
+            })
+
+             // calling service fun 
+             function send()
+             {
+            connection.invoke("sendmessage",$("#txt").val(),username)
+             }
+            </script>
+         }
+         
+         
+</html>
