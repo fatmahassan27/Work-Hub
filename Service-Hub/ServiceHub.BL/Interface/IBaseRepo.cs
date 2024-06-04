@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceHub.DAL.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,10 @@ namespace ServiceHub.BL.Interface
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
         Task Create(T obj);
-        Task Update(T obj);
+        Task<T> Update(int id,T obj);
         Task Delete(int id);
-        Task Delete(T obj);
+        
+
+
     }
 }

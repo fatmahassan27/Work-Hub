@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.DataBase
 {
-	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser >
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
 		{

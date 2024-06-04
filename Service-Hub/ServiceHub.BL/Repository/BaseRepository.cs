@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using ServiceHub.BL.DTO;
 using ServiceHub.BL.Interface;
 using ServiceHub.DAL.DataBase;
+using ServiceHub.DAL.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,53 +15,42 @@ namespace ServiceHub.BL.Repository
     public class BaseRepository<T> : IBaseRepo<T> where T : class
     {
         protected readonly ApplicationDbContext db;
-        #region const
-        public BaseRepository(ApplicationDbContext db) 
+
+        public BaseRepository(ApplicationDbContext db)
         {
             this.db = db;
         }
-        #endregion
-        #region methods
+
         public async Task Create(T obj)
         {
             await db.Set<T>().AddAsync(obj);
-          //  await db.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
             var data = await db.Set<T>().FindAsync(id);
-            db.Set<T>().Remove(data);
-            //await db.SaveChangesAsync();
-        }
-
-        public   async Task Delete(T obj)
-        {
-            db.Set<T>().Remove(obj);
-           // await db.SaveChangesAsync();
+            if (data != null)
+            {
+                db.Set<T>().Remove(data);
+            }
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            var data =await db.Set<T>().ToListAsync();
-            return data;
+            return await db.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetById(int id)
         {
-            var data = await db.Set<T>().FindAsync(id);
-            return data;
+            return await db.Set<T>().FindAsync(id);
         }
 
-        public  async Task Update(T obj)
+        public async Task<T> Update(int id, T obj)
         {
-            db.Set<T>().Update(obj);
-           // await db.SaveChangesAsync();
+          //  var data = await db.Set<T>().FindAsync(id);
+            db.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            return obj;
+
         }
-        public void Save()
-        {
-            db.SaveChanges();
-        }
-        #endregion
     }
 }
