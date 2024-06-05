@@ -21,8 +21,35 @@ namespace ServiceHub.PL.Controllers
         //[Authorize]
         public async Task< IActionResult> GetAll()
         {
-            var data =  await unitWork.WorkerRepo.GetAll();
-            return Ok(data);
+            try
+            {
+                var data = await unitWork.WorkerRepo.GetAll();
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        WorkerDTO workerDTO = new WorkerDTO()
+                        {
+                            Id = item.Id,
+                            FullName = item.FullName,
+                            Email = item.Email,
+                            Password = item.Password,
+                            JobId = item.JobId,
+                            DistrictId = item.DistrictId,
+                            Rating = item.Rating
+
+                        };
+                        return Ok(workerDTO);
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                // Log exception (ex) here if needed
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data");
+            }
+           
         }
         [HttpGet("{id:int}")]
         //[Authorize]
@@ -33,7 +60,19 @@ namespace ServiceHub.PL.Controllers
                 var data = await unitWork.WorkerRepo.GetById(id);
                 if (data != null)
                 {
-                    return Ok(data);
+                    WorkerDTO workerDTO = new WorkerDTO()
+                    {
+                        Id = data.Id,
+                        FullName = data.FullName,
+                        Email= data.Email,
+                        Password = data.Password,
+                        JobId=data.JobId,
+                        DistrictId=data.DistrictId,
+                        Rating=data.Rating
+                       
+                    };
+
+                    return Ok(workerDTO);
                 }
                 return NotFound();
             }
