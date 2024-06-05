@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.Entity
 {
-    public class UserConnection
+    public class WorkerConnection
     {
         
         public string ConnectionId { get; set; }
 
-        public int UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        public int WorkerId { get; set; }
+        [ForeignKey("WorkerId")]
+        public Worker Worker { get; set; }
 
 
 

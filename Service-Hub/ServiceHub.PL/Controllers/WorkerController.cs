@@ -26,6 +26,7 @@ namespace ServiceHub.PL.Controllers
                 var data = await unitWork.WorkerRepo.GetAll();
                 if (data != null)
                 {
+                    List<WorkerDTO> workerDTOs = new List<WorkerDTO>();
                     foreach (var item in data)
                     {
                         WorkerDTO workerDTO = new WorkerDTO()
@@ -39,8 +40,10 @@ namespace ServiceHub.PL.Controllers
                             Rating = item.Rating
 
                         };
-                        return Ok(workerDTO);
+                        workerDTOs.Add(workerDTO);
                     }
+                    return Ok(workerDTOs);
+
                 }
                 return NotFound();
             }
@@ -137,11 +140,11 @@ namespace ServiceHub.PL.Controllers
         //api/worker/job/{jobId}
         [HttpGet("job/{jobId}")]
         //[Authorize]
-        public async Task<IActionResult> GetByJobId(int jobId)
+        public async Task<IActionResult> GetAllWorkersByJobId(int jobId)
         {
             try
             {
-                var data = await unitWork.ServiceRepository.GetAllByJobId(jobId);
+                var data = await unitWork.ServiceRepository.GetAllWorkersByJobId(jobId);
                 if (data != null)
                 {
                     return Ok(data);

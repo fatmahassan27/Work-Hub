@@ -25,7 +25,8 @@ namespace ServiceHun.PL
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
-			builder.Services.AddScoped<UnitWork>();
+			builder.Services.AddScoped<UnitWork>();				//IUNITOFWORK	DIP
+
 			//builder.Services.AddScoped(typeof(IBaseRepo<>),typeof(BaseRepository <>));
 
             var app = builder.Build();
@@ -37,6 +38,7 @@ namespace ServiceHun.PL
 				app.UseSwaggerUI();
 			}
 			app.MapHub<ChatHub>("/chat");
+			app.MapHub<NotificationsHub>("/notification");
 
 			app.UseAuthorization();
 

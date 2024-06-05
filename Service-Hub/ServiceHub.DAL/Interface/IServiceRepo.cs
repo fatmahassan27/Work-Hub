@@ -14,7 +14,7 @@ namespace ServiceHub.BL.Interface
        Task SoftDelete(int id);
        Task<List<Order>> GetAllOrdersByUserId(int userId);
        Task<List<Order>> GetAllOrdersByWorkerId(int workerId);
-       Task<List<Worker>> GetAllByJobId(int jobId);
+       Task<List<Worker>> GetAllWorkersByJobId(int jobId);
 
 
 

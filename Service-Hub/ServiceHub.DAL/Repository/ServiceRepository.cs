@@ -46,7 +46,7 @@ namespace ServiceHub.BL.Repository
         {
             return await db.Orders.Where(o => o.WorkerId == workerId).ToListAsync();
         }
-        public async Task<List<Worker>> GetAllByJobId(int jobId)
+        public async Task<List<Worker>> GetAllWorkersByJobId(int jobId)
         {
             return await db.Workers.Where(w => w.JobId == jobId).ToListAsync();
         }
