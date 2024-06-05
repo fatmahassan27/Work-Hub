@@ -23,17 +23,6 @@ namespace ServiceHub.PL.Controllers
         {
             this.unitOfWork = unitOfWork;
         }
-        //[HttpGet]
-        //public IActionResult Registration()
-        //{
-
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Registration()
-        //{
-
-        //}
         [HttpPost("Register")]
         public IActionResult Registration(RegistrationDTO userDTO)
         {
