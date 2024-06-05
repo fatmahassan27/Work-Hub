@@ -18,6 +18,14 @@ namespace ServiceHub.BL.UnitOfWork
         BaseRepository<User> userRepo;
         ServiceRepository serviceRepository;
         BaseRepository<Worker> workerRepo;
+        
+        BaseRepository<Notification> notificationRepo;
+        BaseRepository<Rate> rateRepo;
+        BaseRepository<Job> jobRepo;
+        BaseRepository<Order> orderRepo;
+        CustomWorkerRepo customWorkerRepo;
+        CustomOrderRepo customOrderRepo;
+
         public UnitWork(ApplicationDbContext db)
         {
             this.db = db;
@@ -67,6 +75,74 @@ namespace ServiceHub.BL.UnitOfWork
                 return serviceRepository;
             }
         }
+
+        public BaseRepository<Notification> NotificationRepo
+        {
+            get
+            {
+                if (notificationRepo == null)
+                {
+                    notificationRepo = new BaseRepository<Notification>(db);
+                }
+                return notificationRepo;
+            }
+        }
+        public BaseRepository<Rate> RateRepo
+        {
+            get
+            {
+                if (rateRepo == null)
+                {
+                    rateRepo = new BaseRepository<Rate>(db);
+                }
+                return rateRepo;
+            }
+        }
+        public BaseRepository<Job> JobRepo
+        {
+            get
+            {
+                if (jobRepo == null)
+                {
+                    jobRepo = new BaseRepository<Job>(db);
+                }
+                return jobRepo;
+            }
+        }
+        public BaseRepository<Order> OrderRepo
+        {
+            get
+            {
+                if (orderRepo == null)
+                {
+                    orderRepo = new BaseRepository<Order>(db);
+                }
+                return orderRepo;
+            }
+        }
+        public CustomWorkerRepo CustomWorkerRepo
+        {
+            get
+            {
+                if (customWorkerRepo == null)
+                {
+                    customWorkerRepo = new CustomWorkerRepo(db);
+                }
+                return customWorkerRepo;
+            }
+        }
+        public CustomOrderRepo CustomOrderRepo
+        {
+            get
+            {
+                if (customOrderRepo == null)
+                {
+                    customOrderRepo = new CustomOrderRepo(db);
+                }
+                return customOrderRepo;
+            }
+        }
+
         public void saveChanges()
         {
             db.SaveChanges();

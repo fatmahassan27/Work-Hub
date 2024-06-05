@@ -94,6 +94,25 @@ namespace ServiceHub.PL.Controllers
             unitWork.saveChanges();
             return Ok("Deleted");
         }
-        
+       
+        //api/worker/job/{id}
+        [HttpGet("job")]
+        //[Authorize]
+        public async Task<IActionResult> GetByJobId(int jobId)
+        {
+            try
+            {
+                var data = await unitWork.CustomWorkerRepo.GetAllByJobId(jobId);
+                if (data != null)
+                {
+                    return Ok(data);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data, Message: {ex}");
+            }
+        }
     }
 }
