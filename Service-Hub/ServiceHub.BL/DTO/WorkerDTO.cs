@@ -15,11 +15,15 @@ namespace ServiceHub.BL.DTO
         [Required, MaxLength(30)]
         public string? FullName { get; set; }
         [EmailAddress]
+        public bool? IsDeleted { get; set; } = false;
+
         public string? Email { get; set; }
         [MaxLength(10), MinLength(3), DataType(DataType.Password)]
         public string? Password { get; set; }
         public int JobId { get; set; }
         public int DistrictId { get; set; }
+        public int Rating { get; set; } //average of ratings	
+
 
     }
 }

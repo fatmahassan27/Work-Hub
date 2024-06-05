@@ -90,10 +90,29 @@ namespace ServiceHub.PL.Controllers
         {
             //var worker  = unitWork.WorkerRepo.GetById(id);
             //if (worker == null) return NotFound();
-           await  unitWork.ServiceRepository.SoftDelete(id);
+            await  unitWork.ServiceRepository.SoftDelete(id);
             unitWork.saveChanges();
             return Ok("Deleted");
         }
-        
+       
+        //api/worker/job/{jobId}
+        [HttpGet("job/{jobId}")]
+        //[Authorize]
+        public async Task<IActionResult> GetByJobId(int jobId)
+        {
+            try
+            {
+                var data = await unitWork.ServiceRepository.GetAllByJobId(jobId);
+                if (data != null)
+                {
+                    return Ok(data);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data, Message: {ex}");
+            }
+        }
     }
 }

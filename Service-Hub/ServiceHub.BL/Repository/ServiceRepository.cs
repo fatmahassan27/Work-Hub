@@ -38,5 +38,17 @@ namespace ServiceHub.BL.Repository
                 db.Workers.Remove(data);
             }
         }
+        public async Task<List<Order>> GetAllOrdersByUserId(int userId)
+        {
+            return await db.Orders.Where(o => o.UserId == userId).ToListAsync();
+        }
+        public async Task<List<Order>> GetAllOrdersByWorkerId(int workerId)
+        {
+            return await db.Orders.Where(o => o.WorkerId == workerId).ToListAsync();
+        }
+        public async Task<List<Worker>> GetAllByJobId(int jobId)
+        {
+            return await db.Workers.Where(w => w.JobId == jobId).ToListAsync();
+        }
     }
 }
