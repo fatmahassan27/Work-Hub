@@ -12,7 +12,7 @@ using ServiceHub.DAL.DataBase;
 namespace ServiceHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240602230106_v1")]
+    [Migration("20240606121000_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -170,11 +170,13 @@ namespace ServiceHub.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
+                    b.Property<string>("WorkerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("createdDate")
                         .HasColumnType("datetime2");
@@ -267,11 +269,11 @@ namespace ServiceHub.DAL.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("WorkerId")
-                        .HasColumnType("int");
+                    b.Property<string>("WorkerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -284,12 +286,6 @@ namespace ServiceHub.DAL.Migrations
 
             modelBuilder.Entity("ServiceHub.DAL.Entity.Order", b =>
                 {
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -302,9 +298,19 @@ namespace ServiceHub.DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("WorkerId", "UserId", "Id");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WorkerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Orders");
                 });
@@ -317,11 +323,14 @@ namespace ServiceHub.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
+                    b.Property<string>("WorkerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -334,95 +343,9 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasKey("Id", "UserId", "WorkerId");
 
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WorkerId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Ratings");
-                });
-
-            modelBuilder.Entity("ServiceHub.DAL.Entity.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ServiceHub.DAL.Entity.UserConnection", b =>
-                {
-                    b.Property<int>("ConnectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ConnectionId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserConnections");
-                });
-
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Worker", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DistrictId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DistrictId");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("Workers");
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Helper.ApplicationUser", b =>
@@ -437,6 +360,9 @@ namespace ServiceHub.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
@@ -449,6 +375,15 @@ namespace ServiceHub.DAL.Migrations
 
                     b.Property<bool>("IsAgree")
                         .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobId1")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -473,6 +408,9 @@ namespace ServiceHub.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("Rating")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -486,6 +424,10 @@ namespace ServiceHub.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DistrictId");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("JobId1");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -551,16 +493,16 @@ namespace ServiceHub.DAL.Migrations
 
             modelBuilder.Entity("ServiceHub.DAL.Entity.ChatMessage", b =>
                 {
-                    b.HasOne("ServiceHub.DAL.Entity.User", "User")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "User")
                         .WithMany("ChatMessages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ServiceHub.DAL.Entity.Worker", "Worker")
-                        .WithMany("ChatMessages")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "Worker")
+                        .WithMany()
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -581,12 +523,13 @@ namespace ServiceHub.DAL.Migrations
 
             modelBuilder.Entity("ServiceHub.DAL.Entity.Notification", b =>
                 {
-                    b.HasOne("ServiceHub.DAL.Entity.User", "User")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "User")
                         .WithMany("Notifications")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ServiceHub.DAL.Entity.Worker", "Worker")
-                        .WithMany("Notifications")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "Worker")
+                        .WithMany()
                         .HasForeignKey("WorkerId");
 
                     b.Navigation("User");
@@ -596,16 +539,16 @@ namespace ServiceHub.DAL.Migrations
 
             modelBuilder.Entity("ServiceHub.DAL.Entity.Order", b =>
                 {
-                    b.HasOne("ServiceHub.DAL.Entity.User", "User")
-                        .WithMany("Orders")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "User")
+                        .WithMany("UserOrders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ServiceHub.DAL.Entity.Worker", "Worker")
-                        .WithMany("Orders")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "Worker")
+                        .WithMany("WorkerOrders")
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -615,51 +558,9 @@ namespace ServiceHub.DAL.Migrations
 
             modelBuilder.Entity("ServiceHub.DAL.Entity.Rate", b =>
                 {
-                    b.HasOne("ServiceHub.DAL.Entity.User", "User")
+                    b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", null)
                         .WithMany("Ratings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceHub.DAL.Entity.Worker", "Worker")
-                        .WithMany("Ratings")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("Worker");
-                });
-
-            modelBuilder.Entity("ServiceHub.DAL.Entity.UserConnection", b =>
-                {
-                    b.HasOne("ServiceHub.DAL.Entity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Worker", b =>
-                {
-                    b.HasOne("ServiceHub.DAL.Entity.District", "District")
-                        .WithMany()
-                        .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceHub.DAL.Entity.Job", "Job")
-                        .WithMany("Workers")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("District");
-
-                    b.Navigation("Job");
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Helper.ApplicationUser", b =>
@@ -667,10 +568,22 @@ namespace ServiceHub.DAL.Migrations
                     b.HasOne("ServiceHub.DAL.Entity.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ServiceHub.DAL.Entity.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ServiceHub.DAL.Entity.Job", null)
+                        .WithMany("Workers")
+                        .HasForeignKey("JobId1");
+
                     b.Navigation("District");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Entity.City", b =>
@@ -683,26 +596,17 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("Workers");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.User", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Helper.ApplicationUser", b =>
                 {
                     b.Navigation("ChatMessages");
 
                     b.Navigation("Notifications");
 
-                    b.Navigation("Orders");
-
                     b.Navigation("Ratings");
-                });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Worker", b =>
-                {
-                    b.Navigation("ChatMessages");
+                    b.Navigation("UserOrders");
 
-                    b.Navigation("Notifications");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Ratings");
+                    b.Navigation("WorkerOrders");
                 });
 #pragma warning restore 612, 618
         }

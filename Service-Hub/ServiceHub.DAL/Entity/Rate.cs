@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceHub.DAL.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,14 +16,17 @@ namespace ServiceHub.DAL.Entity
         [Range(1, 5)]
         public int Value { get; set; }
         public string? Review { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public int WorkerId { get; set; }
-        public int UserId { get; set; }
+        public string WorkerId { get; set; }
 
         [ForeignKey("WorkerId")]
-        public Worker? Worker { get; set; }
+        [NotMapped]
+        public ApplicationUser? Worker { get; set; }
+        public string? UserId { get; set; }
+
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        [NotMapped]
+        public ApplicationUser? User { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
 
     }

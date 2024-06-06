@@ -19,28 +19,28 @@ namespace ServiceHub.BL.DTO
         public DateTime? CreatedDate { get; set; }
 
 
-        public static OrderDTO FromOrder(Order order)
-        {
-            return new OrderDTO()
-            {
-                Id = order.Id,
-                UserId = order.UserId,
-                WorkerId = order.WorkerId,
-                Status = order.Status,
-                CreatedDate = order.CreatedDate
-            };
-        }
+        //public static OrderDTO FromOrder(Order order)
+        //{
+        //    return new OrderDTO()
+        //    {
+        //        Id = order.Id,
+        //      //  UserId = order.UserId,
+        //        WorkerId = order.WorkerId,
+        //        Status = order.Status,
+        //        CreatedDate = order.CreatedDate
+        //    };
+        //}
 
-        public static Order ToOrder(OrderDTO orderDTO)
-        {
-            return new Order()
-            {
-                Id = orderDTO.Id,
-                UserId = orderDTO.UserId,
-                WorkerId = orderDTO.WorkerId,
-                Status = orderDTO.Status,
-                CreatedDate = orderDTO.CreatedDate
-            };
-        }
+        //public static Order ToOrder(OrderDTO orderDTO)
+        //{
+        //    return new Order()
+        //    {
+        //        Id = orderDTO.Id,
+        //      //  UserId = orderDTO.UserId,
+        //        WorkerId = orderDTO.WorkerId,
+        //        Status = orderDTO.Status,
+        //        CreatedDate = orderDTO.CreatedDate
+        //    };
+        //}
     }
 }

@@ -1,11 +1,11 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using ServiceHub.BL.Interface;
-using ServiceHub.BL.Repository;
-using ServiceHub.BL.UnitOfWork;
+//using ServiceHub.BL.Interface;
+//using ServiceHub.BL.Repository;
+//using ServiceHub.BL.UnitOfWork;
 using ServiceHub.DAL.DataBase;
-using ServiceHub.PL.Hubs;
+//using ServiceHub.PL.Hubs;
 using System;
 
 namespace ServiceHun.PL
@@ -25,7 +25,7 @@ namespace ServiceHun.PL
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
-			builder.Services.AddScoped<UnitWork>();
+			//builder.Services.AddScoped<UnitWork>();
 			//builder.Services.AddScoped(typeof(IBaseRepo<>),typeof(BaseRepository <>));
 
             var app = builder.Build();
@@ -36,7 +36,7 @@ namespace ServiceHun.PL
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
-			app.MapHub<ChatHub>("/chat");
+			//app.MapHub<ChatHub>("/chat");
 
 			app.UseAuthorization();
 

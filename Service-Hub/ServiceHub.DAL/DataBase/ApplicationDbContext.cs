@@ -23,15 +23,60 @@ namespace ServiceHub.DAL.DataBase
                 base.OnModelCreating(modelBuilder);
 
                 modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
-                modelBuilder.Entity<UserConnection>()
-                    .HasKey(uow => new { uow.ConnectionId, uow.UserId });
+              
                 
                 modelBuilder.Entity<Rate>()
-                 .HasKey(x => new { x.Id, x.UserId, x.WorkerId });
+                            .HasKey(x => new { x.Id, x.UserId, x.WorkerId });
+
+
+                // Configure ChatMessage-User relationship
+                modelBuilder.Entity<ChatMessage>()
+                            .HasOne(cm => cm.User)
+                            .WithMany(u => u.ChatMessages)
+                            .HasForeignKey(cm => cm.UserId)
+                            .OnDelete(DeleteBehavior.Restrict);
+
+                // Configure ChatMessage-Worker relationship
+                modelBuilder.Entity<ChatMessage>()
+                            .HasOne(cm => cm.Worker)
+                            .WithMany()
+                            .HasForeignKey(cm => cm.WorkerId)
+                            .OnDelete(DeleteBehavior.Restrict);
+
+                // Configure Notification-User relationship
+                modelBuilder.Entity<Notification>()
+                            .HasOne(n => n.User)
+                            .WithMany(u => u.Notifications)
+                            .HasForeignKey(n => n.UserId)
+                            .OnDelete(DeleteBehavior.Restrict);
+
+                // Configure Order-User relationship
                 modelBuilder.Entity<Order>()
-                            .HasKey(uow => new { uow.WorkerId, uow.UserId, uow.Id });
+                            .HasOne(o => o.User)
+                            .WithMany(u => u.UserOrders)
+                            .HasForeignKey(o => o.UserId)
+                            .OnDelete(DeleteBehavior.Restrict);
 
+                // Configure Order-Worker relationship
+                modelBuilder.Entity<Order>()
+                            .HasOne(o => o.Worker)
+                            .WithMany(u => u.WorkerOrders)
+                            .HasForeignKey(o => o.WorkerId)
+                            .OnDelete(DeleteBehavior.Restrict);
 
+                // Configure ApplicationUser-District relationship
+                modelBuilder.Entity<ApplicationUser>()
+                            .HasOne(u => u.District)
+                            .WithMany()
+                            .HasForeignKey(u => u.DistrictId)
+                            .OnDelete(DeleteBehavior.Restrict);
+
+                // Configure ApplicationUser-Job relationship
+                modelBuilder.Entity<ApplicationUser>()
+                           .HasOne(u => u.Job)
+                           .WithMany()
+                           .HasForeignKey(u => u.JobId)
+                           .OnDelete(DeleteBehavior.Restrict);
 
             }
         }
@@ -42,9 +87,7 @@ namespace ServiceHub.DAL.DataBase
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Order> Orders { get; set; }
 		public DbSet<Rate> Ratings { get; set; }
-		public DbSet<User> Users { get; set; }
-        public DbSet<UserConnection> UserConnections { get; set; }
-        public DbSet<Worker> Workers { get; set; }
+       // public DbSet<UserConnection> UserConnections { get; set; }
 
 	}
 }

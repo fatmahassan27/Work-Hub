@@ -1,6 +1,7 @@
 ﻿using ServiceHub.BL.Repository;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entity;
+using ServiceHub.DAL.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,8 @@ namespace ServiceHub.BL.UnitOfWork
     {
         private readonly ApplicationDbContext db;
         BaseRepository<ChatMessage> chatMessageRepo;
-        BaseRepository<User> userRepo;
-        ServiceRepository serviceRepository;
-        BaseRepository<Worker> workerRepo;
-        
+        BaseRepository<ApplicationUser> userRepo;
+        ServiceRepository serviceRepository;        
         BaseRepository<Notification> notificationRepo;
         BaseRepository<Rate> rateRepo;
         BaseRepository<Job> jobRepo;
@@ -41,28 +40,18 @@ namespace ServiceHub.BL.UnitOfWork
             }
         }
        
-        public BaseRepository<User> UserRepo
+        public BaseRepository<ApplicationUser> UserRepo
         {
             get
             {
                 if (userRepo == null)
                 {
-                    userRepo = new BaseRepository<User>(db);
+                    userRepo = new BaseRepository<ApplicationUser>(db);
                 }
                 return userRepo;
             }
         }
-        public BaseRepository<Worker> WorkerRepo
-        {
-            get
-            {
-                if (workerRepo == null)
-                {
-                    workerRepo = new BaseRepository<Worker>(db);
-                }
-                return workerRepo;
-            }
-        }
+       
         public ServiceRepository ServiceRepository
         {
             get

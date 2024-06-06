@@ -1,4 +1,5 @@
 ﻿using ServiceHub.DAL.Enum;
+using ServiceHub.DAL.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,14 +18,13 @@ namespace ServiceHub.DAL.Entity
         public string? Content { get; set; }
         public bool? IsRead { get; set; } = false;
 		public DateTime? CreatedDate { get; set; } = DateTime.Now;
-
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
         [ForeignKey("UserId")]
-        public User? User { get; set; }
-        public int? WorkerId { get; set; }
+        public ApplicationUser? User { get; set; }
+        public string? WorkerId { get; set; }
        
         [ForeignKey("WorkerId")]
-        public Worker? Worker { get; set; }
+        public ApplicationUser? Worker { get; set; }
 
     }
 }
