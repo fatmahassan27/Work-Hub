@@ -14,6 +14,7 @@ namespace ServiceHub.BL.Interface
         Task Create(T obj);
         Task<T> Update(int id,T obj);
         Task Delete(int id);
+        Task Delete(string id);
         
 
 

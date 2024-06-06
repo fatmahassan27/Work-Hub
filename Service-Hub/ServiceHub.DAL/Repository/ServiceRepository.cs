@@ -15,30 +15,26 @@ namespace ServiceHub.BL.Repository
     {
         private readonly ApplicationDbContext db;
 
-        public ServiceRepository(ApplicationDbContext db) 
+        public ServiceRepository(ApplicationDbContext db)
         {
             this.db = db;
         }
-        public  ApplicationUser FindEmail(string email)
+        public ApplicationUser FindEmail(string email)
         {
-            return  db.Users.FirstOrDefault(a => a.Email == email);
+           
+            return db.Users.FirstOrDefault(a => a.Email == email);
+
         }
 
-
-        //public ApplicationUser Findemail(string email)
-        //{
-        //    return   db..FirstOrDefault(a => a.Email == email);
-        //}
-
-        //public async Task SoftDelete(int id)
-        //{
-        //    var data = await db.ApplicationUser.FindAsync(id);
-        //    if (data != null)
-        //    {
-        //        data.IsDeleted = true;
-        //        db.Workers.Remove(data);
-        //    }
-        //}
+        public async Task Delete(string id)
+        {
+            var data = await db.Users.FindAsync(id);
+            if (data != null)
+            {
+                data.IsDeleted = true;
+                db.Users.Remove(data);
+            }
+        }
         public async Task<List<Order>> GetAllOrdersByUserId(string userId)
         {
             return await db.Orders.Where(o => o.UserId == userId).ToListAsync();
@@ -47,9 +43,9 @@ namespace ServiceHub.BL.Repository
         {
             return await db.Orders.Where(o => o.WorkerId == workerId).ToListAsync();
         }
-        //public async Task<List<ApplicationUser>> GetAllWorkersByJobId(string jobId)
-        //{
-        //    return await db.worker.Where(w => w.JobId == jobId).ToListAsync();
-        //}
+        public async Task<List<ApplicationUser>> GetAllWorkersByJobId(int jobId)
+        {
+            return await db.Users.Where(w => w.JobId == jobId).ToListAsync();
+        }
     }
 }

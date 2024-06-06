@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.Interface
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork 
     {
     }
 }

@@ -11,7 +11,7 @@ namespace ServiceHub.BL.DTO
 {
     public class WorkerDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required, MaxLength(30)]
         public string? FullName { get; set; }
         [EmailAddress]
@@ -20,7 +20,7 @@ namespace ServiceHub.BL.DTO
         public string? Password { get; set; }
         public int JobId { get; set; }
         public int DistrictId { get; set; }
-        public int Rating { get; set; } //average of ratings	
+        public int? Rating { get; set; } //average of ratings	
 
 
     }

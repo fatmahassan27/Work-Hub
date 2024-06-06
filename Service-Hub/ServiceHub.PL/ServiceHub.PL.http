@@ -1,6 +1,3 @@
-@ServiceHun.PL_HostAddress = http://localhost:5018
-
-GET {{ServiceHun.PL_HostAddress}}/weatherforecast/
+@ServiceHun.PL_HostAddress = http://localhost:5018;
 Accept: application/json
-
-###
+GET {{ServiceHub.PL_HostAddress}}/weatherforecast/

@@ -33,10 +33,23 @@ namespace ServiceHub.BL.Repository
                 db.Set<T>().Remove(data);
             }
         }
+        public async Task Delete(string id)
+        {
+            var data = await db.Set<T>().FindAsync(id);
+            if (data != null)
+            {
+                db.Set<T>().Remove(data);
+            }
+        }
 
         public async Task<IEnumerable<T>> GetAll()
         {
             return await db.Set<T>().ToListAsync();
+        }
+
+        public async Task GetAllWorkerByJobId(int jobId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<T> GetById(int id)

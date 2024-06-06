@@ -12,7 +12,6 @@ namespace ServiceHub.DAL.Helper
 {
     public class ApplicationUser : IdentityUser
     {
-        public bool IsAgree { get; set; }
         public ICollection<ChatMessage> ChatMessages { get; set; }
         public ICollection<Notification> Notifications { get; set; }
         public List<Rate>? Ratings { get; set; }

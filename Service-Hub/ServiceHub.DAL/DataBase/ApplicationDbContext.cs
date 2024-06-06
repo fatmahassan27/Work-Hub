@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.DataBase
 {
-	public class ApplicationDbContext : IdentityDbContext<ApplicationUser >
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
 		{
@@ -20,7 +20,6 @@ namespace ServiceHub.DAL.DataBase
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			{
-                base.OnModelCreating(modelBuilder);
 
                 modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
               
@@ -78,6 +77,20 @@ namespace ServiceHub.DAL.DataBase
                            .HasForeignKey(u => u.JobId)
                            .OnDelete(DeleteBehavior.Restrict);
 
+                // Configure composite key
+                modelBuilder.Entity<UserConnection>()
+                    .HasKey(uc => new { uc.ConnectionId, uc.UserId });
+
+                // Configure the foreign key relationship
+                modelBuilder.Entity<UserConnection>()
+                    .HasOne(uc => uc.User)
+                    .WithMany()
+                    .HasForeignKey(uc => uc.UserId);
+               
+
+                base.OnModelCreating(modelBuilder);
+
+
             }
         }
         public DbSet<ChatMessage> ChatMessage { get; set; }
@@ -87,7 +100,7 @@ namespace ServiceHub.DAL.DataBase
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Order> Orders { get; set; }
 		public DbSet<Rate> Ratings { get; set; }
-       // public DbSet<UserConnection> UserConnections { get; set; }
+        public DbSet<UserConnection> UserConnections { get; set; }
 
-	}
+    }
 }
