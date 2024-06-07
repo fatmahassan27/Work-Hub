@@ -12,7 +12,7 @@ namespace ServiceHub.PL.Controllers
     {
         private readonly UnitWork unitOWork;
 
-        private readonly IBaseRepo<ChatMessage> chat;
+        private readonly IGenericRepo<ChatMessage> chat;
 
         public ChatHubController(UnitWork unitOWork)
         {

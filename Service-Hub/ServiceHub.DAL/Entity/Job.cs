@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ServiceHub.DAL.Enum;
 using ServiceHub.DAL.Helper;
 
 namespace ServiceHub.DAL.Entity
@@ -18,9 +12,6 @@ namespace ServiceHub.DAL.Entity
 		public string Name { get; set; }
         [Required]
         public double Price { get; set; }
-        public List<ApplicationUser> Workers { get; set; }
-
-
-
+        public ICollection<ApplicationUser> Workers { get; set; } = new HashSet<ApplicationUser>();
     }
 }

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.Interface
 {
-    public interface IUnitOfWork 
+    public interface IOrderRepo
     {
-        IOrderRepo CustomOrderRepo { get; }
-
-        Task<int> saveChanges();
+        
     }
 }

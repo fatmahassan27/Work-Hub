@@ -35,7 +35,7 @@
 //            {
 //                WorkerId = workerId,
 //                Title = "New Work Order",
-//                Content = $"Congratulations! /n user: {db.ApplicationUsers.Find(userId).UserName} is trying to hire you!",
+//                Content = $"Congratulations! /n user: {db.Users.Find(userId).UserName} is trying to hire you!",
 //                CreatedDate = DateTime.Now,
 //            });
 
@@ -57,7 +57,7 @@
 //            {
 //                UserId = userId,
 //                Title = "Order Accepted",
-//                Content = $"The Worker {db.ApplicationUsers.Find(workerId).UserName} accepted your offer. \n please rate the worker When the job is done.",
+//                Content = $"The Worker {db.Users.Find(workerId).UserName} accepted your offer. \n please rate the worker When the job is done.",
 //                CreatedDate = DateTime.Now,
 //            });
 //            //to worker
@@ -78,15 +78,15 @@
 //            //to user
 //            var userNotification = db.Notifications.Add(new Notification()
 //            {
-//                UserId = userId,
+//               // UserId = userId,
 //                Title = "Order Done",
-//                Content = $"The Worker {db.ApplicationUsers.Find(workerId).UserName} has finished the required job. please give him a rating",
+//                Content = $"The Worker {db.Users.Find(workerId).UserName} has finished the required job. please give him a rating",
 //                CreatedDate = DateTime.Now,
 //            });
 //            //to worker
 //            var workerNotification = db.Notifications.Add(new Notification()
 //            {
-//                WorkerId = workerId,
+//               // WorkerId = workerId,
 //                Title = "Order Done",
 //                Content = $"You have successfully finished your work for the user {db.Users.Find(userId).UserName} . \n Good Luck in next Orders",
 //                CreatedDate = DateTime.Now,
@@ -100,15 +100,15 @@
 //            //to user
 //            var userNotification = db.Notifications.Add(new Notification()
 //            {
-//                UserId = userId,
+//                //UserId = userId,
 //                Title = "Order Cancelled",
-//                Content = $"The order with worker {db.ApplicationUsers.Find(workerId).UserName} is cancelled.",
+//                Content = $"The order with worker {db.Users.Find(workerId).UserName} is cancelled.",
 //                CreatedDate = DateTime.Now,
 //            });
 //            //to worker
 //            var workerNotification = db.Notifications.Add(new Notification()
 //            {
-//                WorkerId = workerId,
+//                //WorkerId = workerId,
 //                Title = "Order Cancelled",
 //                Content = $"The order with user {db.Users.Find(userId).UserName} is cancelled.",
 //                CreatedDate = DateTime.Now,
