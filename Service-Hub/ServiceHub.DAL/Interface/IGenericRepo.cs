@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.BL.Interface
 {
-    public interface IBaseRepo<T> where T : class
+    public interface IGenericRepo<T> where T : class
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);

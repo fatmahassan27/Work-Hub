@@ -13,17 +13,16 @@ namespace ServiceHub.BL.DTO
     {
         [Required]
         public string? FullName { get; set; }
-        [Required]
+        [Required,EmailAddress]
         public string? Email { get; set; }
-        [Required]
+        [Required,DataType(DataType.Password)]
         public string? Password { get; set; }
+        [Required, DataType(DataType.Password)]
         [Compare("Password")]
         public string? ConfirmPassword { get; set; }
+        public string Role { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-
-
 
 
 

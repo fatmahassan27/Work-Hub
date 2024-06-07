@@ -12,12 +12,10 @@ namespace ServiceHub.BL.Interface
     {
         ApplicationUser FindEmail(string email);
         //Task SoftDelete(string id);
-        Task<List<Order>> GetAllOrdersByUserId(string userId);
-        Task<List<Order>> GetAllOrdersByWorkerId(string workerId);
+       
+        Task<List<Order>> GetAllOrdersByUserId(int userId);
+        //Task<List<Order>> GetAllOrdersByWorkerId(string workerId);
         Task<List<ApplicationUser>> GetAllWorkersByJobId(int jobId);
-
-
-
 
     }
 }

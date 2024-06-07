@@ -13,8 +13,8 @@ namespace ServiceHub.BL.DTO
     public class OrderDTO
     {
         public int Id { get; set; }
-        public string UserId { get; set; }
-        public string WorkerId { get; set; }
+        public int UserId { get; set; }
+        public int WorkerId { get; set; }
         public OrderStatus Status { get; set; }
         public DateTime? CreatedDate { get; set; }
 
@@ -30,7 +30,6 @@ namespace ServiceHub.BL.DTO
                 CreatedDate = order.CreatedDate
             };
         }
-
         public static Order ToOrder(OrderDTO orderDTO)
         {
             return new Order()
@@ -39,7 +38,7 @@ namespace ServiceHub.BL.DTO
                 UserId = orderDTO.UserId,
                 WorkerId = orderDTO.WorkerId,
                 Status = orderDTO.Status,
-                CreatedDate = orderDTO.CreatedDate
+                //CreatedDate = orderDTO.CreatedDate
             };
         }
     }

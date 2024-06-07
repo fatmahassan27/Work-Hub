@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using ServiceHub.BL.DTO;
 using ServiceHub.BL.UnitOfWork;
-using ServiceHub.DAL.Entity;
 using ServiceHub.DAL.Helper;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,35 +15,58 @@ namespace ServiceHub.PL.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UnitWork unitOfWork;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AccountController(UnitWork unitOfWork)
+        // user manager CRUD login register
+        // , store manager , role manager , store manager
+        
+        public AccountController(UnitWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             this.unitOfWork = unitOfWork;
+            this.userManager = userManager;
         }
+
+        //logging serilog try catch
+
         [HttpPost("Register")]
-        public IActionResult Registration(RegistrationDTO userDTO)
+        public async Task<IActionResult> Registration(RegistrationDTO userDTO)
         {
             if (ModelState.IsValid)
             {
                 ApplicationUser appUser = new ApplicationUser()
                 {
-                    UserName = userDTO.Email,
+                    UserName = userDTO.FullName,
                     Email = userDTO.Email,
                     PasswordHash = userDTO.Password,
 
                 };
-                unitOfWork.AppUserRepo.Create(appUser);
-                unitOfWork.saveChanges();
-                return Created();
+                IdentityResult result = await userManager.CreateAsync(appUser,appUser.PasswordHash);
+                if (result.Succeeded)
+                {
+                    return Created(); //
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("error", error.Description);
+                    }
+                    return BadRequest(ModelState);
+                }
+                
+                //unitOfWork.AppUserRepo.Create(appUser);
+                //unitOfWork.saveChanges();
+                //return Created();
+
             }
             return BadRequest(ModelState);
 
         }
         [HttpPost("Login")]
 
-        public IActionResult Login(LoginDTO userlogin)
+        public async Task<IActionResult> Login(LoginDTO userlogin)
         {
-            var user = unitOfWork.ServiceRepository.FindEmail(userlogin.Email);
+            var user = await userManager.FindByEmailAsync(userlogin.Email);
             if (user != null && user.PasswordHash == userlogin.Password)
             {
                 #region Claims
@@ -59,12 +78,12 @@ namespace ServiceHub.PL.Controllers
 
                 #endregion
 
-
                 #region singing
                 string key = " Welcome To My SecretKey Fatma Hassan";
                 var SecretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
                 var signingcer = new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256);
                 #endregion
+
                 #region generate token
               //  hashing algorithm
               //  playRole => claims,expiredate
@@ -77,15 +96,12 @@ namespace ServiceHub.PL.Controllers
                 //token object =>encoding string
                 var tokenObjHand = new JwtSecurityTokenHandler();
                 var finalToken = tokenObjHand.WriteToken(token);
-                return Ok(finalToken);
-
                 #endregion
-                return Ok();
+
+                return Ok(finalToken);
             }
             else
                 return Unauthorized();
-
         }
-
     }
 }

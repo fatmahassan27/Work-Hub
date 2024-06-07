@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.BL.Repository
 {
-    public class BaseRepository<T> : IBaseRepo<T> where T : class
+    public class GenericRepository<T> : IGenericRepo<T> where T : class
     {
         protected readonly ApplicationDbContext db;
 
-        public BaseRepository(ApplicationDbContext db)
+        public GenericRepository(ApplicationDbContext db)
         {
             this.db = db;
         }

@@ -12,6 +12,7 @@ using ServiceHub.DAL.Interface;
 
 //using ServiceHub.PL.Hubs;
 using System;
+using System.Security.Claims;
 
 namespace ServiceHun.PL
 {
@@ -29,25 +30,17 @@ namespace ServiceHun.PL
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+			
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
-			//builder.Services.AddIdentity<ApplicationUser,IdentityRole>();
-			builder.Services.AddScoped<UnitWork>();
 
-
-			// Add Identity management services
-			builder.Services.AddScoped<UserManager<ApplicationUser>>();
-            builder.Services.AddScoped<SignInManager<ApplicationUser>>();
-            builder.Services.AddScoped<RoleManager<IdentityRole>>();
-            ///////////////////////
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                // Configure Identity options here if needed
-            })
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
                            .AddEntityFrameworkStores<ApplicationDbContext>()
                            .AddDefaultTokenProviders();
 
+			builder.Services.AddAuthorization(x => { x.AddPolicy("Worker", po => po.RequireClaim(ClaimTypes.Role, "Worker")); }) ;
+
             // Register your services
-            builder.Services.AddScoped<IUnitOfWork,UnitWork>();
+            //builder.Services.AddScoped<IUnitOfWork,UnitWork>();
             // Register other services as needed
             // builder.Services.AddScoped<IRepository, Repository>();
 
@@ -60,7 +53,7 @@ namespace ServiceHun.PL
 				app.UseSwaggerUI();
 			}
 			//app.MapHub<ChatHub>("/chat");
-			//app.MapHub<NotificationsHub>("/chat");
+			//app.MapHub<NotificationsHub>("/notifications");
 
 
 
