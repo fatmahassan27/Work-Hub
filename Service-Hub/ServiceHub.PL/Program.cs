@@ -63,7 +63,7 @@ namespace ServiceHun.PL
 			//app.MapHub<NotificationsHub>("/chat");
 
 
-
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 

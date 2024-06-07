@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ServiceHub.BL.Interface;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entity;
@@ -14,11 +15,14 @@ namespace ServiceHub.BL.Repository
     public class ServiceRepository : IServiceRepo
     {
         private readonly ApplicationDbContext db;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ServiceRepository(ApplicationDbContext db)
+        public ServiceRepository(ApplicationDbContext db ,UserManager<ApplicationUser> userManager)
         {
             this.db = db;
+            this.userManager = userManager;
         }
+      
         public ApplicationUser FindEmail(string email)
         {
            

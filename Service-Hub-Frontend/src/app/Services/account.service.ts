@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import * as jwtdecode from 'jwt-decode';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +10,19 @@ export class AccountService {
   login(emailuser:string , password:string)
   {
     let str:string=`?username=${emailuser}&password=${password}`;
-    this.http.get<string>(this.baseurl+str).subscribe(d=>{console.log(d)});
+    this.http.get(this.baseurl+str,{responseType :'text'}).subscribe(d=>{this.isAuthenticated=true;
+      localStorage.setItem("token",d);
+      let r:{useremail:string,isUser:boolean,isWorker:boolean}=jwtdecode.jwtDecode(d);
+      console.log(r.useremail);
+      console.log(r.isUser);
+      console.log(r.isWorker);
+    });
+    }
+    logout()
+    {
+      this.isAuthenticated=false;
+      localStorage.removeItem("token");
     }
   constructor(public http:HttpClient) { }
 }
+

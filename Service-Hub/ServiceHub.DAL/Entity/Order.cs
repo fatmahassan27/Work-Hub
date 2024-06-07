@@ -14,12 +14,7 @@ namespace ServiceHub.DAL.Entity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public ApplicationUser? User { get; set; }
-        public string WorkerId { get; set; }
-        [ForeignKey("WorkerId")]
-        public ApplicationUser? Worker { get; set; }
+      
         [Required]
         public OrderStatus Status { get; set; } = OrderStatus.New;
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
