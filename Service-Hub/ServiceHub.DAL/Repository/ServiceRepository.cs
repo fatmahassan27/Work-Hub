@@ -12,11 +12,12 @@ namespace ServiceHub.BL.Repository
         private readonly ApplicationDbContext db;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ServiceRepository(ApplicationDbContext db,UserManager<ApplicationUser> userManager)
+        public ServiceRepository(ApplicationDbContext db)
         {
             this.db = db;
             this.userManager = userManager;
         }
+      
         public ApplicationUser FindEmail(string email)
         {
            

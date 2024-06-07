@@ -19,6 +19,7 @@ namespace ServiceHub.BL.DTO
         [MaxLength(10), MinLength(3), DataType(DataType.Password)]
         public string? Password { get; set; }
         public int JobId { get; set; }
+        public int CityId { get; set; }
         public int DistrictId { get; set; }
         public int? Rating { get; set; } //average of ratings	
 

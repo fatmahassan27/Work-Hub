@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceHub.BL.DTO;
@@ -72,7 +73,8 @@ namespace ServiceHub.PL.Controllers
                 #region Claims
 
                 List<Claim> userdata = new List<Claim>();
-                userdata.Add(new Claim(ClaimTypes.Role, ""));
+                userdata.Add(new Claim("Role","user")) ;
+                userdata.Add(new Claim(ClaimTypes.Email,userlogin.Email));
                 //userdata.Add(new Claim(ClaimTypes.Name, user.UserName));
                 //userdata.Add(new Claim(ClaimTypes.UserData, user.FullName));
 

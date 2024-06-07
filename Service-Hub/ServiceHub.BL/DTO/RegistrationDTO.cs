@@ -23,6 +23,7 @@ namespace ServiceHub.BL.DTO
         public string Role { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public int DistrictId { get; set; }
 
 
 

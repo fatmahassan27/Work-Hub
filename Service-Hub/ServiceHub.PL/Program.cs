@@ -56,7 +56,7 @@ namespace ServiceHun.PL
 			//app.MapHub<NotificationsHub>("/notifications");
 
 
-
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 
