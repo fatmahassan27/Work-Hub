@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.Enum
 {
-	public enum  OrderStatus
-	{
-		New, InProgress, Done, Canceled
+    public enum OrderStatus
+    {
+        New, InProgress, Done, Canceled
 
-	}
+    }
 }

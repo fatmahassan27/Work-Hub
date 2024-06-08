@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.Entity;
+using ServiceHub.DAL.Enum;
 using ServiceHub.DAL.Helper;
 
 namespace ServiceHub.DAL.DataBase
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,IdentityRole<int>,int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public DbSet<ChatMessage> ChatMessage { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -16,14 +17,28 @@ namespace ServiceHub.DAL.DataBase
         public DbSet<Order> Orders { get; set; }
         public DbSet<Rate> Ratings { get; set; }
         public DbSet<UserConnection> UserConnections { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
-		{            
-		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			{
-                modelBuilder.Entity<IdentityUserLogin<int>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
-                //---------------------------------------------------------------------
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            {
+                modelBuilder.Entity<IdentityRole<int>>().HasData(
+             new IdentityRole<int>
+
+             {
+                 Id = 1,
+                 Name = Role.Worker.ToString(),
+                 NormalizedName = Role.Worker.ToString().ToUpper()
+             },
+              new IdentityRole<int>
+
+              {
+                  Id = 2,
+                  Name = Role.User.ToString(),
+                  NormalizedName = Role.User.ToString().ToUpper()
+              }
+         );
                 // Configure ChatMessage entity
                 modelBuilder.Entity<ChatMessage>()
                     .HasOne(cm => cm.Sender)
@@ -115,7 +130,7 @@ namespace ServiceHub.DAL.DataBase
 
             }
         }
-      
+
 
     }
 }

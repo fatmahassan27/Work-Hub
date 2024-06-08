@@ -40,20 +40,6 @@ namespace ServiceHub.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUserLogin<string>",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityUserLogin<string>", x => new { x.LoginProvider, x.ProviderKey });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Jobs",
                 columns: table => new
                 {
@@ -495,9 +481,6 @@ namespace ServiceHub.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "ChatMessage");
-
-            migrationBuilder.DropTable(
-                name: "IdentityUserLogin<string>");
 
             migrationBuilder.DropTable(
                 name: "Notifications");

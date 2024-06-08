@@ -20,12 +20,12 @@ namespace ServiceHub.BL.Repository
             this.db = db;
         }
 
-        public async Task Create(T obj)
+        public async Task CreateAsync(T obj)
         {
             await db.Set<T>().AddAsync(obj);
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             var data = await db.Set<T>().FindAsync(id);
             if (data != null)
@@ -33,31 +33,19 @@ namespace ServiceHub.BL.Repository
                 db.Set<T>().Remove(data);
             }
         }
-        public async Task Delete(string id)
-        {
-            var data = await db.Set<T>().FindAsync(id);
-            if (data != null)
-            {
-                db.Set<T>().Remove(data);
-            }
-        }
-
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await db.Set<T>().ToListAsync();
         }
 
-        public async Task GetAllWorkerByJobId(int jobId)
-        {
-            throw new NotImplementedException();
-        }
+      
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await db.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> Update(int id, T obj)
+        public async Task<T> UpdateAsync(int id, T obj)
         {
           //  var data = await db.Set<T>().FindAsync(id);
             db.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

@@ -7,6 +7,13 @@ namespace ServiceHub.DAL.Helper
 {
     public class ApplicationUser : IdentityUser<int>
     {
+        public ApplicationUser()
+        {
+            ChatMessages = [];
+            Notifications = [];
+            Ratings = [];
+            Orders = [];
+        }
         public bool? IsDeleted { get; set; } = false;
         public DateTime? CreationDate { get; set; } = DateTime.Now.Date;
         public int? JobId { get; set; }
@@ -17,9 +24,11 @@ namespace ServiceHub.DAL.Helper
         [ForeignKey("DistrictId")]
         public District? District { get; set; }
         public Job? Job { get; set; }
-        public ICollection<ChatMessage> ChatMessages { get; set; } = new HashSet<ChatMessage>();
-        public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
-        public ICollection<Rate>? Ratings { get; set; } = new HashSet<Rate>();  
-        public ICollection<Order>? Orders { get; set; } = new HashSet<Order>();
+        public ICollection<ChatMessage> ChatMessages { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
+        public ICollection<Rate>? Ratings { get; set; } 
+        public ICollection<Order>? Orders { get; set; } 
+
+
     }
 }

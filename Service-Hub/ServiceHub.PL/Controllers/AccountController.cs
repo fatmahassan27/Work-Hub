@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceHub.BL.DTO;
-using ServiceHub.BL.UnitOfWork;
 using ServiceHub.DAL.Helper;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,95 +14,138 @@ namespace ServiceHub.PL.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UnitWork unitOfWork;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IConfiguration configuration;
+        private readonly RoleManager<IdentityRole<int>> roleManager;
 
-        // user manager CRUD login register
-        // , store manager , role manager , store manager
-        
-        public AccountController(UnitWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration, RoleManager<IdentityRole<int>> roleManager)
         {
-            this.unitOfWork = unitOfWork;
             this.userManager = userManager;
+            this.configuration = configuration;
+            this.roleManager = roleManager;
         }
+        //public async Task<IActionResult> Register([FromBody] RegistrationDTO model)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var user = new ApplicationUser { UserName = model.FullName, Email = model.Email, DistrictId = model.DistrictId };
 
-        //logging serilog try catch
+        //            var result = await userManager.CreateAsync(user, model.Password);
 
+        //            if (result.Succeeded)
+        //            {
+        //                var roleExists = await roleManager.RoleExistsAsync(model.RoleName);
+        //                if (!roleExists)
+        //                {
+        //                    var roleResult = await roleManager.CreateAsync(new IdentityRole<int>(model.RoleName));
+        //                    if (!roleResult.Succeeded)
+        //                    {
+        //                        return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating role: {roleResult.Errors.FirstOrDefault()?.Description}");
+        //                    }
+
+        //                }
+        //                var addToRoleResult = await userManager.AddToRoleAsync(user, model.RoleName);
+        //                if (!addToRoleResult.Succeeded)
+        //                {
+        //                    return StatusCode(StatusCodes.Status500InternalServerError, $"Error adding user to role: {addToRoleResult.Errors.FirstOrDefault()?.Description}");
+        //                }
+        //                return Ok("User registered successfully");
+        //            }
+        //            return BadRequest(result.Errors.FirstOrDefault()?.Description);
+
+        //        }
+        //        return BadRequest(ModelState);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data : {ex}");
+
+        //    }
+
+        //}
         [HttpPost("Register")]
-        public async Task<IActionResult> Registration(RegistrationDTO userDTO)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser appUser = new ApplicationUser()
-                {
-                    UserName = userDTO.FullName,
-                    Email = userDTO.Email,
-                    PasswordHash = userDTO.Password,
 
-                };
-                IdentityResult result = await userManager.CreateAsync(appUser,appUser.PasswordHash);
-                if (result.Succeeded)
+        public async Task<IActionResult> Register([FromBody] RegistrationDTO model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
                 {
-                    return Created(); //
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
+                    var user = new ApplicationUser { UserName = model.FullName, Email = model.Email };
+
+                    var result = await userManager.CreateAsync(user, model.Password);
+
+                    if (result.Succeeded)
                     {
-                        ModelState.AddModelError("error", error.Description);
+                        await userManager.AddToRoleAsync(user, model.Role.ToString());
+
+                        return Ok("User registered successfully");
                     }
-                    return BadRequest(ModelState);
+
+                    return BadRequest(result.Errors.FirstOrDefault()?.Description);
                 }
-                
-                //unitOfWork.AppUserRepo.Create(appUser);
-                //unitOfWork.saveChanges();
-                //return Created();
 
+                return BadRequest(ModelState);
             }
-            return BadRequest(ModelState);
-
-        }
-        [HttpPost("Login")]
-
-        public async Task<IActionResult> Login(LoginDTO userlogin)
-        {
-            var user = await userManager.FindByEmailAsync(userlogin.Email);
-            if (user != null && user.PasswordHash == userlogin.Password)
+            catch (Exception ex)
             {
-                #region Claims
-
-                List<Claim> userdata = new List<Claim>();
-                userdata.Add(new Claim("Role","user")) ;
-                userdata.Add(new Claim(ClaimTypes.Email,userlogin.Email));
-                //userdata.Add(new Claim(ClaimTypes.Name, user.UserName));
-                //userdata.Add(new Claim(ClaimTypes.UserData, user.FullName));
-
-                #endregion
-
-                #region singing
-                string key = " Welcome To My SecretKey Fatma Hassan";
-                var SecretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
-                var signingcer = new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256);
-                #endregion
-
-                #region generate token
-              //  hashing algorithm
-              //  playRole => claims,expiredate
-                //signture =>secertkey
-                var token = new JwtSecurityToken(
-                            claims: userdata,
-                            expires: DateTime.Now.AddDays(1),
-                            signingCredentials: signingcer
-                );
-                //token object =>encoding string
-                var tokenObjHand = new JwtSecurityTokenHandler();
-                var finalToken = tokenObjHand.WriteToken(token);
-                #endregion
-
-                return Ok(finalToken);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error processing request: {ex.Message}");
             }
-            else
+        }
+
+
+
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDTO userlog)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await userManager.FindByEmailAsync(userlog.Email);
+                    if (user != null)
+                    {
+                        bool found = await userManager.CheckPasswordAsync(user, userlog.Password);
+                        if (found)
+                        {
+                            List<Claim> userData =
+                            [
+                                new Claim(ClaimTypes.Name, user.UserName),
+                                new Claim(ClaimTypes.Role,string.Join(',', (await userManager.GetRolesAsync(user)))),
+                            ];
+
+                            SecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
+                            SigningCredentials Signcer = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                            //create Token
+                            var token = new JwtSecurityToken(
+                                issuer: configuration["JWT:ValidIssuer"],
+                                audience: configuration["JWT:ValidAudiance"],
+                                 claims: userData,
+                                 expires: DateTime.Now.AddDays(1),
+                                 signingCredentials: Signcer
+                            );
+
+                            return Ok(new
+                            {
+                                stringToken = new JwtSecurityTokenHandler().WriteToken(token),
+                                expairation = token.ValidTo
+                            });
+
+                        }
+                    }
+                    return Unauthorized();
+                }
                 return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data : {ex}");
+
+            }
         }
     }
 }

@@ -9,12 +9,11 @@ namespace ServiceHub.BL.Interface
 {
     public interface IGenericRepo<T> where T : class
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(int id);
-        Task Create(T obj);
-        Task<T> Update(int id,T obj);
-        Task Delete(int id);
-        Task Delete(string id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(int id);
+        Task CreateAsync(T obj);
+        Task<T> UpdateAsync(int id,T obj);
+        Task DeleteAsync(int id);
         
 
 

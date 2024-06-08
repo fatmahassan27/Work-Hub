@@ -17,9 +17,9 @@ namespace ServiceHub.DAL.Entity
 
 
         [ForeignKey("FromUserId")]
-        public ApplicationUser? Rater { get; set; }
+        public ApplicationUser Rater { get; set; }
 
         [ForeignKey("ToUserId")]
-        public ApplicationUser? Rated { get; set; }
+        public ApplicationUser Rated { get; set; }
     }
 }

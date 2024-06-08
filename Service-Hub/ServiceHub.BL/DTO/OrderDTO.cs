@@ -24,8 +24,6 @@ namespace ServiceHub.BL.DTO
             return new OrderDTO()
             {
                 Id = order.Id,
-                UserId = order.UserId,
-                WorkerId = order.WorkerId,
                 Status = order.Status,
                 CreatedDate = order.CreatedDate
             };
@@ -35,8 +33,6 @@ namespace ServiceHub.BL.DTO
             return new Order()
             {
                 Id = orderDTO.Id,
-                UserId = orderDTO.UserId,
-                WorkerId = orderDTO.WorkerId,
                 Status = orderDTO.Status,
                 //CreatedDate = orderDTO.CreatedDate
             };
