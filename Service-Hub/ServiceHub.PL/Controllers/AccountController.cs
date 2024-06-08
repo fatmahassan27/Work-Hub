@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 
 namespace ServiceHub.PL.Controllers
-{
+{//
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
