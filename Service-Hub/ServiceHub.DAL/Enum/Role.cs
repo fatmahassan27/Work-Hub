@@ -2,6 +2,6 @@
 {
     public enum Role
     {
-        Worker = 1, User
+       User=1 ,  Worker 
     }
 }

@@ -16,13 +16,11 @@ namespace ServiceHub.PL.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IConfiguration configuration;
-        private readonly RoleManager<IdentityRole<int>> roleManager;
 
         public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration, RoleManager<IdentityRole<int>> roleManager)
         {
             this.userManager = userManager;
             this.configuration = configuration;
-            this.roleManager = roleManager;
         }
         //public async Task<IActionResult> Register([FromBody] RegistrationDTO model)
         //{

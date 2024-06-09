@@ -19,7 +19,6 @@ namespace ServiceHub.PL.Controllers
     public class WorkerController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly UnitWork unitOfWork;
         public WorkerController( UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
@@ -88,23 +87,23 @@ namespace ServiceHub.PL.Controllers
             try
             {
                 var worker = await userManager.FindByIdAsync(id.ToString());
-                if (worker == null)
+                if (worker != null)
                 {
-                    return NotFound();
-                }
-               
-                worker.UserName = workerDTO.FullName;
-                worker.Email = workerDTO.Email;
-                worker.DistrictId = workerDTO.DistrictId;
-                worker.JobId= workerDTO.JobId;
-                worker.Rating = workerDTO.Rating;
+                    worker.UserName = workerDTO.FullName;
+                    worker.Email = workerDTO.Email;
+                    worker.DistrictId = workerDTO.DistrictId;
+                    worker.JobId = workerDTO.JobId;
+                    worker.Rating = workerDTO.Rating;
+                    var result = await userManager.UpdateAsync(worker);
+                    if (result.Succeeded)
+                    {
+                        return Ok("Updated");
+                    }
+                    return BadRequest(result.Errors);
 
-                var result = await userManager.UpdateAsync(worker);
-                if (result.Succeeded)
-                {
-                    return Ok("Updated");
                 }
-                return BadRequest(result.Errors);
+                return NotFound();
+            
             }
             catch (Exception ex)
             {
@@ -157,6 +156,7 @@ namespace ServiceHub.PL.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data, Message: {ex}");
             }
         }
+
     }
 }
 

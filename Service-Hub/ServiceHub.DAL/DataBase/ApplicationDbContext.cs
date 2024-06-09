@@ -7,7 +7,7 @@ using ServiceHub.DAL.Helper;
 
 namespace ServiceHub.DAL.DataBase
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,IdentityRole<int>,int>
     {
         public DbSet<ChatMessage> ChatMessage { get; set; }
         public DbSet<City> Cities { get; set; }

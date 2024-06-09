@@ -1,4 +1,5 @@
 ﻿using ServiceHub.BL.Interface;
+using ServiceHub.DAL.Entity;
 using ServiceHub.DAL.Helper;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,8 @@ namespace ServiceHub.DAL.Interface
 {
     public interface IUnitOfWork 
     {
-        IOrderRepo CustomOrderRepo { get; }
-        IGenericRepo<ApplicationUser> UserApp { get; }
+        IGenericRepo<Job> JobRepo { get; }
 
-        Task<int> saveChanges();
+        Task<int> saveAsync();
     }
 }
