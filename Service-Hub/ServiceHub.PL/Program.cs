@@ -1,24 +1,19 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using ServiceHub.BL.Interface;
-using ServiceHub.BL.Repository;
-using ServiceHub.BL.UnitOfWork;
-
-
-//using ServiceHub.BL.UnitOfWork;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Helper;
-using ServiceHub.DAL.Interface;
-
-//using ServiceHub.PL.Hubs;
-using System;
-using System.Security.Claims;
 using System.Text;
+using System.Security.Claims;
+using ServiceHub.DAL.Interfaces;
+using ServiceHub.BL.UnitOfWork;
+using ServiceHub.BL.Services;
+using ServiceHub.BL.Mapper;
+
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ServiceHun.PL
 {
@@ -37,8 +32,12 @@ namespace ServiceHun.PL
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+            builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
+
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
+            builder.Services.AddScoped<IJobService, JobService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {
@@ -49,8 +48,6 @@ namespace ServiceHun.PL
             })
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
-
-
 
             builder.Services.AddAuthorization(x => { x.AddPolicy("Worker", po => po.RequireClaim(ClaimTypes.Role, "Worker")); });
             builder.Services.AddAuthorization(x => { x.AddPolicy("User", po => po.RequireClaim(ClaimTypes.Role, "User")); });
@@ -91,10 +88,7 @@ namespace ServiceHun.PL
 
             app.UseAuthorization();
 
-
-
             app.MapControllers();
-
 
             app.Run();
         }

@@ -1,9 +1,6 @@
-﻿using ServiceHub.DAL.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ServiceHub.DAL.Entities;
 
-namespace ServiceHub.BL.DTO
+namespace ServiceHub.BL.DTOs
 {
     public class JobDTO
     {

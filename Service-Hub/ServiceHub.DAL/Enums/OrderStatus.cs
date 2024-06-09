@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceHub.DAL.Enum
+namespace ServiceHub.DAL.Enums
 {
     public enum OrderStatus
     {

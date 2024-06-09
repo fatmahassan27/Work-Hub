@@ -1,30 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using ServiceHub.BL.Interface;
+﻿
+using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
-using ServiceHub.DAL.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ServiceHub.DAL.Interfaces;
 
-namespace ServiceHub.BL.Repository
+namespace ServiceHub.DAL.Repositories
 {
-    public class GenericRepository<T> : IGenericRepo<T> where T : class
+    public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         protected readonly ApplicationDbContext db;
 
-        public GenericRepository(ApplicationDbContext db)
+        public GenericRepo(ApplicationDbContext db)
         {
             this.db = db;
         }
-
         public async Task CreateAsync(T obj)
         {
             await db.Set<T>().AddAsync(obj);
         }
-
         public async Task DeleteAsync(int id)
         {
             var data = await db.Set<T>().FindAsync(id);
@@ -37,20 +29,16 @@ namespace ServiceHub.BL.Repository
         {
             return await db.Set<T>().ToListAsync();
         }
-
-      
-
         public async Task<T> GetByIdAsync(int id)
         {
             return await db.Set<T>().FindAsync(id);
         }
-
-        public async Task<T> UpdateAsync(int id, T obj)
+        public async Task UpdateAsync(int id, T obj)
         {
-          //  var data = await db.Set<T>().FindAsync(id);
-            db.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            return obj;
-
+            //var data = await db.Set<T>().FindAsync(id);
+            db.Entry(obj).State = EntityState.Modified;
+            //return obj;
         }
+
     }
 }

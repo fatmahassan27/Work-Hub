@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ServiceHub.DAL.Entity;
+using ServiceHub.DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

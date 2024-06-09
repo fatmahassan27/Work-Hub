@@ -1,7 +1,7 @@
 ﻿using ServiceHub.DAL.Helper;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ServiceHub.DAL.Entity
+namespace ServiceHub.DAL.Entities
 {
     public class UserConnection
     {

@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using ServiceHub.BL.DTO;
-using ServiceHub.DAL.Entity;
+using ServiceHub.BL.DTOs;
 using ServiceHub.DAL.Helper;
-using Microsoft.EntityFrameworkCore;
-using ServiceHub.DAL.Interface;
-using ServiceHub.BL.UnitOfWork;
-using Microsoft.VisualBasic;
 
 
 namespace ServiceHub.PL.Controllers

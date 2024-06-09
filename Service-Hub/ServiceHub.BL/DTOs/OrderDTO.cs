@@ -1,14 +1,6 @@
-﻿using ServiceHub.DAL.Entity;
-using ServiceHub.DAL.Enum;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServiceHub.BL.DTO
+﻿using ServiceHub.DAL.Entities;
+using ServiceHub.DAL.Enums;
+namespace ServiceHub.BL.DTOs
 {
     public class OrderDTO
     {

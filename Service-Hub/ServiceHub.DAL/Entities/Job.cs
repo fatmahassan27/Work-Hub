@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ServiceHub.DAL.Helper;
 
-namespace ServiceHub.DAL.Entity
+namespace ServiceHub.DAL.Entities
 {
 	public class Job
 	{

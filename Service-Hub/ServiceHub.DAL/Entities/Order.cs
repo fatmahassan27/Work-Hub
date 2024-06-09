@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using ServiceHub.DAL.Enum;
+using ServiceHub.DAL.Enums;
 using ServiceHub.DAL.Helper;
 
-namespace ServiceHub.DAL.Entity
+namespace ServiceHub.DAL.Entities
 {
     public class Order
     {

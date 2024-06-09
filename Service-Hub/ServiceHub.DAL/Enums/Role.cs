@@ -1,4 +1,4 @@
-﻿namespace ServiceHub.DAL.Enum
+﻿namespace ServiceHub.DAL.Enums
 {
     public enum Role
     {

@@ -1,13 +1,7 @@
-﻿using ServiceHub.DAL.Entity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceHub.BL.DTO
+namespace ServiceHub.BL.DTOs
 {
     public class WorkerDTO
     {

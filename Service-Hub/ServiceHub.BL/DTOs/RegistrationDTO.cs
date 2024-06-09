@@ -1,14 +1,8 @@
-﻿using ServiceHub.DAL.Entity;
-using ServiceHub.DAL.Enum;
-using System;
-using System.Collections.Generic;
+﻿
+using ServiceHub.DAL.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceHub.BL.DTO
+namespace ServiceHub.BL.DTOs
 {
     public class RegistrationDTO
     {

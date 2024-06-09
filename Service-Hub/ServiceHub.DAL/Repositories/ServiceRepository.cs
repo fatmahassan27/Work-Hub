@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ServiceHub.BL.Interface;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
-using ServiceHub.DAL.Entity;
 using ServiceHub.DAL.Helper;
 
-namespace ServiceHub.BL.Repository
+namespace ServiceHub.BL.Repositories
 {
-    public class ServiceRepository : IServiceRepo
+    public class ServiceRepository 
     {
         private readonly ApplicationDbContext db;
 

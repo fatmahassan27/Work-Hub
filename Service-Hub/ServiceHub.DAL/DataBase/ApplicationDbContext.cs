@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ServiceHub.DAL.Entity;
-using ServiceHub.DAL.Enum;
+using ServiceHub.DAL.Entities;
+using ServiceHub.DAL.Enums;
 using ServiceHub.DAL.Helper;
 
 namespace ServiceHub.DAL.DataBase
