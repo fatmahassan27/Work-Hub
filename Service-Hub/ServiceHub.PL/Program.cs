@@ -25,6 +25,8 @@ namespace ServiceHun.PL
 
             // Add services to the container.
             var ConnectionString = builder.Configuration.GetConnectionString("Service");
+           
+            builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
@@ -34,7 +36,6 @@ namespace ServiceHun.PL
 
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
-            builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
             builder.Services.AddScoped<IJobService, JobService>();
