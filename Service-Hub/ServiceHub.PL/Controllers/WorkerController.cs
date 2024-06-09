@@ -7,6 +7,9 @@ using ServiceHub.BL.DTO;
 using ServiceHub.DAL.Entity;
 using ServiceHub.DAL.Helper;
 using Microsoft.EntityFrameworkCore;
+using ServiceHub.DAL.Interface;
+using ServiceHub.BL.UnitOfWork;
+using Microsoft.VisualBasic;
 
 
 namespace ServiceHub.PL.Controllers
@@ -16,8 +19,7 @@ namespace ServiceHub.PL.Controllers
     public class WorkerController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
-
-
+        private readonly UnitWork unitOfWork;
         public WorkerController( UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
@@ -29,17 +31,20 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                var data = await userManager.GetUsersInRoleAsync("worker");
+                var data = await userManager.GetUsersInRoleAsync("Worker");
                 if (data != null)
                 {
                     var workerDTOs = data.Select(item => new WorkerDTO
                     {
+                        Id=item.Id,
                         FullName = item.UserName,
                         Email = item.Email,
-                        JobId = item.Job.Id,
-                        DistrictId = (int)item.DistrictId,
+                        JobId= item.JobId,
+                        DistrictId = item.DistrictId,
                         Rating = item.Rating
                     }).ToList();
+                    return Ok(workerDTOs);  
+
                 }
                 return NotFound();
             }
@@ -60,14 +65,13 @@ namespace ServiceHub.PL.Controllers
                 {
                     WorkerDTO workerDTO = new WorkerDTO()
                     {
+                        Id = data.Id,
                         FullName = data.UserName,
                         Email = data.Email,
-                        JobId = data.Job.Id,
-                        DistrictId = data.DistrictId.HasValue ? data.DistrictId.Value : 0, // Handling nullable int
-                        Rating = data.Rating
-
+                        JobId = data.JobId,
+                        DistrictId = data.DistrictId, // Handling nullable int
+                        Rating = data.Ratings.Any() ? (int)data.Ratings.Average(a => a.Value) : 3
                     };
-
                     return Ok(workerDTO);
                 }
                 return NotFound();
@@ -88,25 +92,24 @@ namespace ServiceHub.PL.Controllers
                 {
                     return NotFound();
                 }
-                ApplicationUser appworker = new ApplicationUser()
-                {
-                    UserName = workerDTO.FullName,
-                    Email = workerDTO.Email,
-                    JobId = workerDTO.JobId,
-                    DistrictId = workerDTO.DistrictId,
-                    Rating = workerDTO.Rating,
+               
+                worker.UserName = workerDTO.FullName;
+                worker.Email = workerDTO.Email;
+                worker.DistrictId = workerDTO.DistrictId;
+                worker.JobId= workerDTO.JobId;
+                worker.Rating = workerDTO.Rating;
 
-                };
-                await userManager.UpdateAsync(appworker);
-                return Ok(appworker);
+                var result = await userManager.UpdateAsync(worker);
+                if (result.Succeeded)
+                {
+                    return Ok("Updated");
+                }
+                return BadRequest(result.Errors);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data :{ex}");
-
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating data: {ex.Message}");
             }
-
-
         }
         [HttpDelete("DeleteById/{id:int}")]
         public async Task<IActionResult> Delete(int id)

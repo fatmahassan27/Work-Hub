@@ -17,7 +17,7 @@ namespace ServiceHub.BL.DTO
         [EmailAddress]
         public string? Email { get; set; }
 
-        public int JobId { get; set; }
+        public int? JobId { get; set; }
 
         public int? DistrictId { get; set; }
         public int? Rating { get; set; } //average of ratings	

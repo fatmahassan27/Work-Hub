@@ -38,7 +38,7 @@ namespace ServiceHub.DAL.DataBase
                   Name = Role.User.ToString(),
                   NormalizedName = Role.User.ToString().ToUpper()
               }
-         );
+              );
                 // Configure ChatMessage entity
                 modelBuilder.Entity<ChatMessage>()
                     .HasOne(cm => cm.Sender)

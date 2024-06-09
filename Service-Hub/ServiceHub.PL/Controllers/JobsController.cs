@@ -24,7 +24,7 @@
 //        public JobsController(UnitWork unit)
 //        {
 //            _unit = unit ?? throw new ArgumentNullException(nameof(unit));
-//            Console.WriteLine(User.Identity.Name); 
+//            Console.WriteLine(User.Identity.Name);
 //        }
 
 //        /// <summary>
