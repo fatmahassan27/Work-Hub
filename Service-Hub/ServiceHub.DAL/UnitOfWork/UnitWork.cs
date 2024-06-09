@@ -1,4 +1,5 @@
-﻿using ServiceHub.BL.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using ServiceHub.BL.Interface;
 using ServiceHub.BL.Repository;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entity;
@@ -15,15 +16,30 @@ using System.Threading.Tasks;
 namespace ServiceHub.BL.UnitOfWork
 {
 
-    public class UnitWork
+    public class UnitWork : IUnitOfWork
     {
-        private ApplicationDbContext db;
-        private OrderRepo customOrderRepo;
-        private GenericRepository<Order> orderRepo;
-        private GenericRepository<ApplicationUser> appUsers;
-        private ServiceRepository serviceRepo;
+        private readonly ApplicationDbContext db;
+        private  IGenericRepo<Job> jobRepo;
+     
+        public UnitWork (ApplicationDbContext db)
+        {
+            this.db = db;
+        }
+        public IGenericRepo<Job> JobRepo
+        {
+            get
+            {
+                return jobRepo ??= new GenericRepository<Job>(db);
 
-        //public IGenericRepo<Order> OrderRepo
+            }
+        }
+        public async Task<int> saveAsync()
+        {
+            return await db.SaveChangesAsync();
+        }
+
+
+        //public GenericRepository<Order> OrderRepo
         //{
         //    get
         //    {
@@ -34,6 +50,7 @@ namespace ServiceHub.BL.UnitOfWork
         //        return orderRepo;
         //    }
         //}
+
 
         //public IOrderRepo CustomOrderRepo
         //{
@@ -47,28 +64,28 @@ namespace ServiceHub.BL.UnitOfWork
         //    }
         //}
 
-        public IGenericRepo<ApplicationUser> AppUsers
-        {
-            get
-            {
-                if (appUsers == null)
-                {
-                    appUsers = new GenericRepository<ApplicationUser>(db);
-                }
-                return appUsers;
-            }
-        }
-        public ServiceRepository ServiceRepository
-        {
-            get
-            {
-                if (serviceRepo == null)
-                {
-                    serviceRepo = new ServiceRepository(db);
-                }
-                return serviceRepo;
-            }
-        }
+        //public IGenericRepo<ApplicationUser> AppUsers
+        //{
+        //    get
+        //    {
+        //        if (appUsers == null)
+        //        {
+        //            appUsers = new GenericRepository<ApplicationUser>(db);
+        //        }
+        //        return appUsers;
+        //    }
+        //}
+        //public ServiceRepository ServiceRepository
+        //{
+        //    get
+        //    {
+        //        if (serviceRepo == null)
+        //        {
+        //            serviceRepo = new ServiceRepository(db);
+        //        }
+        //        return serviceRepo;
+        //    }
+        //}
 
         //BaseRepository<ChatMessage> chatMessageRepo;
         //BaseRepository<ApplicationUser> appUserRepo;
@@ -149,12 +166,8 @@ namespace ServiceHub.BL.UnitOfWork
         //}
 
 
-        public async Task<int> saveChanges()
-        {
-            return  db.SaveChanges();
-        }
 
 
-     
+
     }
 }

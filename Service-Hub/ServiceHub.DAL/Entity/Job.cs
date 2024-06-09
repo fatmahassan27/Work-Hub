@@ -11,7 +11,7 @@ namespace ServiceHub.DAL.Entity
 		[Required]
 		public string Name { get; set; }
         [Required]
-        public double Price { get; set; }
+        public int Price { get; set; }
         public ICollection<ApplicationUser> Workers { get; set; } = new HashSet<ApplicationUser>();
     }
 }

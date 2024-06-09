@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ServiceHub.BL.Interface;
 using ServiceHub.BL.Repository;
+using ServiceHub.BL.UnitOfWork;
+
+
 //using ServiceHub.BL.UnitOfWork;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Helper;
@@ -35,6 +38,7 @@ namespace ServiceHun.PL
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+            builder.Services.AddScoped<IUnitOfWork,UnitWork>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {
