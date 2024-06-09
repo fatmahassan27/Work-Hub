@@ -22,25 +22,32 @@ namespace ServiceHub.DAL.DataBase
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            {
-                modelBuilder.Entity<IdentityRole<int>>().HasData(
+            //seeding data
+            //---------------------------------------------------------------------
+            modelBuilder.Entity<IdentityRole<int>>().HasData(
              new IdentityRole<int>
-
              {
                  Id = 1,
                  Name = Role.Worker.ToString(),
                  NormalizedName = Role.Worker.ToString().ToUpper()
              },
               new IdentityRole<int>
-
               {
                   Id = 2,
                   Name = Role.User.ToString(),
                   NormalizedName = Role.User.ToString().ToUpper()
               }
               );
-                // Configure ChatMessage entity
-                modelBuilder.Entity<ChatMessage>()
+            modelBuilder.Entity<City>().HasData(new { id = 1, Name = "Alexandria" }, new { id = 2, Name = "Cairo" }, new { id = 3, Name = "Mansoura" });
+            modelBuilder.Entity<District>().HasData(
+                new { Id = 1, Name = "Smouha", CityId = 1 }, new { Id = 2, Name = "Sporting", CityId = 1 }, new { Id = 3, Name = "Camp Chezar", CityId = 1 },
+                new { Id = 4, Name = "Zamelak", CityId = 2 }, new { Id = 5, Name = "Zayed", CityId = 2 }, new { Id = 6, Name = "Maady", CityId = 2 }
+                );
+            modelBuilder.Entity<Job>().HasData(
+                new { Id = 1 , Name = "Developer", Price = 700 }, new { Id = 2, Name = "Mechanic", Price = 600 }, new { Id = 3, Name = "Carpenter", Price = 500 });
+            //---------------------------------------------------------------------
+            // Configure ChatMessage entity
+            modelBuilder.Entity<ChatMessage>()
                     .HasOne(cm => cm.Sender)
                     .WithMany()
                     .HasForeignKey(cm => cm.SenderId)
@@ -128,9 +135,7 @@ namespace ServiceHub.DAL.DataBase
                 //---------------------------------------------------------------------
                 base.OnModelCreating(modelBuilder);
 
-            }
+            
         }
-
-
     }
 }

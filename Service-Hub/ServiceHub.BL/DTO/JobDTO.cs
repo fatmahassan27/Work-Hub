@@ -9,7 +9,7 @@ namespace ServiceHub.BL.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         /// <summary>
         /// Converts a Job entity to JobDTO.
