@@ -10,7 +10,7 @@ using ServiceHub.DAL.Interfaces;
 using ServiceHub.BL.UnitOfWork;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
-
+using Microsoft.Extensions.DependencyInjection;
 namespace ServiceHub.PL
 {
     public class Program
@@ -32,7 +32,6 @@ namespace ServiceHub.PL
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
-            //builder.Services.AddAutoMapper(typeof(DomainProfile).Assembly);
 
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
             builder.Services.AddScoped<IJobService, JobService>();

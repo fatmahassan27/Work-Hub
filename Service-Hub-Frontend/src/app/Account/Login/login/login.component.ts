@@ -6,6 +6,7 @@ import { AccountService } from '../../../Services/account.service';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule],
+  providers:[AccountService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

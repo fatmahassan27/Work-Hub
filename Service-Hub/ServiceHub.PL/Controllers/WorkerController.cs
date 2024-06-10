@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
 using ServiceHub.DAL.Helper;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace ServiceHub.PL.Controllers
@@ -52,16 +53,8 @@ namespace ServiceHub.PL.Controllers
                 var data = await userManager.FindByIdAsync(id.ToString()); ;
                 if (data != null)
                 {
-                    WorkerDTO workerDTO = new WorkerDTO()
-                    {
-                        Id = data.Id,
-                        FullName = data.UserName,
-                        Email = data.Email,
-                        JobId = data.JobId,
-                        DistrictId = data.DistrictId, // Handling nullable int
-                        Rating = data.Rating
-                    };
-                    return Ok(workerDTO);
+                    var worker = mapper.Map<WorkerDTO>(data);
+                    return Ok(worker);
                 }
                 return NotFound();
             }
@@ -79,12 +72,9 @@ namespace ServiceHub.PL.Controllers
                 var worker = await userManager.FindByIdAsync(id.ToString());
                 if (worker != null)
                 {
-                    worker.UserName = workerDTO.FullName;
-                    worker.Email = workerDTO.Email;
-                    worker.DistrictId = workerDTO.DistrictId;
-                    worker.JobId = workerDTO.JobId;
-                    worker.Rating = workerDTO.Rating;
-                    var result = await userManager.UpdateAsync(worker);
+                    var appuser = mapper.Map<ApplicationUser>(workerDTO); 
+
+                    var result = await userManager.UpdateAsync(appuser);
                     if (result.Succeeded)
                     {
                         return Ok("Updated");
@@ -126,24 +116,39 @@ namespace ServiceHub.PL.Controllers
                 var data = userManager.Users.Where(a => a.JobId == jobId);
                 if (data != null)
                 {
-                    foreach (var item in data)
-                    {
-                        WorkerDTO workerDTO = new WorkerDTO()
-                        {
-                            Id = item.Id,
-                            FullName = item.UserName,
-                            Email = item.Email,
-                            DistrictId = item.DistrictId,
-                            Rating = item.Rating,
-                        };
-                        return Ok(workerDTO);
-                    }
+                   
+                        var workerDto = mapper.Map<IEnumerable<WorkerDTO>>(data);
+                
+                        return Ok(workerDto);
+                   
                 }
                 return NotFound();
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data, Message: {ex}");
+            }
+        }
+
+
+
+        [HttpGet("WorkerByDistrictId/{id:int}")]
+        public async Task<IActionResult> GetByDistrictId(int id)
+        {
+            try
+            {
+                var data = userManager.Users.Where(a => a.DistrictId == id);
+                if (data != null)
+                {
+                    var workers = mapper.Map<IEnumerable<WorkerDTO>>(data);
+                    return Ok(workers);
+                }
+                return NotFound();
+            }
+
+            catch (Exception ex)
+            {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data, Message: {ex}");
             }
         }
 
