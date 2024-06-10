@@ -4,7 +4,6 @@ export class Worker {
         public  Email: string,
         public Password :string,
         public JobId: number,
-        public CityId :number,
         public DistrictId :number,
         public Rating: number
     )

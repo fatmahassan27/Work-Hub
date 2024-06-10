@@ -62,7 +62,7 @@ namespace ServiceHub.PL.Controllers
                         Email = data.Email,
                         JobId = data.JobId,
                         DistrictId = data.DistrictId, // Handling nullable int
-                        Rating = data.Ratings.Any() ? (int)data.Ratings.Average(a => a.Value) : 3
+                        Rating = data.Rating
                     };
                     return Ok(workerDTO);
                 }
