@@ -11,11 +11,11 @@ import { AccountService } from '../../../Services/account.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  emailuser:string="";
-  password:string="";
+  Email:string="";
+  Password:string="";
   constructor(public accountService:AccountService){ }
   login()
   {
-    this.accountService.login(this.emailuser,this.password)
+    this.accountService.login(this.Email,this.Password)
   }
 }

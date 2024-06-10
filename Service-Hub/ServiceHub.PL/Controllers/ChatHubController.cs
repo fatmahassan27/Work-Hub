@@ -1,8 +1,8 @@
 ﻿//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Identity;
 //using Microsoft.AspNetCore.Mvc;
-//using ServiceHub.BL.Interface;
 //using ServiceHub.BL.UnitOfWork;
-//using ServiceHub.DAL.Entity;
+//using ServiceHub.DAL.Helper;
 
 //namespace ServiceHub.PL.Controllers
 //{
@@ -10,13 +10,12 @@
 //    [ApiController]
 //    public class ChatHubController : ControllerBase
 //    {
-//        private readonly UnitWork unitOWork;
+//        private readonly UserManager<ApplicationUser> userManager;
 
-//        private readonly IGenericRepo<ChatMessage> chat;
-
-//        public ChatHubController(UnitWork unitOWork)
+//        public ChatHubController(UserManager<ApplicationUser> userManager)
 //        {
-//            this.unitOWork = unitOWork;
+//            this.userManager = userManager;
 //        }
+       
 //    }
 //}
