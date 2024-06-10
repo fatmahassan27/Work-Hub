@@ -2,6 +2,7 @@
 using AutoMapper;
 using ServiceHub.BL.DTOs;
 using ServiceHub.DAL.Entities;
+using ServiceHub.DAL.Helper;
 
 namespace ServiceHub.BL.Mapper
 {
@@ -9,12 +10,20 @@ namespace ServiceHub.BL.Mapper
     {
         public DomainProfile()
         {
-            //entity to dto
             CreateMap<Job, JobDTO>();
+            CreateMap<JobDTO, Job>();
+            //--------------------------------------------
+            CreateMap<ApplicationUser, WorkerDTO>();
+            CreateMap<WorkerDTO, ApplicationUser>();
+            //--------------------------------------------
+            CreateMap<Order, OrderDTO>();
+            CreateMap<OrderDTO, Order>();
+            //--------------------------------------------
 
-            //dto to entity
-            CreateMap<JobDTO, Job>(); 
-             
+            //--------------------------------------------
+
+            //--------------------------------------------
+
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ServiceHub.BL.DTOs
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int DistrictId { get; set; }
 
-
+        public int JobId { get; set; }
 
     }
 }

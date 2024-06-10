@@ -21,49 +21,8 @@ namespace ServiceHub.PL.Controllers
             this.userManager = userManager;
             this.configuration = configuration;
         }
-        //public async Task<IActionResult> Register([FromBody] RegistrationDTO model)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var user = new ApplicationUser { UserName = model.FullName, Email = model.Email, DistrictId = model.DistrictId };
-
-        //            var result = await userManager.CreateAsync(user, model.Password);
-
-        //            if (result.Succeeded)
-        //            {
-        //                var roleExists = await roleManager.RoleExistsAsync(model.RoleName);
-        //                if (!roleExists)
-        //                {
-        //                    var roleResult = await roleManager.CreateAsync(new IdentityRole<int>(model.RoleName));
-        //                    if (!roleResult.Succeeded)
-        //                    {
-        //                        return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating role: {roleResult.Errors.FirstOrDefault()?.Description}");
-        //                    }
-
-        //                }
-        //                var addToRoleResult = await userManager.AddToRoleAsync(user, model.RoleName);
-        //                if (!addToRoleResult.Succeeded)
-        //                {
-        //                    return StatusCode(StatusCodes.Status500InternalServerError, $"Error adding user to role: {addToRoleResult.Errors.FirstOrDefault()?.Description}");
-        //                }
-        //                return Ok("User registered successfully");
-        //            }
-        //            return BadRequest(result.Errors.FirstOrDefault()?.Description);
-
-        //        }
-        //        return BadRequest(ModelState);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data : {ex}");
-
-        //    }
-
-        //}
+   
         [HttpPost("Register")]
-
         public async Task<IActionResult> Register([FromBody] RegistrationDTO model)
         {
             try
@@ -91,9 +50,6 @@ namespace ServiceHub.PL.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error processing request: {ex.Message}");
             }
         }
-
-
-
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDTO userlog)

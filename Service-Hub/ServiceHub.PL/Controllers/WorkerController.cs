@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
@@ -12,9 +13,12 @@ namespace ServiceHub.PL.Controllers
     public class WorkerController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
-        public WorkerController( UserManager<ApplicationUser> userManager)
+        private readonly IMapper mapper;
+
+        public WorkerController( UserManager<ApplicationUser> userManager,IMapper mapper)
         {
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         [HttpGet("GetAllWorker")]
@@ -26,16 +30,9 @@ namespace ServiceHub.PL.Controllers
                 var data = await userManager.GetUsersInRoleAsync("Worker");
                 if (data != null)
                 {
-                    var workerDTOs = data.Select(item => new WorkerDTO
-                    {
-                        Id=item.Id,
-                        FullName = item.UserName,
-                        Email = item.Email,
-                        JobId= item.JobId,
-                        DistrictId = item.DistrictId,
-                        Rating = item.Rating
-                    }).ToList();
-                    return Ok(workerDTOs);  
+                    var listDTOs = mapper.Map<IEnumerable<WorkerDTO>>(data);
+                   
+                    return Ok(listDTOs);  
 
                 }
                 return NotFound();

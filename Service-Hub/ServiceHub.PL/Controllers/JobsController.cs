@@ -1,6 +1,8 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
+using ServiceHub.DAL.Entities;
 using ServiceHub.DAL.Interfaces;
 
 namespace ServiceHub.PL.Controllers
@@ -10,9 +12,12 @@ namespace ServiceHub.PL.Controllers
     public class JobsController : ControllerBase
     {
         private readonly IJobService jobService;
-        public JobsController(IJobService _jobService)
+        private readonly IMapper mapper;
+
+        public JobsController(IJobService _jobService,IMapper mapper)
         {
             jobService = _jobService;
+            this.mapper = mapper;
         }
 
         // api/jobs
@@ -24,12 +29,7 @@ namespace ServiceHub.PL.Controllers
                 var jobs = await jobService.GetAllJobs();
                 if (jobs != null)
                 {
-                    var JobDTOs = jobs.Select(item => new JobDTO
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Price = item.Price
-                    }).ToList();
+                    var JobDTOs = mapper.Map<IEnumerable<JobDTO>>(jobs);
                     return Ok(JobDTOs);
                 }
                 return NotFound();
@@ -47,10 +47,11 @@ namespace ServiceHub.PL.Controllers
             try
             {
                 var job = await jobService.GetJobById(id);
+
                 if (job != null)
                 {
-                    var jobDto = JobDTO.FromJob(job);
-                    return Ok(jobDto);
+                    var JobDTO = mapper.Map<JobDTO>(job);
+                    return Ok(JobDTO);
                 }
                 return NotFound();
             }
@@ -69,9 +70,8 @@ namespace ServiceHub.PL.Controllers
                 var job = await jobService.GetJobById(id);
                 if (job != null)
                 {
-                    job.Name = jobDTO.Name;
-                    job.Price = jobDTO.Price;
-                    jobService.UpdateJob(job); 
+                    var updatedJob = mapper.Map<Job>(jobDTO);
+                    jobService.UpdateJob(updatedJob);
                     return Ok("Updated");
                 }
                 return NotFound();

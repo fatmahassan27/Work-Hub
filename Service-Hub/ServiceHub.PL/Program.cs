@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +10,8 @@ using ServiceHub.DAL.Interfaces;
 using ServiceHub.BL.UnitOfWork;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
-using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace ServiceHun.PL
+namespace ServiceHub.PL
 {
     public class Program
     {
@@ -24,19 +21,22 @@ namespace ServiceHun.PL
 
             // Add services to the container.
             var ConnectionString = builder.Configuration.GetConnectionString("Service");
-
+          
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+
             builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
+            //builder.Services.AddAutoMapper(typeof(DomainProfile).Assembly);
 
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
             builder.Services.AddScoped<IJobService, JobService>();
+            //
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {
