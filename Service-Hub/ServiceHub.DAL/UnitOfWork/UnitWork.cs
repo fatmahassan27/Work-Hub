@@ -10,7 +10,8 @@ namespace ServiceHub.BL.UnitOfWork
     {
         private readonly ApplicationDbContext db;
         private IJobRepo jobRepo;
-        //
+        private ICityRepo cityRepo;
+        private IOrderRepo orderRepo;
 
         public UnitWork(ApplicationDbContext db)
         {
@@ -24,6 +25,23 @@ namespace ServiceHub.BL.UnitOfWork
                 return jobRepo ??= new JobRepo(db);
             }
         }
+
+        public ICityRepo CityRepo
+        {
+            get
+            {
+             return cityRepo ??= new CityRepo(db);    
+            }
+        }
+
+        public IOrderRepo OrderRepo
+        {
+            get
+            {
+                return orderRepo ??= new OrderRepo(db);
+            }
+        }
+
         public async Task<int> saveAsync()
         {
             return await db.SaveChangesAsync();

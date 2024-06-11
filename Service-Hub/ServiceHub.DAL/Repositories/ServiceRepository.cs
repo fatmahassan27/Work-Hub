@@ -17,6 +17,5 @@ namespace ServiceHub.BL.Repositories
         {
             return await db.Users.Where(w => w.JobId == jobId).ToListAsync();
         }
-      //GEtAll
     }
 }
