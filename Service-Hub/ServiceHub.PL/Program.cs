@@ -83,6 +83,14 @@ namespace ServiceHub.PL
 
 			   });
 
+            builder.Services.AddCors(options =>
+            {       options.AddPolicy("AllowLocalhost4200",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+            });
+            var app = builder.Build();
+
 			var app = builder.Build();
             
             // Configure the HTTP request pipeline.
@@ -91,9 +99,11 @@ namespace ServiceHub.PL
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //app.MapHub<ChatHub>("/chat");
-            //app.MapHub<NotificationsHub>("/notifications");
+            //app.MapHub<ChatHub>("/chathub");
+            app.MapHub<NotificationsHub>("/notifications");
 
+            app.UseCors("AllowLocalhost4200");
+            app.UseRouting();
 
             app.UseAuthentication();
 
