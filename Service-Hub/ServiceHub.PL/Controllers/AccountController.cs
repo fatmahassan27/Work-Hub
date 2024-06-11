@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceHub.BL.DTOs;
+using ServiceHub.DAL.Enums;
 using ServiceHub.DAL.Helper;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,11 +17,13 @@ namespace ServiceHub.PL.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IConfiguration configuration;
+        private readonly IMapper mapper;
 
-        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration, RoleManager<IdentityRole<int>> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager, IConfiguration configuration, RoleManager<IdentityRole<int>> roleManager,IMapper mapper)
         {
             this.userManager = userManager;
             this.configuration = configuration;
+            this.mapper = mapper;
         }
    
         [HttpPost("Register")]
@@ -29,17 +33,25 @@ namespace ServiceHub.PL.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser { UserName = model.FullName, Email = model.Email };
-
-                    var result = await userManager.CreateAsync(user, model.Password);
+                    var user = new ApplicationUser { UserName = model.FullName, Email = model.Email , PasswordHash = model.Password };
+                    var result = await userManager.CreateAsync(user, model.Password);//
+                    await userManager.AddToRoleAsync(user, model.Role.ToString());
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, model.Role.ToString());
+                        if (model.Role == Role.Worker)
+                        {
+                            user.JobId = model.JobId;
+                            user.DistrictId = model.DistrictId;
+                            await userManager.UpdateAsync(user);
+                            return Ok("Worker registered successfully");
+                        }
+                        else if(model.Role == Role.User)
+                        {
+                            return Ok("User registered successfully");
+                        }
 
-                        return Ok("User registered successfully");
                     }
-
                     return BadRequest(result.Errors.FirstOrDefault()?.Description);
                 }
 
@@ -66,6 +78,7 @@ namespace ServiceHub.PL.Controllers
                         {
                             List<Claim> userData =
                             [
+                                new Claim("id",user.Id.ToString()),
                                 new Claim(ClaimTypes.Name, user.UserName),
                                 new Claim(ClaimTypes.Role,string.Join(',', (await userManager.GetRolesAsync(user)))),
                             ];
@@ -81,12 +94,13 @@ namespace ServiceHub.PL.Controllers
                                  expires: DateTime.Now.AddDays(1),
                                  signingCredentials: Signcer
                             );
+                            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
 
-                            return Ok(new
-                            {
-                                stringToken = new JwtSecurityTokenHandler().WriteToken(token),
-                                expairation = token.ValidTo
-                            });
+                            //return Ok(new
+                            //{
+                            //    stringToken = new JwtSecurityTokenHandler().WriteToken(token),
+                            //    expairation = token.ValidTo
+                            //});
 
                         }
                     }

@@ -84,8 +84,8 @@ namespace ServiceHub.PL
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-           // app.MapHub<ChatHub>("/chathub");
-            //app.MapHub<NotificationsHub>("/notifications");
+            //app.MapHub<ChatHub>("/chathub");
+            app.MapHub<NotificationsHub>("/notifications");
 
             app.UseCors("AllowLocalhost4200");
             app.UseRouting();

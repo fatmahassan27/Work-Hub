@@ -12,8 +12,8 @@ using ServiceHub.DAL.DataBase;
 namespace ServiceHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240608220129_seedRoles")]
-    partial class seedRoles
+    [Migration("20240610234750_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,12 +58,14 @@ namespace ServiceHub.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Worker"
+                            Name = "Worker",
+                            NormalizedName = "WORKER"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "User"
+                            Name = "User",
+                            NormalizedName = "USER"
                         });
                 });
 
@@ -170,7 +172,7 @@ namespace ServiceHub.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.ChatMessage", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.ChatMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,7 +210,7 @@ namespace ServiceHub.DAL.Migrations
                     b.ToTable("ChatMessage");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.City", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.City", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -223,9 +225,26 @@ namespace ServiceHub.DAL.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            Name = "Alexandria"
+                        },
+                        new
+                        {
+                            id = 2,
+                            Name = "Cairo"
+                        },
+                        new
+                        {
+                            id = 3,
+                            Name = "Mansoura"
+                        });
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.District", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.District", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,9 +264,47 @@ namespace ServiceHub.DAL.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Districts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CityId = 1,
+                            Name = "Smouha"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CityId = 1,
+                            Name = "Sporting"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CityId = 1,
+                            Name = "Camp Chezar"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CityId = 2,
+                            Name = "Zamelak"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CityId = 2,
+                            Name = "Zayed"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CityId = 2,
+                            Name = "Maady"
+                        });
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Job", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Job", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,15 +316,35 @@ namespace ServiceHub.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Developer",
+                            Price = 700
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mechanic",
+                            Price = 600
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Carpenter",
+                            Price = 500
+                        });
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Notification", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,7 +374,7 @@ namespace ServiceHub.DAL.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Order", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -326,7 +403,7 @@ namespace ServiceHub.DAL.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Rate", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Rate", b =>
                 {
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");
@@ -361,7 +438,7 @@ namespace ServiceHub.DAL.Migrations
                     b.ToTable("Ratings");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.UserConnection", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.UserConnection", b =>
                 {
                     b.Property<string>("ConnectionId")
                         .HasColumnType("nvarchar(450)");
@@ -514,7 +591,7 @@ namespace ServiceHub.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.ChatMessage", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.ChatMessage", b =>
                 {
                     b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", null)
                         .WithMany("ChatMessages")
@@ -537,9 +614,9 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.District", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.District", b =>
                 {
-                    b.HasOne("ServiceHub.DAL.Entity.City", "City")
+                    b.HasOne("ServiceHub.DAL.Entities.City", "City")
                         .WithMany("Districtlist")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -548,7 +625,7 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Notification", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Notification", b =>
                 {
                     b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "Owner")
                         .WithMany("Notifications")
@@ -559,7 +636,7 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Order", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Order", b =>
                 {
                     b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "User")
                         .WithMany("Orders")
@@ -578,7 +655,7 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Rate", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Rate", b =>
                 {
                     b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", null)
                         .WithMany("Ratings")
@@ -601,7 +678,7 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("Rater");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.UserConnection", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.UserConnection", b =>
                 {
                     b.HasOne("ServiceHub.DAL.Helper.ApplicationUser", "User")
                         .WithMany()
@@ -614,12 +691,12 @@ namespace ServiceHub.DAL.Migrations
 
             modelBuilder.Entity("ServiceHub.DAL.Helper.ApplicationUser", b =>
                 {
-                    b.HasOne("ServiceHub.DAL.Entity.District", "District")
+                    b.HasOne("ServiceHub.DAL.Entities.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ServiceHub.DAL.Entity.Job", "Job")
+                    b.HasOne("ServiceHub.DAL.Entities.Job", "Job")
                         .WithMany("Workers")
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -629,12 +706,12 @@ namespace ServiceHub.DAL.Migrations
                     b.Navigation("Job");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.City", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.City", b =>
                 {
                     b.Navigation("Districtlist");
                 });
 
-            modelBuilder.Entity("ServiceHub.DAL.Entity.Job", b =>
+            modelBuilder.Entity("ServiceHub.DAL.Entities.Job", b =>
                 {
                     b.Navigation("Workers");
                 });
