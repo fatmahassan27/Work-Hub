@@ -11,12 +11,14 @@ using ServiceHub.BL.UnitOfWork;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.CodeAnalysis.Options;
 namespace ServiceHub.PL
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            string text = "";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -36,7 +38,7 @@ namespace ServiceHub.PL
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
             builder.Services.AddScoped<IJobService, JobService>();
             //
-
+           
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {
                 opt.Password.RequireLowercase = false;
@@ -69,6 +71,17 @@ namespace ServiceHub.PL
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!))
                     };
                 });
+			builder.Services.AddCors(
+			   Option => {
+				   Option.AddPolicy(text,
+					   builder =>
+					   {
+						   builder.AllowAnyOrigin();
+						   builder.AllowAnyMethod();
+						   builder.AllowAnyHeader();
+					   });
+
+			   });
 
             builder.Services.AddCors(options =>
             {       options.AddPolicy("AllowLocalhost4200",
@@ -78,6 +91,8 @@ namespace ServiceHub.PL
             });
             var app = builder.Build();
 
+			var app = builder.Build();
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -93,6 +108,7 @@ namespace ServiceHub.PL
             app.UseAuthentication();
 
             app.UseAuthorization();
+            app.UseCors(text);
 
             app.MapControllers();
 

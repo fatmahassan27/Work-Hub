@@ -1,12 +1,13 @@
-﻿
-using ServiceHub.DAL.Entities;
-
+﻿using ServiceHub.DAL.Entities;
 namespace ServiceHub.DAL.Interfaces
 {
-    public interface IUnitOfWork 
+    public interface IUnitOfWork
     {
         IJobRepo JobRepo { get; }
-
-        Task<int> saveAsync();
+        ICityRepo CityRepo{ get; }
+ 
+		Task<int> saveAsync();
     }
+
+
 }
