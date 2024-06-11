@@ -5,6 +5,7 @@ namespace ServiceHub.DAL.Interfaces
     {
         IJobRepo JobRepo { get; }
         ICityRepo CityRepo{ get; }
+        IOrderRepo OrderRepo { get; }
  
 		Task<int> saveAsync();
     }

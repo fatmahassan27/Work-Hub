@@ -22,7 +22,8 @@ namespace ServiceHub.BL.Mapper
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderDTO, Order>();
             //--------------------------------------------
-
+            CreateMap<City, CityDTO>();
+            CreateMap<CityDTO, City>();
             //--------------------------------------------
 
             //--------------------------------------------

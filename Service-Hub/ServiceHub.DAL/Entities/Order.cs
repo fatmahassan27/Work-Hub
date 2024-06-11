@@ -20,11 +20,11 @@ namespace ServiceHub.DAL.Entities
         [ForeignKey("WorkerId")]
         public ApplicationUser Worker { get; set; }
 
-        public Order()
-        {
-            //Status = OrderStatus.New;
-            CreatedDate = DateTime.Now;
-        }
+        //public Order()
+        //{
+        //    //Status = OrderStatus.New;
+        //    CreatedDate = DateTime.Now;
+        //}
 
 
     }

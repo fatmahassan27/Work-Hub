@@ -28,13 +28,11 @@ export class AccountService {
     }
   }
   login(user:UserLogin) 
-  baseurl="http://localhost:5018/api/Account/Login";
-  login(Email:string,Password:string)
   {
      let str:string=`?Email=${user.Email}&Password=${user.Password}`;
      return  this.http.post(this.baseurl+str,{responseType :'text'}).subscribe(d=>
       {this.isAuthenticated=true;
-    let str: string = `?username=${Email}&password=${Password}`;
+    let str: string = `?username=${user.Email}&password=${user.Password}`;
     return this.http.post(this.baseurl + str, { responseType: 'text' }).subscribe(d => {
       this.isAuthenticated = true;
       localStorage.setItem("token",d.toString());
