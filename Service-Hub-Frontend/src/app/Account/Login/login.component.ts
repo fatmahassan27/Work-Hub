@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AccountService } from '../../../Services/account.service';
+import { AccountService } from '../../Services/account.service';
 
 @Component({
   selector: 'app-login',

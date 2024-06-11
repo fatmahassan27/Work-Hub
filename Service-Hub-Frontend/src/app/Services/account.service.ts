@@ -16,8 +16,8 @@ export class AccountService {
   constructor(public http:HttpClient) { }
 
   login(Email:string,Password:string) :void{
-  {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  {  
+    //const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      let str:string=`?Email=${Email}&Password=${Password}`;
      this.http.post(this.baseurl+str,{headers ,responseType :'text'}).subscribe(d=>{this.isAuthenticated=true;
       localStorage.setItem("token",d.toString());

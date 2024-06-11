@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ServiceHub.DAL.Migrations
 {
     /// <inheritdoc />
@@ -46,7 +48,7 @@ namespace ServiceHub.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false)
+                    Price = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -359,6 +361,48 @@ namespace ServiceHub.DAL.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, null, "Worker", "WORKER" },
+                    { 2, null, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Alexandria" },
+                    { 2, "Cairo" },
+                    { 3, "Mansoura" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Developer", 700 },
+                    { 2, "Mechanic", 600 },
+                    { 3, "Carpenter", 500 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Districts",
+                columns: new[] { "Id", "CityId", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "Smouha" },
+                    { 2, 1, "Sporting" },
+                    { 3, 1, "Camp Chezar" },
+                    { 4, 2, "Zamelak" },
+                    { 5, 2, "Zayed" },
+                    { 6, 2, "Maady" }
                 });
 
             migrationBuilder.CreateIndex(

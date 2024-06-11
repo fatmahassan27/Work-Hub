@@ -10,8 +10,8 @@ using ServiceHub.DAL.Interfaces;
 using ServiceHub.BL.UnitOfWork;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
-using Microsoft.Extensions.DependencyInjection;
 using ServiceHub.PL.Hubs;
+
 namespace ServiceHub.PL
 {
     public class Program
@@ -85,8 +85,8 @@ namespace ServiceHub.PL
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-           // app.MapHub<ChatHub>("/chathub");
-            //app.MapHub<NotificationsHub>("/notifications");
+            //app.MapHub<ChatHub>("/chathub");
+            app.MapHub<NotificationsHub>("/notifications");
 
             app.UseCors("AllowLocalhost4200");
             app.UseRouting();

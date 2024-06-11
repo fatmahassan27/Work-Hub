@@ -13,6 +13,9 @@ namespace ServiceHub.BL.Mapper
             CreateMap<Job, JobDTO>();
             CreateMap<JobDTO, Job>();
             //--------------------------------------------
+            CreateMap<ApplicationUser, RegistrationDTO>();
+            CreateMap<RegistrationDTO, ApplicationUser>();
+            //--------------------------------------------
             CreateMap<ApplicationUser, WorkerDTO>();
             CreateMap<WorkerDTO, ApplicationUser>();
             //--------------------------------------------
