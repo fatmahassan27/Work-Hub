@@ -19,7 +19,7 @@ export class AccountService {
   {  
     //const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      let str:string=`?Email=${Email}&Password=${Password}`;
-     this.http.post(this.baseurl+str,{headers ,responseType :'text'}).subscribe(d=>{this.isAuthenticated=true;
+     this.http.post(this.baseurl+str,{responseType :'text'}).subscribe(d=>{this.isAuthenticated=true;
       localStorage.setItem("token",d.toString());
       let r:{username:string,isUser:boolean,isWorker:boolean}=jwtdecode.jwtDecode(d.toString());
       console.log(r.username);
