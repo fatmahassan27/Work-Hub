@@ -11,7 +11,6 @@ using ServiceHub.BL.UnitOfWork;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceHub.PL.Hubs;
 namespace ServiceHub.PL
 {
     public class Program

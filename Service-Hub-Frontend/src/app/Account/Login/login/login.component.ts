@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../../Services/account.service';
+import { UserLogin } from '../../../Models/user-login';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +12,10 @@ import { AccountService } from '../../../Services/account.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  Email:string="";
-  Password:string="";
+  user:UserLogin=new UserLogin("","");
   constructor(public accountService:AccountService){ }
   login()
   {
-    this.accountService.login(this.Email,this.Password)
+    this.accountService.login(this.user)
   }
 }
