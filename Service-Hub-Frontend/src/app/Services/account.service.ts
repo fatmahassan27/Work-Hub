@@ -9,10 +9,11 @@ import * as jwtdecode from 'jwt-decode';
 export class AccountService {
   isAuthenticated=false;
   baseurl="http://localhost:5018/api/Account/Login";
-  login(emailuser:string,password:string)
+  login(Email:string,Password:string)
   {
-    let str:string=`?username=${emailuser}&password=${password}`;
-   return this.http.post(this.baseurl+str,{responseType :'text'}).subscribe(d=>{this.isAuthenticated=true;
+    let str: string = `?username=${Email}&password=${Password}`;
+    return this.http.post(this.baseurl + str, { responseType: 'text' }).subscribe(d => {
+      this.isAuthenticated = true;
       localStorage.setItem("token",d.toString());
       let r:{useremail:string,isUser:boolean,isWorker:boolean}=jwtdecode.jwtDecode(d.toString());
       console.log(r.useremail);
