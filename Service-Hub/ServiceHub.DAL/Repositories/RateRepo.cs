@@ -22,15 +22,8 @@ namespace ServiceHub.DAL.Repositories
         {
             return  await db.Ratings.Where(a=>a.ToUserId==workerId).ToListAsync();
         }
-        public  async Task AddRate(int workerId,int userId,int value, string review)
+        public  async Task AddRate(Rate rate)
         {
-            Rate rate = new Rate()
-            {
-                ToUserId = workerId,
-                FromUserId= userId,
-                Value =value,
-                Review=review
-            };
             await db.Ratings.AddAsync(rate);
         }
     }

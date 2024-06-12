@@ -28,7 +28,9 @@ namespace ServiceHub.BL.Mapper
             CreateMap<District, DistrictDTO>();
             CreateMap<DistrictDTO, District>();
             //--------------------------------------------
-
+            CreateMap<Rate, RateDTO>();
+            CreateMap<RateDTO, Rate>();
+            //--------------------------------------------
         }
     }
 }

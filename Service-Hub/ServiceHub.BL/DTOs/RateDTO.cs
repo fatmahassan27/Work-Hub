@@ -13,7 +13,7 @@ namespace ServiceHub.BL.DTOs
         [Range(1, 5)]
         public int Value { get; set; }
         public string? Review { get; set; }
-        public int userId { get; set; }
-        public int workerId { get; set; }
+        public int FromUserId { get; set; }
+        public int ToUserId { get; set; }
     }
 }
