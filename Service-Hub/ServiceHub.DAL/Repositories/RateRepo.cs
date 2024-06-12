@@ -18,7 +18,7 @@ namespace ServiceHub.DAL.Repositories
         {
             this.db = db;
         }
-        public async Task<IEnumerable<Rate>> GetAllRatingByWorkerId(int workerId)
+        public async Task<IEnumerable<Rate>> GetAllRatingsByWorkerId(int workerId)
         {
             return  await db.Ratings.Where(a=>a.ToUserId==workerId).ToListAsync();
         }

@@ -21,19 +21,34 @@ namespace ServiceHub.PL.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRateToWorker(RateDTO rateDTO)
+        public async Task<IActionResult> AddRate(RateDTO rateDTO)
         {
             try
             {
                 var rate = mapper.Map<Rate>(rateDTO);
-               await unitOfWork.RateRepo.AddRate(rate);
-               await unitOfWork.saveAsync();
-                return Ok();
+                await unitOfWork.RateRepo.AddRate(rate);
+                await unitOfWork.saveAsync();
+                return Ok("Rate Is Added Successfully");
             }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpGet("{workerId:int}")]
+        public async Task<IActionResult> GetAllRatingsByWorkerId(int workerId)
+        {
+            try
+            {
+                var data = unitOfWork.RateRepo.GetAllRatingsByWorkerId(workerId);
+                return Ok(data);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
         }
       
     }
