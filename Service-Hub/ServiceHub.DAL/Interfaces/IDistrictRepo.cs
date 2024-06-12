@@ -1,14 +1,11 @@
-﻿using ServiceHub.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ServiceHub.DAL.Entities;
 
 namespace ServiceHub.DAL.Interfaces
 {
 	public interface IDistrictRepo: IGenericRepo<District>
 	{
-		//add
-	}
+        Task<IEnumerable<District>> GetAllDistrictsByCityId(int cityId);
+        //add
+    }
 }

@@ -10,41 +10,35 @@ namespace ServiceHub.PL.Controllers
 	[ApiController]
 	public class DistrictController : ControllerBase
 	{
-		private readonly IDistrictService DistrictService;
-		private readonly IMapper mapper;
+        private readonly IDistrictService districtService;
+        private readonly IMapper mapper;
 
-
-		public DistrictController(IDistrictService _DistrictService, IMapper mapper)
+		public DistrictController(IDistrictService districtService, IMapper mapper)
 		{
-			DistrictService = _DistrictService;
-			this.mapper = mapper;
+            this.districtService = districtService;
+            this.mapper = mapper;
 		}
-		[HttpGet("all")]
-		public async Task<ActionResult<IEnumerable<DistrictDTO>>> GetAllByCityId(int cityid)
+		[HttpGet("{cityId:int}")]
+		public async Task<ActionResult<IEnumerable<DistrictDTO>>> GetAllByCityId(int cityId)
 		{
 			try
 			{
-				var districts = await DistrictService.GetAllByCityId(cityid);
-				if (districts == null)
-
+				var districts = await districtService.GetAllByCityId(cityId);
+				if (districts != null)
 				{
-					var DistrictDTO = mapper.Map<DistrictDTO>(districts);
+					var DistrictDTO = mapper.Map<IEnumerable<DistrictDTO>>(districts);
 					return Ok(DistrictDTO);
 				}
-
 				return NotFound();
 			}
 			catch (Exception ex)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, new
 				{
-					message = "An error occurred while retrieving the jobs.",
+					message = "An error occurred while retrieving Districts",
 					details = ex.Message
 				});
-
 			}
-			
-
 		}
 	}
 }

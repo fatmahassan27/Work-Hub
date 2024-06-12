@@ -11,6 +11,7 @@ namespace ServiceHub.BL.UnitOfWork
         private readonly ApplicationDbContext db;
         private IJobRepo jobRepo;
         private ICityRepo cityRepo;
+        private IDistrictRepo districtRepo;
         private IOrderRepo orderRepo;
 
         public UnitWork(ApplicationDbContext db)
@@ -41,6 +42,8 @@ namespace ServiceHub.BL.UnitOfWork
                 return orderRepo ??= new OrderRepo(db);
             }
         }
+
+        public IDistrictRepo DistrictRepo => districtRepo ?? new DistrictRepo(db);
 
         public async Task<int> saveAsync()
         {

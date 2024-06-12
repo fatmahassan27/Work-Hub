@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.BL.Services;
-using ServiceHub.BL.UnitOfWork;
-using ServiceHub.DAL.Entities;
 using ServiceHub.DAL.Interfaces;
 
 namespace ServiceHub.PL.Controllers
@@ -22,7 +18,7 @@ namespace ServiceHub.PL.Controllers
 			this.mapper = mapper;
 		}
 	
-		[HttpGet("GetAllCity")]
+		[HttpGet]
 		public async Task<ActionResult<IEnumerable<CityDTO>>> Getall()
 		{
 			try
@@ -37,7 +33,7 @@ namespace ServiceHub.PL.Controllers
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while retrieving the jobs.", details = ex.Message });
+				return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while retrieving Citites", details = ex.Message });
 			}
 		}
 	}

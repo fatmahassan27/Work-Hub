@@ -10,8 +10,7 @@ using ServiceHub.DAL.Interfaces;
 using ServiceHub.BL.UnitOfWork;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.CodeAnalysis.Options;
+
 namespace ServiceHub.PL
 {
     public class Program
@@ -37,8 +36,11 @@ namespace ServiceHub.PL
 
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
             builder.Services.AddScoped<IJobService, JobService>();
+            builder.Services.AddScoped<ICityService, CityService>();
+            builder.Services.AddScoped<IDistrictService, DistrictService>();
+            builder.Services.AddScoped<IJobService, JobService>();
             //
-           
+
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {
                 opt.Password.RequireLowercase = false;
