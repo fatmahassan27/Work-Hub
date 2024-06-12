@@ -4,6 +4,7 @@
 //using ServiceHub.DAL.DataBase;
 //using ServiceHub.DAL.Entities;
 //using ServiceHub.DAL.Helper;
+//using System.Collections.Concurrent;
 
 //namespace ServiceHub.PL.Hubs
 //{
@@ -12,6 +13,7 @@
 //        private readonly ApplicationDbContext db;
 //        private readonly UserManager<ApplicationUser> userManager;
 //        private readonly IMapper mapper;
+//       // private static ConcurrentDictionary<int, int> UserConnections = new ConcurrentDictionary<int,int>();
 
 //        public ChatHub(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IMapper mapper)
 //        {
@@ -22,14 +24,10 @@
 
 //        public override Task OnConnectedAsync()
 //        {
-//            string userId = Context.UserIdentifier;
-//            UserConnection[userId] = Context.ConnectionId;
 //            return base.OnConnectedAsync();
 //        }
 //        public override Task OnDisconnectedAsync(Exception exception)
 //        {
-//            string userId = Context.UserIdentifier;
-//            UserConnection.TryRemove(userId, out _);
 //            return base.OnDisconnectedAsync(exception);
 //        }
 //        public async Task sendmessage(string messId, string message, string userId, string workerId, string user)//path

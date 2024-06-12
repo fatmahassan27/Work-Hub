@@ -13,6 +13,8 @@ namespace ServiceHub.BL.UnitOfWork
         private ICityRepo cityRepo;
         private IDistrictRepo districtRepo;
         private IOrderRepo orderRepo;
+        private IRateRepo rateRepo;
+
 
         public UnitWork(ApplicationDbContext db)
         {
@@ -44,6 +46,15 @@ namespace ServiceHub.BL.UnitOfWork
         }
 
         public IDistrictRepo DistrictRepo => districtRepo ?? new DistrictRepo(db);
+
+        public IRateRepo RateRepo
+        {
+            get
+            {
+                return rateRepo ??= new RateRepo(db);
+            }
+        }
+           
 
         public async Task<int> saveAsync()
         {

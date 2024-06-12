@@ -7,7 +7,9 @@ namespace ServiceHub.DAL.Interfaces
         ICityRepo CityRepo{ get; }
         IOrderRepo OrderRepo { get; }
         IDistrictRepo DistrictRepo { get; }
-		Task<int> saveAsync();
+        IRateRepo RateRepo { get; }
+
+        Task<int> saveAsync();
     }
 
 
