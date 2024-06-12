@@ -36,8 +36,6 @@
 bin/
 obj/
 
-appsettings.json
-
 # Ignore user-specific files and workspace settings
 .vscode/
 .idea/

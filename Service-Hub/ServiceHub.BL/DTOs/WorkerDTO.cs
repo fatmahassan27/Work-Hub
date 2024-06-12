@@ -7,7 +7,7 @@ namespace ServiceHub.BL.DTOs
     {
         public int Id { get; set; }
         [Required, MaxLength(30)]
-        public string? FullName { get; set; }
+        public string? UserName { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
 

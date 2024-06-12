@@ -35,20 +35,21 @@ namespace ServiceHub.PL.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpGet("{workerId:int}")]
         public async Task<IActionResult> GetAllRatingsByWorkerId(int workerId)
         {
             try
             {
                 var data = unitOfWork.RateRepo.GetAllRatingsByWorkerId(workerId);
-                return Ok(data);
+                var dtos = mapper.Map<IEnumerable<RateDTO>>(data);
+                
+                return Ok(dtos);
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
-
+                return BadRequest(new { message = "An error occurred while processing your request.", error = ex.Message });
             }
-
         }
       
     }
