@@ -20,7 +20,9 @@ namespace ServiceHub.DAL.Repositories
         }
         public async Task<IEnumerable<Rate>> GetAllRatingsByWorkerId(int workerId)
         {
-            return  await db.Ratings.Where(a=>a.ToUserId==workerId).ToListAsync();
+            var data=  await db.Ratings.Where(a=>a.ToUserId==workerId).ToListAsync();
+            return data; 
+
         }
         public  async Task AddRate(Rate rate)
         {

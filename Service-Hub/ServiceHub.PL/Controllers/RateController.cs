@@ -40,8 +40,9 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                var data = unitOfWork.RateRepo.GetAllRatingsByWorkerId(workerId);
-                return Ok(data);
+                var data =  await unitOfWork.RateRepo.GetAllRatingsByWorkerId(workerId);
+                var rate = mapper.Map<IEnumerable<RateDTO>>(data);
+                return Ok(rate);
             }
             catch(Exception ex)
             {
