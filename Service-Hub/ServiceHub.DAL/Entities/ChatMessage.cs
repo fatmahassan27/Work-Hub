@@ -18,5 +18,6 @@ namespace ServiceHub.DAL.Entities
         public ApplicationUser Sender { get; set; }
         [ForeignKey("ReceiverId")]
         public ApplicationUser Receiver { get; set; }
+
     }
 }

@@ -1,32 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
+using ServiceHub.DAL.Helper;
 using ServiceHub.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceHub.DAL.Repositories
 {
     public class RateRepo :GenericRepo<Rate> ,IRateRepo
     {
         private readonly ApplicationDbContext db;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public RateRepo(ApplicationDbContext db) :base(db)
+        public RateRepo(ApplicationDbContext db,UserManager<ApplicationUser> userManager) :base(db)
         {
             this.db = db;
+            this.userManager = userManager;
         }
-        public async Task<IEnumerable<Rate>> GetAllRatingsByWorkerId(int workerId)
+        public IEnumerable<Rate> GetAllRatingsByWorkerId(int workerId)
         {
-            var data=  await db.Ratings.Where(a=>a.ToUserId==workerId).ToListAsync();
-            return data; 
-
+            return  db.Ratings.Where(a=>a.ToUserId==workerId).ToList();
         }
         public  async Task AddRate(Rate rate)
         {
             await db.Ratings.AddAsync(rate);
         }
+
+        public async Task<double> getAverageWorkerRating(int workerId)
+        {
+            double average = await db.Ratings
+                           .Where(a => a.ToUserId == workerId)
+                           .AverageAsync(a => a.Value);
+
+            var worker =  await userManager.FindByIdAsync(workerId.ToString());
+            worker.Rating= (int)average;
+            userManager.UpdateAsync(worker);
+            return average;
+        }
+
+
     }
 }

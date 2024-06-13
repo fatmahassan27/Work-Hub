@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
 using ServiceHub.DAL.Helper;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace ServiceHub.PL.Controllers
@@ -64,6 +63,7 @@ namespace ServiceHub.PL.Controllers
             }
         }
 
+        /*
         [HttpPut("Edit/{id:int}")]
         public async Task<IActionResult> Edit(int id, [FromBody] WorkerDTO workerDTO)
         {
@@ -89,7 +89,8 @@ namespace ServiceHub.PL.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating data: {ex.Message}");
             }
-        }
+        }*/
+
         [HttpDelete("DeleteById/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -151,6 +152,7 @@ namespace ServiceHub.PL.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data, Message: {ex}");
             }
         }
+
 
     }
 }

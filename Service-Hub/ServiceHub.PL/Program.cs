@@ -40,7 +40,7 @@ namespace ServiceHub.PL
             builder.Services.AddScoped<ICityService, CityService>();
             builder.Services.AddScoped<IDistrictService, DistrictService>();
             builder.Services.AddScoped<IJobService, JobService>();
-            builder.Services.AddScoped<IRateRepo,RateRepo>();
+           // builder.Services.AddScoped<IRateRepo,RateRepo>();
 
           
 
