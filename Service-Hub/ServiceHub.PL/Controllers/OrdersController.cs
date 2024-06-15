@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.DAL.UnitOfWork;
+using ServiceHub.BL.Interfaces;
 
 namespace ServiceHub.PL.Controllers
 {
@@ -9,13 +8,11 @@ namespace ServiceHub.PL.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly IUnitOfWork unit;
-        private readonly IMapper mapper;
+        private readonly IOrderService orderService;
 
-        public OrdersController(IUnitOfWork unit , IMapper mapper)
+        public OrdersController(IOrderService orderService)
         {
-            this.unit = unit;
-            this.mapper = mapper;
+            this.orderService = orderService;
         }
 
         [HttpPost("{userId:int}/{workerId:int}")]
@@ -23,8 +20,7 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                await unit.OrderRepo.CreateOrderAsync(userId, workerId);
-                await unit.saveAsync();
+                await orderService.CreateOrderAsync(userId, workerId);
                 return Created();
             }
             catch (Exception ex)
@@ -32,8 +28,6 @@ namespace ServiceHub.PL.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error Creating Order : {ex}");
 
             }
-
-
         }
 
         [HttpGet("user/{id}")]
@@ -41,9 +35,8 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                var orders = await unit.OrderRepo.GetAllOrdersByUserId(id);
-                var result = mapper.Map<IEnumerable<OrderDTO>>(orders);
-                return Ok(result);
+                var ordersDTO = await orderService.GetAllOrdersByUserId(id);
+                return Ok(ordersDTO);
             }
             catch(Exception ex)
             {
@@ -56,13 +49,12 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                var orders = await unit.OrderRepo.GetAllOrdersByWorkerId(id);
-                var result = mapper.Map<IEnumerable<OrderDTO>>(orders);
-                return Ok(result);
-            }catch(Exception ex)
+                var ordersDTO = await orderService.GetAllOrdersByWorkerId(id);
+                return Ok(ordersDTO);
+            }
+            catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving Order : {ex}");
-
             }
 
         }
@@ -71,16 +63,13 @@ namespace ServiceHub.PL.Controllers
          {
             try
             { 
-                  await unit.OrderRepo.UpdateOrderAsync(id,status);
-                  await unit.saveAsync();
+                  await orderService.UpdateOrderAsync(id, status);
                   return Ok("Updated");
                  
             }catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving Order : {ex}");
-
             }
-
          }
 
     }

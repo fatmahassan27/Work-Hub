@@ -17,9 +17,9 @@ namespace ServiceHub.DAL.Repositories
             this.db = db;
             this.userManager = userManager;
         }
-        public IEnumerable<Rate> GetAllRatingsByWorkerId(int workerId)
+        public async Task<IEnumerable<Rate>> GetAllRatingsByWorkerId(int workerId)
         {
-            return  db.Ratings.Where(a=>a.ToUserId==workerId).ToList();
+            return  await db.Ratings.Where(a=>a.ToUserId==workerId).ToListAsync();
         }
         public  async Task AddRate(Rate rate)
         {
@@ -28,16 +28,21 @@ namespace ServiceHub.DAL.Repositories
 
         public async Task<double> getAverageWorkerRating(int workerId)
         {
-            double average = await db.Ratings
-                           .Where(a => a.ToUserId == workerId)
-                           .AverageAsync(a => a.Value);
+            //double average = await db.Ratings
+            //               .Where(a => a.ToUserId == workerId)
+            //               .AverageAsync(a => a.Value);
 
-            var worker =  await userManager.FindByIdAsync(workerId.ToString());
-            worker.Rating= (int)average;
-            userManager.UpdateAsync(worker);
-            return average;
+            //var worker =  await userManager.FindByIdAsync(workerId.ToString());
+            //worker.Rating= (int)average;
+            //await userManager.UpdateAsync(worker);
+            //return average;
+
+            var TotalRatings = await db.Ratings.Where(x => x.ToUserId == workerId).CountAsync();
+            var SumRatings = await db.Ratings.Where(x => x.ToUserId == workerId).SumAsync(x => x.Value);
+            double avrg = (double)SumRatings / TotalRatings;
+            return avrg;
+
         }
-
 
     }
 }

@@ -39,10 +39,10 @@ namespace ServiceHub.PL
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<ICityService, CityService>();
             builder.Services.AddScoped<IDistrictService, DistrictService>();
-            builder.Services.AddScoped<IJobService, JobService>();
-           // builder.Services.AddScoped<IRateRepo,RateRepo>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IRateService, RateService>();
+            builder.Services.AddScoped<IWorkerService, WorkerService>();
 
-          
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {

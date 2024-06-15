@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
 using ServiceHub.BL.Interfaces;
 
@@ -10,23 +9,20 @@ namespace ServiceHub.PL.Controllers
 	public class DistrictController : ControllerBase
 	{
         private readonly IDistrictService districtService;
-        private readonly IMapper mapper;
 
-		public DistrictController(IDistrictService districtService, IMapper mapper)
+		public DistrictController(IDistrictService districtService)
 		{
             this.districtService = districtService;
-            this.mapper = mapper;
 		}
 		[HttpGet("{cityId:int}")]
 		public async Task<ActionResult<IEnumerable<DistrictDTO>>> GetAllByCityId(int cityId)
 		{
 			try
 			{
-				var districts = await districtService.GetAllByCityId(cityId);
-				if (districts != null)
+				var districtsDTO = await districtService.GetAllDistrictsByCityId(cityId);
+				if (districtsDTO != null)
 				{
-					var DistrictDTO = mapper.Map<IEnumerable<DistrictDTO>>(districts);
-					return Ok(DistrictDTO);
+					return Ok(districtsDTO);
 				}
 				return NotFound();
 			}

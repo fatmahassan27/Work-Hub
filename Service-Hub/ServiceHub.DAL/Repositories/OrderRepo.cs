@@ -14,12 +14,12 @@ namespace ServiceHub.DAL.Repositories
             this.db = db;
         }
 
-        public async Task CreateOrderAsync( int userId, int wokerId)
+        public async Task CreateOrderAsync( int userId, int workerId)
         {
             Order order = new Order()
             {
                 UserId = userId,
-                WorkerId = wokerId,
+                WorkerId = workerId,
                 Status = OrderStatus.New
             };
             await db.Orders.AddAsync(order);

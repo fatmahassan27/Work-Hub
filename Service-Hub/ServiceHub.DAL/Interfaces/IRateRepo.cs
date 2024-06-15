@@ -4,9 +4,10 @@ namespace ServiceHub.DAL.Interfaces
 {
     public interface IRateRepo
     {
-        IEnumerable<Rate> GetAllRatingsByWorkerId(int workerId);
+        Task<IEnumerable<Rate>> GetAllRatingsByWorkerId(int workerId);
         Task AddRate(Rate rate);
 
+         Task<double> getAverageWorkerRating(int workerId);
 
 
 
