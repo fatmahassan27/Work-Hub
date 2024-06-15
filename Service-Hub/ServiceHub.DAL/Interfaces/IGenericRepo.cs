@@ -1,5 +1,4 @@
-﻿
-namespace ServiceHub.DAL.Interfaces
+﻿namespace ServiceHub.DAL.Interfaces
 {
     public interface IGenericRepo<T> where T : class
     {

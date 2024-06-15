@@ -1,10 +1,8 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Enums;
 using ServiceHub.DAL.Interfaces;
-
+using ServiceHub.DAL.Enums;
 namespace ServiceHub.DAL.Repositories
 {
     public class OrderRepo :  GenericRepo<Order> , IOrderRepo
@@ -22,7 +20,7 @@ namespace ServiceHub.DAL.Repositories
             {
                 UserId = userId,
                 WorkerId = wokerId,
-                Status = Enums.OrderStatus.New
+                Status = OrderStatus.New
             };
             await db.Orders.AddAsync(order);
         }

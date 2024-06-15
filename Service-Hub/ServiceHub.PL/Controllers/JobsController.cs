@@ -1,9 +1,6 @@
-﻿
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.BL.Interfaces;
 
 namespace ServiceHub.PL.Controllers
 {
@@ -12,25 +9,22 @@ namespace ServiceHub.PL.Controllers
     public class JobsController : ControllerBase
     {
         private readonly IJobService jobService;
-        private readonly IMapper mapper;
 
-        public JobsController(IJobService _jobService,IMapper mapper)
+        public JobsController(IJobService _jobService)
         {
             jobService = _jobService;
-            this.mapper = mapper;
         }
 
         // api/jobs
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                var jobs = await jobService.GetAllJobs();
-                if (jobs != null)
+                var jobsDTO = await jobService.GetAllJobs();
+                if (jobsDTO != null)
                 {
-                    var JobDTOs = mapper.Map<IEnumerable<JobDTO>>(jobs);
-                    return Ok(JobDTOs);
+                    return Ok(jobsDTO);
                 }
                 return NotFound();
             }
@@ -46,12 +40,11 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                var job = await jobService.GetJobById(id);
+                var jobDTO = await jobService.GetJobById(id);
 
-                if (job != null)
+                if (jobDTO != null)
                 {
-                    var JobDTO = mapper.Map<JobDTO>(job);
-                    return Ok(JobDTO);
+                    return Ok(jobDTO);
                 }
                 return NotFound();
             }
@@ -61,26 +54,20 @@ namespace ServiceHub.PL.Controllers
 
             }
         }
-             
-        [HttpPut("{id:int}")] //Review
-        public async Task<IActionResult> Edit(int id , JobDTO jobDTO)
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Edit(int id, JobDTO jobDTO)
         {
+            if(id!=jobDTO.Id) return BadRequest(); 
             try
             {
-                var job = await jobService.GetJobById(id);
-                if (job != null)
-                {
-                    var updatedJob = mapper.Map<Job>(jobDTO);
-                    jobService.UpdateJob(updatedJob);
-                    return Ok("Updated");
-                }
-                return NotFound();
+                 await jobService.UpdateJob(jobDTO);
+                 return Ok("Updated");
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while updating the job.", details = ex.Message });
             }
         }
-
     }
 }

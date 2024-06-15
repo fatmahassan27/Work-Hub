@@ -1,10 +1,11 @@
 ﻿using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
+
 using ServiceHub.DAL.Interfaces;
 
 namespace ServiceHub.DAL.Repositories
 {
-    public class JobRepo : GenericRepo<Job>, IJobRepo
+    public class JobRepo : GenericRepo<Job> , IJobRepo
     {
         private readonly ApplicationDbContext db;
 

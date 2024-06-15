@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.BL.Interfaces;
 
 namespace ServiceHub.PL.Controllers
 {

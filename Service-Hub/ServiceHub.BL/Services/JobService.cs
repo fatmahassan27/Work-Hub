@@ -1,31 +1,41 @@
-﻿
+﻿using AutoMapper;
+using ServiceHub.BL.DTOs;
+using ServiceHub.BL.Interfaces;
 using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.DAL.UnitOfWork;
 
 namespace ServiceHub.BL.Services
 {
     public class JobService : IJobService
     {
         private readonly IUnitOfWork unit;
+        private readonly IMapper mapper;
 
-        public JobService(IUnitOfWork u)
+        public JobService(IUnitOfWork u,IMapper mapper)
         {
             this.unit = u;
-        }
-        public async Task<IEnumerable<Job>> GetAllJobs()
-        {
-            return await unit.JobRepo.GetAllAsync();
+            this.mapper = mapper;
         }
 
-        public async Task<Job> GetJobById(int id)
+        public async Task<IEnumerable<JobDTO>> GetAllJobs()
         {
-            return await unit.JobRepo.GetByIdAsync(id);
+            var jobs = await unit.JobRepo.GetAllAsync();
+            var jobDTOs =  mapper.Map<IEnumerable<JobDTO>>(jobs);
+            return jobDTOs;
         }
 
-        public async Task UpdateJob(Job job)
+        public async Task<JobDTO> GetJobById(int id)
         {
-            await unit.JobRepo.UpdateAsync(job.Id , job);
-            unit.saveAsync();
+            var job = await unit.JobRepo.GetByIdAsync(id);
+            var jobDTO = mapper.Map<JobDTO>(job);
+            return jobDTO;
+        }
+
+        public async Task UpdateJob(JobDTO jobDTO)
+        {
+            var job = mapper.Map<Job>(jobDTO);
+           await unit.JobRepo.UpdateAsync(job.Id, job);
+            await unit.saveAsync();
         }
     }
 }

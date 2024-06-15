@@ -1,6 +1,7 @@
 ﻿
 using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.BL.Interfaces;
+using ServiceHub.DAL.UnitOfWork;
 
 namespace ServiceHub.BL.Services
 {

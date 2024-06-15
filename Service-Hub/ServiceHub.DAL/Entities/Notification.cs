@@ -1,4 +1,5 @@
-﻿using ServiceHub.DAL.Helper;
+﻿
+using ServiceHub.DAL.Helper;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

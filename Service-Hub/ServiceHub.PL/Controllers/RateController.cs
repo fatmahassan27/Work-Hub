@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
 using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.DAL.UnitOfWork;
 
 namespace ServiceHub.PL.Controllers
 {

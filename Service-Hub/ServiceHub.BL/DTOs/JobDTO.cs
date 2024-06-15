@@ -1,5 +1,4 @@
-﻿using ServiceHub.DAL.Entities;
-
+﻿
 namespace ServiceHub.BL.DTOs
 {
     public class JobDTO

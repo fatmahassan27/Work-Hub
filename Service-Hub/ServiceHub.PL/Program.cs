@@ -6,11 +6,11 @@ using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Helper;
 using System.Text;
 using System.Security.Claims;
-using ServiceHub.DAL.Interfaces;
-using ServiceHub.BL.UnitOfWork;
+using ServiceHub.BL.Interfaces;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
 using ServiceHub.DAL.Repositories;
+using ServiceHub.DAL.UnitOfWork;
 
 namespace ServiceHub.PL
 {
