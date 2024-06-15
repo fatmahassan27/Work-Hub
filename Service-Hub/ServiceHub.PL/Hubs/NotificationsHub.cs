@@ -52,7 +52,10 @@ namespace ServiceHub.PL.Hubs
             //});
 
             Clients.Caller.SendAsync("NewNotification", userNotification);  // caller is the user
-                                                                            // Clients.Client(workerid).SendAsync("NewNotification", workerNotification);
+              // Clients.Client(workerid).SendAsync("NewNotification", workerNotification);
+             // Clients.Client(connectionId).SendAsync("NewNotification", workerNotification);
+            // Clients.User(workerId);
+
         }
 
 

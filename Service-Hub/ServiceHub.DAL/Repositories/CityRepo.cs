@@ -9,9 +9,9 @@ namespace ServiceHub.DAL.Repositories
     {
         private readonly ApplicationDbContext db;
 
-        public CityRepo(ApplicationDbContext _db) : base(_db)
+        public CityRepo(ApplicationDbContext db) : base(db)
         {
-            db = _db;
+          this.db = db;
         }
 
     }

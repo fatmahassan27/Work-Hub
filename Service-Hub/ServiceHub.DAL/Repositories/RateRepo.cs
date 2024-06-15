@@ -12,7 +12,7 @@ namespace ServiceHub.DAL.Repositories
         private readonly ApplicationDbContext db;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public RateRepo(ApplicationDbContext db,UserManager<ApplicationUser> userManager) :base(db)
+        public RateRepo(ApplicationDbContext db) :base(db)
         {
             this.db = db;
             this.userManager = userManager;
@@ -26,17 +26,6 @@ namespace ServiceHub.DAL.Repositories
             await db.Ratings.AddAsync(rate);
         }
 
-        public async Task<double> getAverageWorkerRating(int workerId)
-        {
-            double average = await db.Ratings
-                           .Where(a => a.ToUserId == workerId)
-                           .AverageAsync(a => a.Value);
-
-            var worker =  await userManager.FindByIdAsync(workerId.ToString());
-            worker.Rating= (int)average;
-            userManager.UpdateAsync(worker);
-            return average;
-        }
 
 
     }
