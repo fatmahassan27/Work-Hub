@@ -1,1 +1,14 @@
+<!-- src/app/components/notification/notification.component.html -->
 <p>notification works!</p>
+
+<div *ngFor="let notification of notifications">
+  <div class="notification">
+    <h4>{{ notification.Title }}</h4>
+    <p>{{ notification.Content }}</p>
+    <small>{{ notification.CreatedDate | date: 'short' }}</small>
+  </div>
+</div>
+
+<input type="number" [(ngModel)]="userId" placeholder="UserId">
+<input type="number" [(ngModel)]="workerId" placeholder="WorkerId">
+<input type="button" value="Send" (click)="Send()">

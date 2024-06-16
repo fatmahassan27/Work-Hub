@@ -9,8 +9,8 @@ using System.Security.Claims;
 using ServiceHub.BL.Interfaces;
 using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
-using ServiceHub.DAL.Repositories;
 using ServiceHub.DAL.UnitOfWork;
+using ServiceHub.PL.Hubs;
 
 namespace ServiceHub.PL
 {
@@ -36,12 +36,15 @@ namespace ServiceHub.PL
             builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
             builder.Services.AddScoped<IUnitOfWork,UnitWork>();
+
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<ICityService, CityService>();
             builder.Services.AddScoped<IDistrictService, DistrictService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IWorkerService, WorkerService>();
+            builder.Services.AddScoped<INotificationService,NotificationService>();
+
 
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
@@ -104,7 +107,7 @@ namespace ServiceHub.PL
                 app.UseSwaggerUI();
             }
             //app.MapHub<ChatHub>("/chathub");
-           // app.MapHub<NotificationsHub>("/notifications");
+            app.MapHub<NotificationsHub>("/notificationsHub");
 
             app.UseCors("AllowLocalhost4200");
             app.UseRouting();

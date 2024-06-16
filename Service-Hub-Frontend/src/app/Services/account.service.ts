@@ -27,33 +27,33 @@ export class AccountService {
       this.isAuthenticated = false;
     }
   }
-  login(user:UserLogin) 
-  {
-     let str:string=`?Email=${user.Email}&Password=${user.Password}`;
-     return  this.http.post(this.baseurl+str,{responseType :'text'}).subscribe(d=>
-      {this.isAuthenticated=true;
-    let str: string = `?username=${user.Email}&password=${user.Password}`;
-    return this.http.post(this.baseurl + str, { responseType: 'text' }).subscribe(d => {
-      this.isAuthenticated = true;
-      localStorage.setItem("token",d.toString());
-      let r=jwtdecode.jwtDecode(d.toString());
-      console.log(this.r.isAdmin);
-      console.log(this.r.isCustomer);
-      console.log(this.r.name);
-      console.log(this.r.UserId);
+  // login(user:UserLogin) 
+  // {
+  //    let str:string=`?Email=${user.Email}&Password=${user.Password}`;
+  //    return  this.http.post(this.baseurl+str,{responseType :'text'}).subscribe(d=>
+  //     {this.isAuthenticated=true;
+  //   let str: string = `?username=${user.Email}&password=${user.Password}`;
+  //   return this.http.post(this.baseurl + str, { responseType: 'text' }).subscribe(d => {
+  //     this.isAuthenticated = true;
+  //     localStorage.setItem("token",d.toString());
+  //     let r=jwtdecode.jwtDecode(d.toString());
+  //     console.log(this.r.isAdmin);
+  //     console.log(this.r.isCustomer);
+  //     console.log(this.r.name);
+  //     console.log(this.r.UserId);
       
-    },
-    error => {
-      console.error('Login failed', error);
-    });
-    }
+  //   },
+  //   error => {
+  //     console.error('Login failed', error);
+  //   });
+  //   }
   
-    logout() :void{
+  //   logout() :void{
     
-        this.isAuthenticated=false;
-        localStorage.removeItem("token");
+  //       this.isAuthenticated=false;
+  //       localStorage.removeItem("token");
      
-    }
-   
-}
+  //   }
+  }
+
 

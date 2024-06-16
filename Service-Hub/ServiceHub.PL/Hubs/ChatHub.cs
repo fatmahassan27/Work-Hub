@@ -13,7 +13,7 @@
 //        private readonly ApplicationDbContext db;
 //        private readonly UserManager<ApplicationUser> userManager;
 //        private readonly IMapper mapper;
-//       // private static ConcurrentDictionary<int, int> UserConnections = new ConcurrentDictionary<int,int>();
+//        // private static ConcurrentDictionary<int, int> UserConnections = new ConcurrentDictionary<int,int>();
 
 //        public ChatHub(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IMapper mapper)
 //        {

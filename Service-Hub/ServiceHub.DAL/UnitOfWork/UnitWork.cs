@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Helper;
 using ServiceHub.DAL.Interfaces;
@@ -18,6 +19,7 @@ namespace ServiceHub.BL.Interfaces
         private IDistrictRepo districtRepo;
         private IOrderRepo orderRepo;
         private IRateRepo rateRepo;
+        private INotificaionRepo notificationRepo;
 
 
         public UnitWork(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
@@ -59,7 +61,8 @@ namespace ServiceHub.BL.Interfaces
                 return rateRepo ??= new RateRepo(db,userManager);
             }
         }
-           
+
+        public INotificaionRepo NotificaionRepo => notificationRepo?? new NotificationRepo(db);
 
         public async Task<int> saveAsync()
         {
