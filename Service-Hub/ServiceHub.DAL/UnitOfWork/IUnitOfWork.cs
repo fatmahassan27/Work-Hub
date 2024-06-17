@@ -10,6 +10,7 @@ namespace ServiceHub.DAL.UnitOfWork
         IDistrictRepo DistrictRepo { get; }
         IRateRepo RateRepo { get; }
         INotificaionRepo NotificaionRepo { get; }
+        IUserConnectionRepo UserConnectionRepo { get; }
 
         Task<int> saveAsync();
     }

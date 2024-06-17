@@ -3,11 +3,6 @@ using ServiceHub.BL.DTOs;
 using ServiceHub.BL.Interfaces;
 using ServiceHub.DAL.Entities;
 using ServiceHub.DAL.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceHub.BL.Services
 {
@@ -54,5 +49,6 @@ namespace ServiceHub.BL.Services
             await unitOfWork.NotificaionRepo.UpdateAsync(noficationid, notification);
             await unitOfWork.saveAsync();
         }
+
     }
 }

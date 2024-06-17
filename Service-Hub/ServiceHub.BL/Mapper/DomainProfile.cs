@@ -31,6 +31,10 @@ namespace ServiceHub.BL.Mapper
             CreateMap<Rate, RateDTO>();
             CreateMap<RateDTO, Rate>();
             //--------------------------------------------
+            CreateMap<Notification, NotificationDTO>();
+            CreateMap<NotificationDTO, Notification>();
+            //--------------------------------------------
+
         }
     }
 }

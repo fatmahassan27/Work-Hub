@@ -1,14 +1,19 @@
-<!-- src/app/components/notification/notification.component.html -->
-<p>notification works!</p>
+<p>Notification works!</p>
 
-<div *ngFor="let notification of notifications">
+<div *ngFor="let notification of notifications; let i=index ;">
   <div class="notification">
-    <h4>{{ notification.Title }}</h4>
-    <p>{{ notification.Content }}</p>
-    <small>{{ notification.CreatedDate | date: 'short' }}</small>
+    <h4>{{i+1}} : {{ notification.title }}</h4>
+    <p>{{ notification.content }}</p>
+    <p>Id: {{ notification.id }}</p>
+    <p>ownerId: {{ notification.ownerId }}</p>
+    <p>isRead: {{ notification.isRead }}</p>
+    <small>{{ notification.createdDate | date: 'short' }}</small>
   </div>
 </div>
+<input type="button" value="reload" (click)="reload(workerId)">
 
-<input type="number" [(ngModel)]="userId" placeholder="UserId">
+<br>
+<input #t1 type="number" [(ngModel)]="userId" placeholder="UserId">
 <input type="number" [(ngModel)]="workerId" placeholder="WorkerId">
-<input type="button" value="Send" (click)="Send()">
+<input type="button" value="SendOrderCreatedNotification" (click)="SendOrderCreatedNotification()">
+<input type="button" value="SendOrderAcceptedNotification" (click)="SendOrderAcceptedNotification()">

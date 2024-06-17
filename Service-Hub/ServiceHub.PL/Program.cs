@@ -18,12 +18,11 @@ namespace ServiceHub.PL
     {
         public static void Main(string[] args)
         {
-            string text = "";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             var ConnectionString = builder.Configuration.GetConnectionString("Service");
-          
+
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
 
@@ -35,7 +34,7 @@ namespace ServiceHub.PL
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
-            builder.Services.AddScoped<IUnitOfWork,UnitWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitWork>();
 
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<ICityService, CityService>();
@@ -43,9 +42,8 @@ namespace ServiceHub.PL
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IWorkerService, WorkerService>();
-            builder.Services.AddScoped<INotificationService,NotificationService>();
-
-
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<IUserConnectionService, UserConnectionService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
             {
@@ -54,8 +52,8 @@ namespace ServiceHub.PL
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
             })
-             .AddEntityFrameworkStores<ApplicationDbContext>()
-             .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             builder.Services.AddAuthorization(x => { x.AddPolicy("Worker", po => po.RequireClaim(ClaimTypes.Role, "Worker")); });
             builder.Services.AddAuthorization(x => { x.AddPolicy("User", po => po.RequireClaim(ClaimTypes.Role, "User")); });
@@ -66,56 +64,46 @@ namespace ServiceHub.PL
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(options =>
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    options.SaveToken = true;
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidAudience = builder.Configuration["JWT:ValidAudience"],
-                        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!))
-                    };
-                });
-			builder.Services.AddCors(
-			   Option => {
-				   Option.AddPolicy(text,
-					   builder =>
-					   {
-						   builder.AllowAnyOrigin();
-						   builder.AllowAnyMethod();
-						   builder.AllowAnyHeader();
-					   });
-
-			   });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!))
+                };
+            });
 
             builder.Services.AddCors(options =>
-            {       options.AddPolicy("AllowLocalhost4200",
-                    builder => builder.WithOrigins("http://localhost:4200")
-                                      .AllowAnyMethod()
-                                      .AllowAnyHeader());
+            {
+                options.AddPolicy("AllowLocalhost4200", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials(); // Ensure credentials are allowed if using authentication
+                });
             });
+
             var app = builder.Build();
 
-            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //app.MapHub<ChatHub>("/chathub");
-            app.MapHub<NotificationsHub>("/notificationsHub");
 
-            app.UseCors("AllowLocalhost4200");
             app.UseRouting();
-
+            app.UseCors("AllowLocalhost4200");
             app.UseAuthentication();
-
             app.UseAuthorization();
-            app.UseCors(text);
+
+            app.MapHub<NotificationsHub>("/notificationsHub");
 
             app.MapControllers();
 

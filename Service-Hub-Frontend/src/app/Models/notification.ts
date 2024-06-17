@@ -1,10 +1,10 @@
 export class Notification {
     constructor(
-        public Id : number,
-        public IsRead: boolean,
-        public OwnerId: number,
-        public Title: string,
-        public Content: string,
-        public CreatedDate: Date
-    ){}
-}
+        public id: number,
+        public isRead: boolean,
+        public ownerId: number,
+        public title: string,
+        public content: string,
+        public createdDate: Date
+    ) {}
+}  

@@ -20,7 +20,7 @@ namespace ServiceHub.BL.Interfaces
         private IOrderRepo orderRepo;
         private IRateRepo rateRepo;
         private INotificaionRepo notificationRepo;
-
+        private IUserConnectionRepo userConnectionRepo;
 
         public UnitWork(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
@@ -63,6 +63,8 @@ namespace ServiceHub.BL.Interfaces
         }
 
         public INotificaionRepo NotificaionRepo => notificationRepo?? new NotificationRepo(db);
+
+        public IUserConnectionRepo UserConnectionRepo => userConnectionRepo?? new UserConnectionsRepo(db);
 
         public async Task<int> saveAsync()
         {
