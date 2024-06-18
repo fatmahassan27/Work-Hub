@@ -1,5 +1,4 @@
-﻿
-using ServiceHub.DAL.Enums;
+﻿using ServiceHub.DAL.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceHub.BL.DTOs

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.BL.Interfaces;
 
 namespace ServiceHub.PL.Controllers
 {
@@ -10,12 +10,10 @@ namespace ServiceHub.PL.Controllers
 	public class CityController : ControllerBase
 	{
 		private readonly ICityService CityService;
-		private readonly IMapper mapper;
 	
-		public CityController(ICityService _cityService, IMapper mapper)
+		public CityController(ICityService _cityService)
 		{
 			CityService = _cityService;
-			this.mapper = mapper;
 		}
 	
 		[HttpGet]
@@ -23,10 +21,9 @@ namespace ServiceHub.PL.Controllers
 		{
 			try
 			{
-				var cities = await CityService.GetAllCity();
-				if (cities != null)
+				var CityDTOs = await CityService.GetAllCity();
+				if (CityDTOs != null)
 				{
-					var CityDTOs= mapper.Map<IEnumerable<CityDTO>>(cities);
 					return Ok(CityDTOs);
 				}
 				return NotFound();

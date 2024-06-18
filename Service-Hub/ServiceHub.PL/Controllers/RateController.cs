@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Interfaces;
+using ServiceHub.BL.Interfaces;
+
 
 namespace ServiceHub.PL.Controllers
 {
@@ -11,15 +9,11 @@ namespace ServiceHub.PL.Controllers
     [ApiController]
     public class RateController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork ;
-        private readonly IMapper mapper;
-        private readonly IWorkerRepo workerRepo;
+        private readonly IRateService rateService;
 
-        public RateController(IUnitOfWork unitOfWork,IMapper mapper , IWorkerRepo workerRepo) 
+        public RateController(IRateService rateService) 
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-            this.workerRepo = workerRepo;
+            this.rateService = rateService;
         }
 
         [HttpPost]
@@ -27,9 +21,7 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-                var rate = mapper.Map<Rate>(rateDTO);
-                await unitOfWork.RateRepo.AddRate(rate);
-                await unitOfWork.saveAsync();
+                await rateService.AddRate(rateDTO);
                 return Ok("Rate Is Added Successfully");
             }
             catch(Exception ex)
@@ -43,23 +35,23 @@ namespace ServiceHub.PL.Controllers
         {
             try
             {
-             
-                var data = unitOfWork.RateRepo.GetAllRatingsByWorkerId(workerId);
-                var dtos = mapper.Map<IEnumerable<RateDTO>>(data);
-                
-                return Ok(dtos);
+                var data = rateService.GetAllRatingsByWorkerId(workerId);
+                return Ok(data);
             }
             catch(Exception ex)
             {
                 return BadRequest(new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
+
         [HttpGet("Average/{id:int}")]
         public async Task<IActionResult> GetRating(int id)
         {
-             var data = await workerRepo.getAverageWorkerRating(id);
+            var data = await rateService.getAverageWorkerRating(id);
             return Ok(data);
         }
-      
+
+
+
     }
 }

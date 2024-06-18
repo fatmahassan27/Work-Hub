@@ -1,9 +1,6 @@
-﻿
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
-using ServiceHub.DAL.Helper;
+using ServiceHub.BL.Interfaces;
 
 
 namespace ServiceHub.PL.Controllers
@@ -12,30 +9,21 @@ namespace ServiceHub.PL.Controllers
     [ApiController]
     public class WorkerController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly IMapper mapper;
+        private readonly IWorkerService workerService;
 
-        public WorkerController( UserManager<ApplicationUser> userManager,IMapper mapper)
+        public WorkerController(IWorkerService workerService)
         {
-            this.userManager = userManager;
-            this.mapper = mapper;
+            this.workerService = workerService;
         }
 
-        [HttpGet("GetAllWorker")]
+        [HttpGet]
         //[Authorize(Policy = "Worker")]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                var data = await userManager.GetUsersInRoleAsync("Worker");
-                if (data != null)
-                {
-                    var listDTOs = mapper.Map<IEnumerable<WorkerDTO>>(data);
-                   
-                    return Ok(listDTOs);  
-
-                }
-                return NotFound();
+                var workersDTO = await workerService.GetAllWorkers();
+                return Ok(workersDTO);
             }
             catch (Exception ex)
             {
@@ -43,23 +31,20 @@ namespace ServiceHub.PL.Controllers
             }
 
         }
-        [HttpGet("GetWorkerById/{id:int}")]
+        [HttpGet("{id:int}")]
         //[Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var data = await userManager.FindByIdAsync(id.ToString()); ;
-                if (data != null)
-                {
-                    var worker = mapper.Map<WorkerDTO>(data);
-                    return Ok(worker);
-                }
+                var workerDTO = await workerService.GetWorkerById(id);
+                if(workerDTO != null)
+                    return Ok(workerDTO);
                 return NotFound();
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data: {ex}");
             }
         }
 
@@ -91,14 +76,12 @@ namespace ServiceHub.PL.Controllers
             }
         }*/
 
-        [HttpDelete("DeleteById/{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var worker = await userManager.FindByIdAsync(id.ToString());
-                if (worker == null) return NotFound();
-                await userManager.DeleteAsync(worker);
+                await workerService.DeleteWorker(id);
                 return Ok("Deleted");
             }
             catch (Exception ex)
@@ -109,21 +92,13 @@ namespace ServiceHub.PL.Controllers
         }
 
         //[Authorize]
-        [HttpGet("WorkersByJobId/{jobId:int}")]
+        [HttpGet("Job/{jobId:int}")]
         public async Task<IActionResult> GetAllByJobId(int jobId)
         {
             try
             {
-                var data = userManager.Users.Where(a => a.JobId == jobId);
-                if (data != null)
-                {
-                   
-                        var workerDto = mapper.Map<IEnumerable<WorkerDTO>>(data);
-                
-                        return Ok(workerDto);
-                   
-                }
-                return NotFound();
+                var workersDTO = await workerService.GetAllWorkersByJobId(jobId);
+                return Ok(workersDTO);
             }
             catch (Exception ex)
             {
@@ -133,18 +108,13 @@ namespace ServiceHub.PL.Controllers
 
 
 
-        [HttpGet("WorkerByDistrictId/{id:int}")]
+        [HttpGet("District/{id:int}")]
         public async Task<IActionResult> GetByDistrictId(int id)
         {
             try
             {
-                var data = userManager.Users.Where(a => a.DistrictId == id);
-                if (data != null)
-                {
-                    var workers = mapper.Map<IEnumerable<WorkerDTO>>(data);
-                    return Ok(workers);
-                }
-                return NotFound();
+                var workersDTO = await workerService.GetAllWorkersByDistrictId(id);
+                return Ok(workersDTO);
             }
 
             catch (Exception ex)

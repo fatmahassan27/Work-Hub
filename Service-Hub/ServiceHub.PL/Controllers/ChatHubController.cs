@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ServiceHub.BL.UnitOfWork;
+using ServiceHub.BL.Interfaces;
 using ServiceHub.DAL.Helper;
 
 namespace ServiceHub.PL.Controllers

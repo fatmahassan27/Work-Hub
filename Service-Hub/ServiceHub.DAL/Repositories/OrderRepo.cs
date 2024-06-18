@@ -1,10 +1,8 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
-using ServiceHub.DAL.Enums;
 using ServiceHub.DAL.Interfaces;
-
+using ServiceHub.DAL.Enums;
 namespace ServiceHub.DAL.Repositories
 {
     public class OrderRepo :  GenericRepo<Order> , IOrderRepo
@@ -16,13 +14,13 @@ namespace ServiceHub.DAL.Repositories
             this.db = db;
         }
 
-        public async Task CreateOrderAsync( int userId, int wokerId)
+        public async Task CreateOrderAsync( int userId, int workerId)
         {
             Order order = new Order()
             {
                 UserId = userId,
-                WorkerId = wokerId,
-                Status = Enums.OrderStatus.New
+                WorkerId = workerId,
+                Status = OrderStatus.New
             };
             await db.Orders.AddAsync(order);
         }

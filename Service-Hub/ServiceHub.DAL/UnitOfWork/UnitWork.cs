@@ -1,14 +1,18 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
 using ServiceHub.DAL.DataBase;
+using ServiceHub.DAL.Helper;
 using ServiceHub.DAL.Interfaces;
 using ServiceHub.DAL.Repositories;
+using ServiceHub.DAL.UnitOfWork;
 
-namespace ServiceHub.BL.UnitOfWork
+namespace ServiceHub.BL.Interfaces
 {
 
     public class UnitWork : IUnitOfWork
     {
         private readonly ApplicationDbContext db;
+        private readonly UserManager<ApplicationUser> userManager;
         private IJobRepo jobRepo;
         private ICityRepo cityRepo;
         private IDistrictRepo districtRepo;
@@ -16,9 +20,10 @@ namespace ServiceHub.BL.UnitOfWork
         private IRateRepo rateRepo;
 
 
-        public UnitWork(ApplicationDbContext db)
+        public UnitWork(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             this.db = db;
+            this.userManager = userManager;
         }
 
         public IJobRepo JobRepo
@@ -51,7 +56,7 @@ namespace ServiceHub.BL.UnitOfWork
         {
             get
             {
-                return rateRepo ??= new RateRepo(db);
+                return rateRepo ??= new RateRepo(db,userManager);
             }
         }
            

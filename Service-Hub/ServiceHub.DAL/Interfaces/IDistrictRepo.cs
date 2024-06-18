@@ -1,5 +1,4 @@
-﻿
-using ServiceHub.DAL.Entities;
+﻿using ServiceHub.DAL.Entities;
 
 namespace ServiceHub.DAL.Interfaces
 {
