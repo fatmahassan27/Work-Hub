@@ -3,6 +3,7 @@ using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
 using ServiceHub.DAL.Interfaces;
 using ServiceHub.DAL.Enums;
+using ServiceHub.DAL.GenericRepository;
 namespace ServiceHub.DAL.Repositories
 {
     public class OrderRepo :  GenericRepo<Order> , IOrderRepo

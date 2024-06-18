@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.DAL.Entities;
+using ServiceHub.DAL.GenericRepository;
 
 namespace ServiceHub.DAL.Interfaces
 {

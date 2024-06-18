@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
+using ServiceHub.DAL.GenericRepository;
 using ServiceHub.DAL.Interfaces;
 
 namespace ServiceHub.DAL.Repositories

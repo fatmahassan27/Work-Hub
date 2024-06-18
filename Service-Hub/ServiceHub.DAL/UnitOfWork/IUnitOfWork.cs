@@ -9,6 +9,8 @@ namespace ServiceHub.DAL.UnitOfWork
         IOrderRepo OrderRepo { get; }
         IDistrictRepo DistrictRepo { get; }
         IRateRepo RateRepo { get; }
+        INotificaionRepo NotificaionRepo { get; }
+        IUserConnectionRepo UserConnectionRepo { get; }
 
         Task<int> saveAsync();
     }

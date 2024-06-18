@@ -1,9 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using ServiceHub.DAL.DataBase;
-using ServiceHub.DAL.Interfaces;
 
-namespace ServiceHub.DAL.Repositories
+namespace ServiceHub.DAL.GenericRepository
 {
     public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
