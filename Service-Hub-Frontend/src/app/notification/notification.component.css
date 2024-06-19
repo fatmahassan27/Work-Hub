@@ -1,7 +1,0 @@
-.notification {
-    width: 400px; /* Use a semicolon to separate property-value pairs */
-    border: 2px solid; /* Specify a color or remove 'solid' if not needed */
-    height: auto; /* Use a semicolon to separate property-value pairs */
-    color: black violet; /* Specify the color name, hex code, or RGB value */
-    margin: 2px;
-}
