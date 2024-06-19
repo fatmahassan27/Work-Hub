@@ -11,6 +11,7 @@ using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
 using ServiceHub.DAL.UnitOfWork;
 using ServiceHub.PL.Hubs;
+using NuGet.Protocol;
 
 namespace ServiceHub.PL
 {
@@ -25,6 +26,7 @@ namespace ServiceHub.PL
 
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
+            builder.Services.AddLogging();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -53,12 +55,13 @@ namespace ServiceHub.PL
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddAuthorization(x => { x.AddPolicy("Worker", po => po.RequireClaim(ClaimTypes.Role, "Worker")); });
             builder.Services.AddAuthorization(x => { x.AddPolicy("User", po => po.RequireClaim(ClaimTypes.Role, "User")); });
 
+            var key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!);
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,9 +76,26 @@ namespace ServiceHub.PL
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
+                    ValidateLifetime = true,
                     ValidAudience = builder.Configuration["JWT:ValidAudience"],
                     ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!))
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["accesss-token"];
+                        // If the request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/notificationsHub")))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

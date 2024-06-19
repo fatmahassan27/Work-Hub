@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using ServiceHub.BL.DTOs;
 using ServiceHub.BL.Interfaces;
@@ -39,37 +41,38 @@ namespace ServiceHub.PL.Hubs
 
         //    await base.OnConnectedAsync();
         //}
-        public async override Task OnConnectedAsync()
-        {
-            try
-            {
-                Console.WriteLine("Client connected: " + Context.ConnectionId);
-                var userId = Context.User?.FindFirst("id")?.Value;
 
-                if (string.IsNullOrEmpty(userId))
-                {
-                    _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
-                    return;
-                }
+        //public async override Task OnConnectedAsync()
+        //{
+        //    try
+        //    {
+        //        Console.WriteLine("Client connected: " + Context.ConnectionId);
+        //        var userId = Context.User?.FindFirst("id")?.Value;
+        //        //var user = userManager.
+        //        if (string.IsNullOrEmpty(userId))
+        //        {
+        //            _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
+        //            return;
+        //        }
 
-                var userConnection = new UserConnection
-                {
-                    UserId = int.Parse(userId), // Ensure this matches your UserId type
-                    ConnectionId = Context.ConnectionId
-                };
+        //        var userConnection = new UserConnection
+        //        {
+        //            UserId = int.Parse(userId), // Ensure this matches your UserId type
+        //            ConnectionId = Context.ConnectionId
+        //        };
 
-                await userConnectionService.CreateAsync(userConnection);
+        //        await userConnectionService.CreateAsync(userConnection);
 
-                _logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
+        //        _logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
 
-                await base.OnConnectedAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
-                throw; // Re-throw the exception to let SignalR handle the disconnection
-            }
-        }
+        //        await base.OnConnectedAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
+        //        throw; // Re-throw the exception to let SignalR handle the disconnection
+        //    }
+        //}
 
 
 
@@ -84,38 +87,103 @@ namespace ServiceHub.PL.Hubs
         //        }
         //         base.OnDisconnectedAsync(exception);
         //    }
+        //public async override Task OnDisconnectedAsync(Exception? exception)
+        //{
+        //    try
+        //    {
+        //        Console.WriteLine("Client disconnected: " + Context.ConnectionId);
+
+        //        var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
+        //        if (userConn != null)
+        //        {
+        //            await userConnectionService.RemoveAsync(userConn);
+        //            Console.WriteLine("Removed connection: " + Context.ConnectionId);
+        //        }
+
+        //        if (exception != null)
+        //        {
+        //            Console.WriteLine("Disconnection error: " + exception.Message);
+        //        }
+
+        //        await base.OnDisconnectedAsync(exception);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error during disconnection: " + ex.Message);
+        //        throw; // Re-throw the exception to let SignalR handle any further cleanup
+        //    }
+        //}
+
+        public async override Task OnConnectedAsync()
+            {
+                try
+                {
+                    var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
+                        return;
+                    }
+
+                    var userConnection = new UserConnection
+                    {
+                        UserId = int.Parse(userId), // Ensure this matches your UserId type
+                        ConnectionId = Context.ConnectionId
+                    };
+
+                    await userConnectionService.CreateAsync(userConnection);
+
+                    _logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
+
+                    await base.OnConnectedAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
+                    throw; // Re-throw the exception to let SignalR handle the disconnection
+                }
+            }
+
         public async override Task OnDisconnectedAsync(Exception? exception)
-        {
-            try
             {
-                Console.WriteLine("Client disconnected: " + Context.ConnectionId);
-
-                var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
-                if (userConn != null)
+                try
                 {
-                    await userConnectionService.RemoveAsync(userConn);
-                    Console.WriteLine("Removed connection: " + Context.ConnectionId);
-                }
+                    Console.WriteLine("Client disconnected: " + Context.ConnectionId);
 
-                if (exception != null)
+                    var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
+                    if (userConn != null)
+                    {
+                        await userConnectionService.RemoveAsync(userConn);
+                        Console.WriteLine("Removed connection: " + Context.ConnectionId);
+                    }
+
+                    if (exception != null)
+                    {
+                        Console.WriteLine("Disconnection error: " + exception.Message);
+                    }
+
+                    await base.OnDisconnectedAsync(exception);
+                }
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Disconnection error: " + exception.Message);
+                    Console.WriteLine("Error during disconnection: " + ex.Message);
+                    throw; // Re-throw the exception to let SignalR handle any further cleanup
                 }
-
-                await base.OnDisconnectedAsync(exception);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error during disconnection: " + ex.Message);
-                throw; // Re-throw the exception to let SignalR handle any further cleanup
-            }
-        }
-
-
+        
         public async Task SendOrderCreatedNotification(int userId, int workerId)
         {
             try
             {
+                //var userIdd = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                //if (string.IsNullOrEmpty(userIdd))
+                //{
+                //    _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
+                //    return;
+                //}
+                //*************************************************************************************************************
                 var user = await userManager.FindByIdAsync(userId.ToString());
                 var worker = await userManager.FindByIdAsync(workerId.ToString());
 
@@ -150,8 +218,12 @@ namespace ServiceHub.PL.Hubs
                 await notificationService.CreateAsync(userNotificationDTO);
                 await notificationService.CreateAsync(workerNotificationDTO);
 
-                //await Clients.All.SendAsync("NewNotification", userNotificationDTO);
+                await Clients.All.SendAsync("NewNotification", userNotificationDTO);
+                //await Clients.User(userIdd).SendAsync("NewNotification", userNotificationDTO);
+
+
                 //await Clients.Caller.SendAsync("NewNotification", userNotificationDTO);
+
                 await Clients.User(user.Id.ToString()).SendAsync("NewNotification", userNotificationDTO);
                 await Clients.User(worker.Id.ToString()).SendAsync("NewNotification", workerNotificationDTO);
             }
