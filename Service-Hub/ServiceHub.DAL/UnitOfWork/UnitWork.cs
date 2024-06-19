@@ -21,6 +21,7 @@ namespace ServiceHub.BL.Interfaces
         private IRateRepo rateRepo;
         private INotificaionRepo notificationRepo;
         private IUserConnectionRepo userConnectionRepo;
+        private IChatMessageRepo chatMessageRepo;
 
         public UnitWork(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
@@ -58,13 +59,15 @@ namespace ServiceHub.BL.Interfaces
         {
             get
             {
-                return rateRepo ??= new RateRepo(db,userManager);
+                return rateRepo ??= new RateRepo(db);
             }
         }
 
-        public INotificaionRepo NotificaionRepo => notificationRepo?? new NotificationRepo(db);
-
         public IUserConnectionRepo UserConnectionRepo => userConnectionRepo?? new UserConnectionsRepo(db);
+
+        public INotificaionRepo NotificationRepo => notificationRepo ?? new NotificationRepo(db);
+
+        public IChatMessageRepo ChatMessageRepo => chatMessageRepo ?? new ChatMessageRepo(db);
 
         public async Task<int> saveAsync()
         {

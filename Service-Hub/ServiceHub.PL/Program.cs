@@ -43,6 +43,7 @@ namespace ServiceHub.PL
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IWorkerService, WorkerService>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<IChatMessageService,ChatMessageService>();
             builder.Services.AddScoped<IUserConnectionService, UserConnectionService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
@@ -99,11 +100,14 @@ namespace ServiceHub.PL
             }
 
             app.UseRouting();
+
             app.UseCors("AllowLocalhost4200");
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapHub<NotificationsHub>("/notificationsHub");
+            app.MapHub<ChatHub>("/chatHub");
+
 
             app.MapControllers();
 

@@ -8,13 +8,13 @@ namespace ServiceHub.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChatHubController : ControllerBase
+    public class ChatController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IChatMessageService chatservice;
 
-        public ChatHubController(UserManager<ApplicationUser> userManager)
+        public ChatController(IChatMessageService chatservice)
         {
-            this.userManager = userManager;
+            this.chatservice = chatservice;
         }
 
     }

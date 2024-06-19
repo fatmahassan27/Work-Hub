@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
 using ServiceHub.BL.Interfaces;
+using ServiceHub.DAL.UnitOfWork;
 
 
 namespace ServiceHub.PL.Controllers
@@ -29,29 +30,12 @@ namespace ServiceHub.PL.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
-        [HttpGet("{workerId:int}")]
-        public async Task<IActionResult> GetAllRatingsByWorkerId(int workerId)
-        {
-            try
-            {
-                var data = rateService.GetAllRatingsByWorkerId(workerId);
-                return Ok(data);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(new { message = "An error occurred while processing your request.", error = ex.Message });
-            }
-        }
-
+      
         [HttpGet("Average/{id:int}")]
         public async Task<IActionResult> GetRating(int id)
         {
             var data = await rateService.getAverageWorkerRating(id);
             return Ok(data);
         }
-
-
-
     }
 }
