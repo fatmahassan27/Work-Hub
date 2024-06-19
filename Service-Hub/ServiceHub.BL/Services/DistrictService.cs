@@ -2,6 +2,7 @@
 using ServiceHub.DAL.UnitOfWork;
 using ServiceHub.BL.DTOs;
 using AutoMapper;
+using ServiceHub.DAL.Entities;
 
 namespace ServiceHub.BL.Services
 {
@@ -23,6 +24,14 @@ namespace ServiceHub.BL.Services
             var districtsDTO = mapper.Map<IEnumerable<DistrictDTO>>(districts);
 
             return districtsDTO;
+        }
+
+        public async Task<DistrictDTO> getById(int id)
+        {
+            var district = await unit.DistrictRepo.GetByIdAsync(id);
+            var districtDTO = mapper.Map<DistrictDTO>(district);
+            return districtDTO;
+
         }
     }
 }

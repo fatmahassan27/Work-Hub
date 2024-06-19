@@ -1,0 +1,21 @@
+.row
+{
+  width:90%;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-bottom: 30px;
+}
+.card
+{
+  margin-bottom: 40px;
+}
+select{
+  width: 10%;
+margin-left: 10%;
+height: 40px;
+border-radius: 12px;
+}
+.op
+{
+  border-radius: 12px;
+}

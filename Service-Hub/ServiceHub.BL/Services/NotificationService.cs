@@ -19,18 +19,18 @@ namespace ServiceHub.BL.Services
         public async Task CreateAsync(NotificationDTO notificationDTO)
         {
             var notification = mapper.Map<Notification>(notificationDTO);
-            await unitOfWork.NotificaionRepo.CreateAsync(notification);
+            await unitOfWork.NotificationRepo.CreateAsync(notification);
             await unitOfWork.saveAsync();
         }
 
         public async Task DeleteAsync(int notificationId)
         {
-            await unitOfWork.NotificaionRepo.DeleteAsync(notificationId);
+            await unitOfWork.NotificationRepo.DeleteAsync(notificationId);
         }
 
         public async Task<IEnumerable<NotificationDTO>> GetAllNotificationsByOwnerId(int ownerId)
         {
-            var notifications = await unitOfWork.NotificaionRepo.GetAllNotificationsByOwnerId(ownerId);
+            var notifications = await unitOfWork.NotificationRepo.GetAllNotificationsByOwnerId(ownerId);
             var notificationsDTO = mapper.Map<IEnumerable<NotificationDTO>>(notifications);
             return notificationsDTO;
 
@@ -38,7 +38,7 @@ namespace ServiceHub.BL.Services
 
         public async Task<NotificationDTO> GetByIdAsync(int id)
         {
-            var notification = await unitOfWork.NotificaionRepo.GetByIdAsync(id);
+            var notification = await unitOfWork.NotificationRepo.GetByIdAsync(id);
             var notificationDTO = mapper.Map<NotificationDTO>(notification);
             return notificationDTO;
         }
@@ -46,7 +46,7 @@ namespace ServiceHub.BL.Services
         public async Task UpdateAsync(int noficationid, NotificationDTO notificationDTO)
         {
             var notification = mapper.Map<Notification>(notificationDTO);
-            await unitOfWork.NotificaionRepo.UpdateAsync(noficationid, notification);
+            await unitOfWork.NotificationRepo.UpdateAsync(noficationid, notification);
             await unitOfWork.saveAsync();
         }
 

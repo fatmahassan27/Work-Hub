@@ -1,0 +1,157 @@
+<p>Worker works!</p>
+<div class="mb-3">
+  <label for="" class="form-label">City</label>
+  <select title="city"
+          class="form-select form-select-sm"
+          [(ngModel)]="selectedCityId"
+          (change)="onCityChange($event)">
+    <option class="op" value="0" selected>Select a city</option>
+    <option class="op" *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+  </select>
+
+  <label for="" class="form-label">District</label>
+  <select title="district"
+          class="form-select form-select-sm"
+          [(ngModel)]="selectedDistrictId"
+          (change)="onDistrictChange($event)">
+    <option class="op" value="0" selected>Select a district</option>
+    <option class="op" *ngFor="let district of districts" [value]="district.id">{{district.name}}</option>
+  </select>
+</div>
+
+<div *ngFor="let item of filteredWorkers" class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Name: {{item.userName}}</h3>
+        <p class="card-text">Job: {{item.jobId}}</p>
+        <p class="card-text">District: {{item.districtId}}</p>
+        <p class="card-text">Rating: {{item.rating}}</p>
+        <button class="btn btn-primary" type="button">Order</button>
+        <button class="btn btn-primary" type="button">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <p>worker works!</p>
+<div class="mb-3">
+  <label for="" class="form-label">City</label>
+  <select title="city"
+    class="form-select form-select-sm"
+    [(ngModel)]="selectedCityId"
+    (change)="onCityChange($event)" >
+  <option class="op" value="0" selected>Select a city</option>
+  <option class="op" *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+</select>
+<label for="" class="form-label">District</label>
+<select title="district"
+    class="form-select form-select-sm"
+    [(ngModel)]="selectedDistrictId" 
+    (change)="onDistrictChange($event)" >
+
+  <option class="op" value="0" selected>Select a district</option>
+  <option class="op" *ngFor="let district of districts" [value]="district.id">{{district.name}}</option>
+</select>
+</div>
+
+  <div *ngFor="let item of workers" class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Name:{{item.userName}}</h3>
+          <p class="card-text">Job:{{item.jobId}}</p>
+          <p class="card-text">District:{{item.districtId}}</p>
+          <p class="card-text">Rating:{{item.rating}}</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+        </div> -->
+
+<!-- fddfhfg -->
+
+<!--
+  <div class="con col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <img src="#">
+          <h3 class="card-title">Name:</h3>
+          <p class="card-text">Price:</p>
+          <p class="card-text">job:</p>
+          <p class="card-text">district:</p>
+          <p class="card-text">Rate:</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <img src="#">
+          <h3 class="card-title">Name:</h3>
+          <p class="card-text">Price:</p>
+          <p class="card-text">job:</p>
+          <p class="card-text">district:</p>
+          <p class="card-text">Rate:</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <img src="#">
+          <h3 class="card-title">Name:</h3>
+          <p class="card-text">Price:</p>
+          <p class="card-text">job:</p>
+          <p class="card-text">district:</p>
+          <p class="card-text">Rate:</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <img src="#">
+          <h3 class="card-title">Name:</h3>
+          <p class="card-text">Price:</p>
+          <p class="card-text">job:</p>
+          <p class="card-text">district:</p>
+          <p class="card-text">Rate:</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <img src="#">
+          <h3 class="card-title">Name:</h3>
+          <p class="card-text">Price:</p>
+          <p class="card-text">job:</p>
+          <p class="card-text">district:</p>
+          <p class="card-text">Rate:</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <img src="#">
+          <h3 class="card-title">Name:</h3>
+          <p class="card-text">Price:</p>
+          <p class="card-text">job:</p>
+          <p class="card-text">district:</p>
+          <p class="card-text">Rate:</p>
+          <button class="btn btn-primary" type="button">order</button>|<button class="btn btn-primary" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+
+ -->

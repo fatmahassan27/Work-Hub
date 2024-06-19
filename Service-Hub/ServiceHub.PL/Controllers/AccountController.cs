@@ -83,8 +83,8 @@ namespace ServiceHub.PL.Controllers
                     {
                         return Unauthorized();
                     }
-                    var token = GenerateJwtToken(user);
-                    return Ok(new { Token = token });
+                    var token = await GenerateJwtToken(user);
+                    return Ok(token);
                 }
                 return Unauthorized();
             }

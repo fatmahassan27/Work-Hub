@@ -1,0 +1,50 @@
+nav
+{
+  background-color: #31547c;
+  height: 65px;
+}
+
+button
+{
+  margin:2px;
+  padding:8px;
+  font-weight:bold;
+  font-size: small;
+  color: white;
+  border-color: rgba(240, 248, 255, 0.397);
+  transition: background-color 0.3s;
+}
+button:hover,button:focus
+{
+  font-weight:bold;
+  font-size: small;
+  color: white;
+  border-color: rgba(240, 248, 255, 0.397);
+  margin:2px;
+  padding: 8px;
+  background-color: rgb(231, 99, 66);
+}
+input
+{
+  background-color: rgba(255, 255, 255, 0.521);
+  width:200px;
+  height: 35px;
+  size: 100px;
+}
+.nav-link{
+color: white;
+margin: 6px;
+padding: 4px;
+transition: background-color 0.3s;
+}
+.nav-link:hover,.nav-link:focus
+{
+  background-color:rgb(231, 99, 66);;
+  border-radius: 15px;
+  margin: 6px;
+  color: white;
+}
+.noti
+{
+  margin-right: 10px;
+}

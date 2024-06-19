@@ -35,5 +35,27 @@ namespace ServiceHub.PL.Controllers
 				});
 			}
 		}
+
+		[HttpGet("byId/{id:int}")]
+		public async Task<IActionResult> getById(int id)
+		{
+			try
+			{
+                var districtDTO =  await districtService.getById(id);
+				if (districtDTO != null)
+					return Ok(districtDTO);
+				return NotFound();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    message = "An error occurred while retrieving District",
+                    details = ex.Message
+                });
+            }
+
+        }
 	}
 }
