@@ -1,5 +1,4 @@
-<!-- Pills navs -->
-<div class="container">
+<!-- <div class="container">
   <ul class="nav mb-3" >
     <li class="nav-item" >
       <a class="nav-link" routerLink="/login">Login</a
@@ -9,9 +8,7 @@
       <a class="nav-link" routerLink="/register">Register</a>
     </li>
   </ul>
-  <!-- Pills navs -->
 
-  <!-- Pills content -->
   <div class="tab-content">
     <div
       class="tab-pane fade show active"
@@ -19,8 +16,8 @@
       role="tabpanel"
       aria-labelledby="tab-login"
     >
-      <form>
-        <!-- <div class="text-center mb-3">
+      <form> -->
+        <!-- ///oldcooomentttt///<div class="text-center mb-3">
           <p class="text">Sign in with:</p>
           <button data-mdb-ripple-init type="button" class="btn btn-secondary btn-floating mx-1">
             <i class="fab fa-facebook-f"></i>
@@ -38,8 +35,8 @@
             <i class="fab fa-github"></i>
           </button>
         </div>
-        <p class="text text-center">or:</p> -->
-        <div data-mdb-input-init class="form-outline mb-4">
+        <p class="text text-center">or:</p> ///oldcomment///-->
+        <!-- <div data-mdb-input-init class="form-outline mb-4">
           <div class="selectcon">
             <div class="mb-3">
               <label for="roleSelect" class="form-label">Worker or User</label>
@@ -53,7 +50,7 @@
         <div data-mdb-input-init class="form-outline mb-4">
           <label class="form-label" for="loginName">Username</label>
           <input type="text" id="loginName" class="form-control" name="loginName" [(ngModel)]="RegisterDTO.fullName" />
-        </div>   
+        </div>
         <div data-mdb-input-init class="form-outline mb-4">
           <label class="form-label" for="email">Email</label>
           <input type="email" id="email" class="form-control" name="email" [(ngModel)]="RegisterDTO.email" />
@@ -66,8 +63,8 @@
           <label class="form-label" for="confirmPassword">Repeat password</label>
           <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" [(ngModel)]="RegisterDTO.confirmPassword" />
         </div>
-        @if(RegisterDTO.role==1){
-          <!-- <div data-mdb-input-init class="form-outline mb-4">
+        @if(RegisterDTO.role==1){ -->
+          <!-- ////oldcomment/// <div data-mdb-input-init class="form-outline mb-4">
             <div class="selectcon">
                 <div class="mb-3">
                   <label for="" class="form-label">City</label>
@@ -76,9 +73,9 @@
                    <option class="op" *ngFor="let item of cities" value="">{{item.name}}</option></select>
                 </div>
             </div>
-            </div>    -->
-            
-          <div data-mdb-input-init class="form-outline mb-4">
+            </div>  ////old comment////  -->
+
+          <!-- <div data-mdb-input-init class="form-outline mb-4">
             <div class="selectcon">
                 <div class="mb-3">
                   <label for="" class="form-label">District</label>
@@ -88,11 +85,11 @@
                   </div>
                   </div>
           </div>
-        }
-        
-      
-    
-        <!-- <div data-mdb-input-init class="form-outline mb-4">
+        } -->
+
+
+
+        <!--////oldcomment/// <div data-mdb-input-init class="form-outline mb-4">
           <div class="selectcon">
               <div class="mb-3">
                 <label for="" class="form-label">Job</label>
@@ -101,13 +98,12 @@
                 <option class="op" *ngFor="let item of jobs" value="">{{item.name}}</option></select>
                 </div>
                 </div>
-        </div> -->
-       
+        </div> ///oldcomment////-->
 
-        <!-- 2 column grid layout -->
-        <div class="row mb-4">
+
+        <!-- <div class="row mb-4">
           <div class="col-md-6 d-flex justify-content-center">
-            <!-- Checkbox -->
+
             <div class="form-check mb-3 mb-md-0">
               <input
                 class="form-check-input"
@@ -124,4 +120,51 @@
       </form>
     </div>
   </div>
-</div>
+
+</div> -->
+<div class="container" id="container">
+  <div class="form-container sign-up">
+      <div class="form">
+          <h1>Create Account</h1>
+          <input type="text" placeholder="FullName"  [(ngModel)]="RegisterDTO.fullName" id="name">
+          <input type="email" [(ngModel)]="RegisterDTO.email" placeholder="Email" id="email">
+          <input type="password" placeholder="Password"  [(ngModel)]="RegisterDTO.password" id="pass">
+          <input type="password" placeholder="Re-Password"  [(ngModel)]="RegisterDTO.confirmPassword" id="password">
+          <div class="selection">
+            <label for="roleSelect" class="form-label">Worker or User</label>
+            <select name="roleSelect" id="roleSelect"  [(ngModel)]="RegisterDTO.role" class="form-select">
+              <option class="op" value="2">User</option>
+              <option class="op" value="1">Worker</option>
+            </select>
+        </div>
+        @if(RegisterDTO.role==1){
+          <div class="selection">
+              <label for="" class="form-label">District</label>
+              <br>
+              <select  title="districtId"  [ngModel]="selectedRole" [ngModel]="RegisterDTO.districtId" >
+              <option class="op" value="0" selected> Select one</option>
+              <option class="op" *ngFor="let item of districts" [value]="item.id">{{item.name}}</option></select>
+              </div>
+              <div class="selection">
+                <label for="" class="form-label">job</label>
+                <br>
+                <select  title="districtId"  [ngModel]="selectedRole" [ngModel]="RegisterDTO.districtId" >
+                <option class="op" value="0" selected>Select one</option>
+                <option class="op" *ngFor="let item of districts" [value]="item.id">{{item.name}}</option></select>
+                </div>
+          }
+          <button id="SignUpData" (click)="save()" >Sign Up</button>
+        </div>
+
+          <div class="massage" id="massege"></div>
+
+      </div>
+  <div class="toggle-container">
+    <div class="toggle-panel toggle">
+        <div>
+            <h1>Welcome Back!</h1>
+            <p>Enter your personal details to use all of site features</p>
+            <button class="hidden" id="login" routerLink="/login" (click)="save()">Sign In</button>
+        </div>
+      </div>
+

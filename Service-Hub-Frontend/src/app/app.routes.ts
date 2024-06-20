@@ -9,6 +9,7 @@ import { RegistrationFormComponent } from './Account/register/register.component
 import { WorkerComponent } from './worker/worker.component';
 import { ServicesSectionComponent } from './services-section/services-section.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LogoutComponent } from './Account/logout/logout.component';
 
 export const routes: Routes = [
   { path: "home", component: HomeComponent },
@@ -17,7 +18,8 @@ export const routes: Routes = [
   { path: "worker",component:WorkerComponent,canActivate:[loginGuard]},
   { path: "Notification", component: NotificationComponent ,canActivate:[loginGuard]},
   { path: "Chat", component: ChatmessageComponent,canActivate:[loginGuard] },
-  { path: "login", component:LoginComponent },
-  {path:"register",component:RegistrationFormComponent},
+  { path: "login", component:LoginComponent},
+  { path: "register", component: RegistrationFormComponent},
+  { path: "logout", component: LogoutComponent},
   {path:"**" , component:NotFoundComponent}
 ];

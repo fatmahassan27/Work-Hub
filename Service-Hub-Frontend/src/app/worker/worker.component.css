@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+*
+{
+font-family: 'Montserrat';
+font-weight: bold;
+margin: 5px;
+padding: 7px;
+}
 .row
 {
   width:90%;
@@ -8,14 +16,52 @@
 .card
 {
   margin-bottom: 40px;
+  background-color: #c0c0c00e;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(60, 60, 105, 0.363);
+  transition: box-shadow 0.3s ease;
 }
-select{
-  width: 10%;
-margin-left: 10%;
-height: 40px;
-border-radius: 12px;
+select
+{
+  width: 20%;
+  height: 40px;
+  border-radius: 12px;
+  font-weight: 500;
+  background-color: #a3b0be46;
+}
+select:hover,select:focus
+{
+  width: 20%;
+  height: 40px;
+  border-radius: 12px;
+  font-weight: 500;
+  background-color: #fcfcfc46;
+}
+.dropdown-container
+{
+  display: flex;
+  margin-left: 20%;
 }
 .op
 {
   border-radius: 12px;
 }
+.btn
+{
+  padding: 5px;
+  margin: 5px;
+  color: white;
+background-color:rgb(231, 99, 66);
+}
+.btn:hover
+{
+  padding: 6px;
+  margin: 5px;
+  color: white;
+background-color:rgba(231, 99, 66, 0.904);
+}
+.form-label2
+{
+ margin-left: 120px;
+}
+

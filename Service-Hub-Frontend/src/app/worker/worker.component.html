@@ -1,17 +1,17 @@
-<p>Worker works!</p>
-<div class="mb-3">
-  <label for="" class="form-label">City</label>
+<body>
+<div class="dropdown-container">
+  <label for="" class="form-label1">City</label>
   <select title="city"
-          class="form-select form-select-sm"
+          class="form-select city form-select-sm"
           [(ngModel)]="selectedCityId"
           (change)="onCityChange($event)">
     <option class="op" value="0" selected>Select a city</option>
     <option class="op" *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
   </select>
 
-  <label for="" class="form-label">District</label>
-  <select title="district"
-          class="form-select form-select-sm"
+  <label for="" class="form-label2">District</label>
+  <select  title="district"
+          class="form-select district form-select-sm"
           [(ngModel)]="selectedDistrictId"
           (change)="onDistrictChange($event)">
     <option class="op" value="0" selected>Select a district</option>
@@ -27,13 +27,13 @@
         <p class="card-text">Job: {{item.jobId}}</p>
         <p class="card-text">District: {{item.districtId}}</p>
         <p class="card-text">Rating: {{item.rating}}</p>
-        <button class="btn btn-primary" type="button">Order</button>
-        <button class="btn btn-primary" type="button">Send message</button>
+        <button class="btn" type="button">Order</button>
+        <button class="btn" type="button">Send message</button>
       </div>
     </div>
   </div>
 </div>
-
+</body>
 
 <!-- <p>worker works!</p>
 <div class="mb-3">
@@ -48,7 +48,7 @@
 <label for="" class="form-label">District</label>
 <select title="district"
     class="form-select form-select-sm"
-    [(ngModel)]="selectedDistrictId" 
+    [(ngModel)]="selectedDistrictId"
     (change)="onDistrictChange($event)" >
 
   <option class="op" value="0" selected>Select a district</option>
