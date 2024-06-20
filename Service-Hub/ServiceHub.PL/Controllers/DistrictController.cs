@@ -14,7 +14,29 @@ namespace ServiceHub.PL.Controllers
 		{
             this.districtService = districtService;
 		}
-		[HttpGet("{cityId:int}")]
+		[HttpGet]
+        public async Task<ActionResult<IEnumerable<DistrictDTO>>> GetAll()
+        {
+            try
+            {
+                var districtsDTO = await districtService.GetAll();
+                if (districtsDTO != null)
+                {
+                    return Ok(districtsDTO);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    message = "An error occurred while retrieving Districts",
+                    details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{cityId:int}")]
 		public async Task<ActionResult<IEnumerable<DistrictDTO>>> GetAllByCityId(int cityId)
 		{
 			try

@@ -17,6 +17,15 @@ namespace ServiceHub.BL.Services
             this.mapper = mapper;
         }
 
+        public async Task<IEnumerable<DistrictDTO>> GetAll()
+        {
+            var districts = await unit.DistrictRepo.GetAllAsync();
+
+            var districtsDTO = mapper.Map<IEnumerable<DistrictDTO>>(districts);
+
+            return districtsDTO;
+        }
+
         public async Task<IEnumerable<DistrictDTO>> GetAllDistrictsByCityId(int CityId)
         {
             var districts = await unit.DistrictRepo.GetAllDistrictsByCityId(CityId);

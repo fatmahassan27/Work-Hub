@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkerService } from '../Service/worker.service';
+import { WorkerService } from '../Services/worker.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Worker } from '../Models/worker.model';
 import { City } from '../Models/City.model';
-import { CityService } from '../Service/city.service';
+import { CityService } from '../Services/city.service';
 import { District } from '../Models/District.model';
-import { DistrictService } from '../Service/district.service';
+import { DistrictService } from '../Services/district.service';
 
 @Component({
   selector: 'app-worker',
@@ -33,9 +33,9 @@ export class WorkerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cityServices.getAll().subscribe((c: City[]) => {
-      console.log(c);
-      this.cities = c;
+    this.cityServices.getAll().subscribe((data: City[]) => {
+      console.log(data);
+      this.cities = data;
     });
 
     this.workerService.getAll().subscribe((data: Worker[]) => {

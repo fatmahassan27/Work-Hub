@@ -8,9 +8,15 @@ import { District } from '../Models/District.model';
 })
 export class DistrictService {
   private baseurl = "http://localhost:5018/api/District/";
+  
+  getAll(): Observable<District[]>{
+    return this.http.get<District[]>(this.baseurl);
+  }
+
   getAllByCityId(id:number): Observable<District[]> {
     return this.http.get<District[]>(this.baseurl+id);
   }
+  
   getById(id:number):Observable<District>{
     return this.http.get<District>(this.baseurl+"ById/"+id);
   }

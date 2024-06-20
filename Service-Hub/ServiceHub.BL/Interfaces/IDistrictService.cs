@@ -5,7 +5,8 @@ namespace ServiceHub.BL.Interfaces
 {
 	public interface IDistrictService
 	{
-		Task<IEnumerable<DistrictDTO>> GetAllDistrictsByCityId(int CityId);
+        Task<IEnumerable<DistrictDTO>> GetAll();
+        Task<IEnumerable<DistrictDTO>> GetAllDistrictsByCityId(int CityId);
 		Task<DistrictDTO> getById(int id);
 
 

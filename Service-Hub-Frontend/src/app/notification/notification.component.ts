@@ -1,12 +1,83 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../Services/notification.service';
+import { AccountService } from './../Services/account.service';
+import { NotificationDTO } from '../Models/notification.model';
 
 @Component({
   selector: 'app-notification',
-  standalone: true,
-  imports: [],
   templateUrl: './notification.component.html',
-  styleUrl: './notification.component.css'
+  styleUrls: ['./notification.component.css'],
+  imports: [DatePipe, FormsModule, CommonModule],
+standalone: true
 })
-export class NotificationComponent {
+export class NotificationComponent implements OnInit {
 
+  notifications: NotificationDTO[] = [];
+  userId: number = 0; // Assuming you have userId
+  workerId: number = 0; // Assuming you have workerId
+  currentUserId: number = 0;
+  constructor(private notificationService: NotificationService,public accountService:AccountService) {}
+
+  ngOnInit() {
+    if(this.accountService.userInfo?.id){
+      this.currentUserId = this.accountService.userInfo?.id ;
+    }
+    this.notificationService.getNotificationsHttp(this.currentUserId).subscribe({
+      next: (nots: NotificationDTO[]) => {
+        console.log(nots);
+        this.notifications = nots ;
+        console.log("Component: notifications loaded successfully.");
+      },
+      error: (err) => {
+        console.error('Component: Error receiving notifications: ', err);
+      }
+    });
+  }
+
+  reload(ownerId : number){
+    console.log("reloading... ownerId: ",ownerId);
+
+    this.notificationService.getNotificationsHttp(ownerId)
+    .subscribe({
+      next: (nots: NotificationDTO[]) => {
+        console.log(nots);
+        this.notifications =nots;
+        console.log("Component: notifications reloaded successfully.");
+      },
+      error: (err) => {
+        console.error('Component: Error receiving notifications: ', err);
+      },
+      complete:()=>{
+        console.log("Component: notifications retreived successfully");
+      }
+    });
+  }
+
+  SendOrderCreatedNotification() {
+    this.notificationService.sendOrderCreatedNotification(this.userId, this.workerId)
+      .then(() => {
+        alert("Notification sent successfully");
+      })
+      .catch(err => {
+        console.error('Error while sending notification: ', err);
+        alert("Error sending notification");
+      })
+      .finally(() => {
+        console.log("Send button clicked");
+      });
+  }
+  SendOrderAcceptedNotification() {
+    this.notificationService.sendOrderAcceptedNotification(this.userId, this.workerId)
+    .then(() => {
+      alert("Notification sent successfully");
+    })
+    .catch(err => {
+      console.error('Error while sending notification: ', err);
+      alert("Error sending notification");
+    })
+    .finally(() => {
+      console.log("Send button clicked");
+    });    }
 }

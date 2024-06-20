@@ -56,7 +56,7 @@ namespace ServiceHub.PL.Controllers
                         }
                         else if (model.Role == Role.User)
                         {
-                            return Ok("User registered successfully");
+                            return Ok(new { message = "User registered successfully" });
                         }
 
                     }
@@ -97,9 +97,16 @@ namespace ServiceHub.PL.Controllers
 
         private async Task<string> GenerateJwtToken(ApplicationUser user)
         {
+            var roles = await userManager.GetRolesAsync(user);
             var claims = new[]
             {
             new Claim("id",user.Id.ToString() ),
+            new Claim("name",user.UserName),
+            new Claim("role", roles.FirstOrDefault()),
+            new Claim("email",user.Email ),
+            new Claim("districtId",user.DistrictId.ToString()),
+            new Claim("jobId",user.JobId.ToString() ),
+
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.UserName!),
             new Claim(ClaimTypes.Email,user.Email!),

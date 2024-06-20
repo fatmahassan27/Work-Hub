@@ -1,4 +1,4 @@
-export class Notification {
+export class NotificationDTO {
   constructor(
       public id: number,
       public isRead: boolean,

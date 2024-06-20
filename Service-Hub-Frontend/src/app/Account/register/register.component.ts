@@ -1,47 +1,85 @@
 import { Component, OnInit } from '@angular/core';
-import { Register } from '../../Models/Register.model';
 import { City } from '../../Models/City.model';
-import { RegistrationService } from '../../Service/registration.service';
 import { Subscription } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
-import { CityService } from '../../Service/city.service';
+import { CityService } from '../../Services/city.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { District } from '../../Models/District.model';
+import { AccountService } from '../../Services/account.service';
+import { DistrictService } from '../../Services/district.service';
+import { Role } from '../../enums/role';
+import { RegisterationDTO } from '../../Models/registration-dto';
+
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [RouterLink, FormsModule, HttpClientModule, CommonModule],
-  templateUrl: './register.component.html',
+templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegistrationFormComponent implements OnInit{
 
-  client: Register = new Register("", "", "", "", 0, 0, 0, new Date());
-  cities: City[] = [];
+  sub: Subscription | null = null;
+  RegisterDTO: RegisterationDTO = new RegisterationDTO("", "", "", "", Role.User, 0,0);
   districts: District[] =[];
+  selectedRole: Role = Role.User;
   //jobs:
   
-  constructor(private registrationService: RegistrationService, public cityservice:CityService, public router:Router) { }
-  sub: Subscription | null = null;
+  constructor(
+    private accountService: AccountService,
+    public cityservice:CityService,
+    public districtService:DistrictService,
+    public router:Router
+    //jobs
+  ) { }
 
-ngOnInit(): void {
-  this.cityservice.getAll().subscribe((c: City[]) => {
-    console.log(c);
-    this.cities = c;
+  ngOnInit(): void {
+    // this.cityservice.getAll().subscribe((c: City[]) => {
+    //   console.log(c);
+    //   this.cities = c;
+    // });
+
+    this.loadDistricts();
+
+    // if (this.selectedCityId !== null) {
+    //   this.loadDistricts(this.selectedCityId);
+    // }
   }
-  )
-}
-  save() {
-    this.sub = this.registrationService.register(this.client).subscribe(data => {
+
+  // onSelectCity(event: Event): void {
+  //   const selectElement = event.target as HTMLSelectElement;
+  //   this.selectedCityId = Number(selectElement.value);
+  //   if (this.selectedCityId !== null) {
+  //     this.loadDistricts(this.selectedCityId);
+  //   }
+  // }
+
+  // onSelectDistrict(event: Event): void {
+  //   const selectElement = event.target as HTMLSelectElement;
+  //   this.selectedDistrictId = Number(selectElement.value);
+  // }
+
+  loadDistricts(): void {
+    this.districtService.getAll().subscribe((data: District[]) => {
+      console.log(data);
+      this.districts = data;
+    });
+  }
+
+  save(): void {
+    console.log(this.RegisterDTO);
+    //if user
+    this.sub = this.accountService.register(this.RegisterDTO).subscribe((data) => {
       console.log(data);
       this.router.navigateByUrl("/Home");
     });
-  }
-  ngOnDestroy(){
-    this.sub?.unsubscribe();
-  }
+
   }
 
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+}
