@@ -41,11 +41,31 @@
       <li routerLink="/Chat" class="fa fa-comment"></li>
       </button>
     </form>
+
     <form class="noti d-flex my-2 my-lg-0">
-      <button class="btn my-2 my-sm-0 " type="submit">
-      <li routerLink="/login" class="fa fa-user"></li>
+      <button class="btn my-2 my-sm-0" type="submit">
+        <li routerLink="/Login" class="fa fa-user"></li>
+
+        <!-- <div class="dropdown">
+          <a class="btn btn-secondary bg-white border-1 mt-0 dropdown-toggle" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="position-absolute top-0 left-10 translate-middle badge rounded-pill bg-light"></span>
+          </a>
+          <ul class="dropdown-menu">
+            @if(!accountService.isAuthenticated)
+            {
+              <li><a class="nav-link m-2" routerLink="/Login">Login</a></li>
+            }
+            @else
+            {
+              <li><a (click)="logout()">Logout</a></li>
+            }
+            <li><a class="nav-link m-2" routerLink="/Register">Register</a></li>
+          </ul>
+        </div> -->
       </button>
     </form>
+    
   </div>
 </nav>
 

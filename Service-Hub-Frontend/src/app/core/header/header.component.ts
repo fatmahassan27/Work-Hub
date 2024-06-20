@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Route, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AccountService } from '../../Services/account.service';
 
 @Component({
   selector: 'app-header',
@@ -9,5 +10,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(public accountService:AccountService , public router: Router)
+  {
+
+  }
+   logout()
+   {
+     this.accountService.logout();
+   }
 
 }
