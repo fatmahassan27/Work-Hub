@@ -14,9 +14,9 @@ export class HeaderComponent {
   {
 
   }
-   logout()
-   {
-     this.accountService.logout();
-   }
+  logout()
+  {
+    this.accountService.logout();
+  }
 
 }

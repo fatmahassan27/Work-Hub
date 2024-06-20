@@ -1,6 +1,6 @@
 nav
 {
-  background-color: #31547c;
+  background: linear-gradient(#5c6bc0, #31547c);
   height: 65px;
 }
 
@@ -39,7 +39,7 @@ transition: background-color 0.3s;
 }
 .nav-link:hover,.nav-link:focus
 {
-  background-color:rgb(231, 99, 66);;
+  background-color:rgb(231, 99, 66);
   border-radius: 15px;
   margin: 6px;
   color: white;
@@ -47,4 +47,20 @@ transition: background-color 0.3s;
 .noti
 {
   margin-right: 10px;
+}
+.login
+{
+  width: 80px;
+  padding: 0px;
+  height: 5px;
+  font-size: small;
+  font-weight: bold;
+  margin: 0px;
+  color: aliceblue;
+  text-decoration: none;
+}
+.logout
+{
+  text-decoration: none;
+  background-color:rgb(231, 99, 66);
 }
