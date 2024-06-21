@@ -22,7 +22,10 @@ export class WorkerService {
   getAllByDistrictId(id: number): Observable<Worker[]> {
     return this.http.get<Worker[]>(this.baseurl+"district/"+ id);
   }
-
+   
+  getAllByJobId(id: number): Observable<Worker[]> {
+    return this.http.get<Worker[]>(this.baseurl+"job/"+ id);
+  }
 
   ngOnInit() {
     // this.workerService.getAll().subscribe((data: Worker[]) => {

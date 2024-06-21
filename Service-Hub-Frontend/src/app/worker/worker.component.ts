@@ -18,7 +18,7 @@ import { JobService } from '../Services/job.service';
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule],
-templateUrl: './worker.component.html',
+  templateUrl: './worker.component.html',
   styleUrls: ['./worker.component.css']
 })
 export class WorkerComponent implements OnInit {
@@ -40,7 +40,7 @@ export class WorkerComponent implements OnInit {
     public notificationService: NotificationService,
     public orderService: OrderService,
     public accountService: AccountService,
-    public jobService:JobService
+   // public jobService:JobService
   ) {}
 
   ngOnInit() {
@@ -53,8 +53,9 @@ export class WorkerComponent implements OnInit {
       this.filteredWorkers = data; // Initialize filteredWorkers with all workers
     });
     this.currentUserInfo = this.accountService.userInfo ;
-    this.selectedjobId=this.jobService.tempJobId;
-    this.filterWorkersByJobId(this.selectedjobId);
+    //  this.selectedjobId=this.jobService.tempJobId;
+    //  console.log(this.selectedjobId);
+    //  this.filterWorkersByJobId(this.selectedjobId);
   }
 
   filterWorkersByDistrict(districtId: number) {
@@ -96,38 +97,16 @@ export class WorkerComponent implements OnInit {
         }
       });
   }
+    
+ 
+  // filterWorkersByJobId(jobId:number|null) {
+  //   if (jobId == null || jobId == 0) {
+  //     this.filteredWorkers = this.workers;
+  //   } else {
+  //     this.filteredWorkers = this.workers.filter(worker => worker.jobId == jobId);
+  //     console.log(jobId);
 
-  filterWorkersByJobId(jobId:number) {
-    if (jobId === 0) {
-      this.filteredWorkers = this.workers;
-    } else {
-      console.log(this.workers);
-      console.log(this.filteredWorkers);
-
-      this.filteredWorkers = this.workers.filter(worker => worker.jobId === jobId);
-      console.log(jobId);
-
-      console.log(this.workers);
-      console.log(this.filteredWorkers);
-    }
-  }
-  onCityChange(event: Event) {
-    const selectedCityId = (event.target as HTMLSelectElement).value;
-    this.selectedCityId = +selectedCityId;
-    this.loadDistricts(this.selectedCityId);
-  }
-  onDistrictChange(event: Event) {
-    const selectedDistrictId = (event.target as HTMLSelectElement).value;
-    this.selectedDistrictId = +selectedDistrictId;
-    this.filterWorkersByDistrict(this.selectedDistrictId);
-  }
-  loadDistricts(cityId: number) {
-  this.districtService.getAllByCityId(cityId).subscribe((districts: District[]) => {
-    console.log(cityId);
-    console.log(districts);
-    this.districts = districts;
-    this.selectedDistrictId = 0; // Reset selected district when city changes
-    this.filteredWorkers = this.workers; // Reset filtered workers
-  });
-  }
+  //   }
+  // }
+    
 }

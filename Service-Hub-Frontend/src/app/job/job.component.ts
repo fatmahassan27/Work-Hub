@@ -39,10 +39,11 @@ export class JobListComponent implements OnInit {
     });
   }
 
-  public ShowWorkers(jobId:number) 
-  {      
-    this.router.navigateByUrl("/worker");
-    this.jobService.tempJobId=jobId;
   }
-  
+   public ShowWorkers(jobId:number) 
+    {
+       this.jobService.tempJobId=jobId;
+       this.router.navigateByUrl("/workerByJob");
+    }
+   
 }

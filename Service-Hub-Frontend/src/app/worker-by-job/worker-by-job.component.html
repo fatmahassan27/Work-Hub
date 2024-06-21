@@ -1,0 +1,15 @@
+<p>worker-by-job works!</p>
+<div *ngFor="let item of filteredWorkers" class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Name: {{item.userName}}</h3>
+          <p class="card-text">Job: {{item.jobId}}</p>
+          <p class="card-text">District: {{item.districtId}}</p>
+          <p class="card-text">Rating: {{item.rating}}</p>
+         <!-- // <button class="btn" type="button" (click)="CreateOrder(item.id)">Order</button> -->
+          <button class="btn" type="button">Send message</button>
+        </div>
+      </div>
+    </div>
+  </div>
