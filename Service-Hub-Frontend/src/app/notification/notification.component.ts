@@ -10,7 +10,7 @@ import { NotificationDTO } from '../Models/notification.model';
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.css'],
   imports: [DatePipe, FormsModule, CommonModule],
-standalone: true
+  standalone: true
 })
 export class NotificationComponent implements OnInit {
 
@@ -18,66 +18,84 @@ export class NotificationComponent implements OnInit {
   userId: number = 0; // Assuming you have userId
   workerId: number = 0; // Assuming you have workerId
   currentUserId: number = 0;
-  constructor(private notificationService: NotificationService,public accountService:AccountService) {}
+
+  constructor(
+    private notificationService: NotificationService,
+    public accountService: AccountService
+  ) {}
 
   ngOnInit() {
-    if(this.accountService.userInfo?.id){
-      this.currentUserId = this.accountService.userInfo?.id ;
+    if (this.accountService.userInfo?.id) {
+      this.currentUserId = this.accountService.userInfo?.id;
+      console.log(`${this.currentUserId} CURRENT USER ID`);
     }
+
     this.notificationService.getNotificationsHttp(this.currentUserId).subscribe({
       next: (nots: NotificationDTO[]) => {
         console.log(nots);
-        this.notifications = nots ;
+        this.notifications = nots;
         console.log("Component: notifications loaded successfully.");
       },
       error: (err) => {
         console.error('Component: Error receiving notifications: ', err);
       }
     });
-  }
 
-  reload(ownerId : number){
-    console.log("reloading... ownerId: ",ownerId);
-
-    this.notificationService.getNotificationsHttp(ownerId)
-    .subscribe({
-      next: (nots: NotificationDTO[]) => {
-        console.log(nots);
-        this.notifications =nots;
-        console.log("Component: notifications reloaded successfully.");
+    this.notificationService.invokeOnNewNotification().subscribe({
+      next: (notification: NotificationDTO) => {
+        this.notifications.push(notification);
+        console.log('Component: New notification added:', notification);
       },
       error: (err) => {
-        console.error('Component: Error receiving notifications: ', err);
-      },
-      complete:()=>{
-        console.log("Component: notifications retreived successfully");
+        console.error('Component: Error receiving new notification: ', err);
       }
     });
   }
-
-  SendOrderCreatedNotification() {
-    this.notificationService.sendOrderCreatedNotification(this.userId, this.workerId)
-      .then(() => {
-        alert("Notification sent successfully");
-      })
-      .catch(err => {
-        console.error('Error while sending notification: ', err);
-        alert("Error sending notification");
-      })
-      .finally(() => {
-        console.log("Send button clicked");
-      });
-  }
-  SendOrderAcceptedNotification() {
-    this.notificationService.sendOrderAcceptedNotification(this.userId, this.workerId)
-    .then(() => {
-      alert("Notification sent successfully");
-    })
-    .catch(err => {
-      console.error('Error while sending notification: ', err);
-      alert("Error sending notification");
-    })
-    .finally(() => {
-      console.log("Send button clicked");
-    });    }
 }
+
+
+  // reload(){
+  //   console.log("reloading... ownerId: ",this.currentUserId);
+
+  //   this.notificationService.getNotificationsHttp(this.currentUserId)
+  //   .subscribe({
+  //     next: (nots: NotificationDTO[]) => {
+  //       console.log(nots);
+  //       this.notifications =nots;
+  //       console.log("Component: notifications reloaded successfully.");
+  //     },
+  //     error: (err) => {
+  //       console.error('Component: Error receiving notifications: ', err);
+  //     },
+  //     complete:()=>{
+  //       console.log("Component: notifications retreived successfully");
+  //     }
+  //   });
+  // }
+
+  // SendOrderCreatedNotification() {
+  //   this.notificationService.sendOrderCreatedNotification(this.userId, this.workerId)
+  //     .then(() => {
+  //       alert("Notification sent successfully");
+  //     })
+  //     .catch(err => {
+  //       console.error('Error while sending notification: ', err);
+  //       alert("Error sending notification");
+  //     })
+  //     .finally(() => {
+  //       console.log("Send button clicked");
+  //     });
+  // }
+  // SendOrderAcceptedNotification() {
+  //   this.notificationService.sendOrderAcceptedNotification(this.userId, this.workerId)
+  //   .then(() => {
+  //     alert("Notification sent successfully");
+  //   })
+  //   .catch(err => {
+  //     console.error('Error while sending notification: ', err);
+  //     alert("Error sending notification");
+  //   })
+  //   .finally(() => {
+  //     console.log("Send button clicked");
+  //   });    }
+

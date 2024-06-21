@@ -1,1 +1,13 @@
-
+<p>job works!</p>
+<div *ngFor="let item of jobs" class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">JobName: {{item.name}}</h3>
+          <p class="card-text">Price: {{item.price}}</p>
+          <!-- <button class="btn" type="button" (click)="CreateOrder(item.id)">Order</button> -->
+          <button class="btn" type="button" (click)="ShowWorkers(item.id)"> Show Workers </button>
+        </div>
+      </div>
+    </div>
+  </div>

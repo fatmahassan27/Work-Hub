@@ -19,7 +19,7 @@ namespace ServiceHub.DAL.Helper
         public int? JobId { get; set; }
         public int? DistrictId { get; set; }
         [Range(1, 5)]
-        public int? Rating { get; set; } //average of ratings
+        public int? Rating { get; set; } = 3;//average of ratings
 
         [ForeignKey("DistrictId")]
         public District? District { get; set; }

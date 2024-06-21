@@ -7,6 +7,7 @@ import { WorkerComponent } from '../worker/worker.component';
 @Injectable({
   providedIn: 'root'
 })
+
 export class CityService {
   private baseurl="http://localhost:5018/api/city";
   
@@ -14,5 +15,7 @@ export class CityService {
   {
     return this.http.get<City[]>(this.baseurl);
   }
+
   constructor(public http:HttpClient) { }
+
 }

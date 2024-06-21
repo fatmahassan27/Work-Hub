@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@microsoft/signalr';
 import { Rate } from '../Models/Rate.model';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class RateService {
   private baseurl="http://localhost:5018/api/Rate" ;
+  
   constructor(public http:HttpClient) { }
- 
-  AddRate(rate:Rate)
+
+  AddRate(rate:Rate) 
   {
-    this.http.post(this.baseurl+"/"+rate, {responseType:'text'});
+    return this.http.post(this.baseurl , rate);
   }
   
-
 }
