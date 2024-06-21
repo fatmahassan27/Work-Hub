@@ -1,9 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 nav
 {
-  background: linear-gradient(#5c6bc0, #31547c);
+  background-color:rgba(27, 63, 105, 0.685);
   height: 65px;
+  border-color: rgba(209, 208, 208, 0.137);
+  border-width: 1px;
+  border-style: solid;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 50px;
+  box-shadow: rgb(2, 14, 14);
+  font-family: 'Montserrat';
 }
-
 button
 {
   margin:2px;

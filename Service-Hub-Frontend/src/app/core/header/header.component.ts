@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Route, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AccountService } from '../../Services/account.service';
-
+import { RegisterationDTO } from '../../Models/registration-dto';
+import { UserLogin } from '../../Models/user-login.model';
+import { Role } from '../../enums/role';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -10,7 +12,10 @@ import { AccountService } from '../../Services/account.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(public accountService:AccountService , public router: Router)
+  [x: string]: any;
+
+  selectedRole: Role = Role.User;
+  constructor(public accountService:AccountService ,public router: Router)
   {
 
   }

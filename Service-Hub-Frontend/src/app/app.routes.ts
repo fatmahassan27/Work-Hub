@@ -10,6 +10,7 @@ import { WorkerComponent } from './worker/worker.component';
 import { ServicesSectionComponent } from './services-section/services-section.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogoutComponent } from './Account/logout/logout.component';
+import { OrUserComponent } from './orders/or-user/or-user.component';
 
 export const routes: Routes = [
   { path: "home", component: HomeComponent },
@@ -20,6 +21,8 @@ export const routes: Routes = [
   { path: "Chat", component: ChatmessageComponent,canActivate:[loginGuard] },
   { path: "login", component:LoginComponent},
   { path: "register", component: RegistrationFormComponent},
-  { path: "logout", component: LogoutComponent},
-  {path:"**" , component:NotFoundComponent}
+  { path: "logout", component: LogoutComponent },
+  //{ path: "order", component: OrUserComponent},
+
+  //{path:"**" , component:NotFoundComponent}
 ];

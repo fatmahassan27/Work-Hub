@@ -15,8 +15,11 @@ padding: 7px;
 }
 .card
 {
+  border:0px;
+  padding: 6px;
+  color:rgb(83, 83, 83) ;
   margin-bottom: 40px;
-  background-color: #c0c0c00e;
+  background-color:#85a3c250;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(60, 60, 105, 0.363);
   transition: box-shadow 0.3s ease;
@@ -63,5 +66,17 @@ background-color:rgba(231, 99, 66, 0.904);
 .form-label2
 {
  margin-left: 120px;
+}
+.card:hover
+{
+  padding: 5px;
+  margin: 5px;
+  color:rgb(83, 83, 83) ;
+  margin-bottom: 40px;
+  background-color:#a3b0be75;
+  border-radius: 15px;
+  border: 0px;
+  box-shadow: 0 4px 8px rgba(233, 233, 247, 0.363);
+  transition: box-shadow 0.3s ease;
 }
 
