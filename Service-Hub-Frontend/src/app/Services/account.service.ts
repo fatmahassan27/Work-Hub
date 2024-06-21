@@ -19,6 +19,7 @@ export class AccountService {
 
   constructor(public http: HttpClient, public router: Router) { }
 
+  
   register(registerDTO :RegisterationDTO){
     return this.http.post(this.baseurl + "Register" ,registerDTO,{ responseType: 'text' });
   }
