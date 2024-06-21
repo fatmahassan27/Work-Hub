@@ -42,7 +42,7 @@ export class JobListComponent implements OnInit {
    public ShowWorkers(jobId:number) 
     {
        this.jobService.tempJobId=jobId;
-       this.router.navigateByUrl("/worker");
+       this.router.navigateByUrl("/workerByJob");
     }
    
 }

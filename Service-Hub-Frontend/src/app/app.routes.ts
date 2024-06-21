@@ -11,12 +11,14 @@ import { ServicesSectionComponent } from './services-section/services-section.co
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogoutComponent } from './Account/logout/logout.component';
 import { JobListComponent } from './job/job.component';
+import { WorkerByJobComponent } from './worker-by-job/worker-by-job.component';
 
 export const routes: Routes = [
   { path: "home", component: HomeComponent },
   { path: "About", component: AboutComponent },
   { path: "Services", component: ServicesSectionComponent,canActivate:[loginGuard]},
   { path: "worker",component:WorkerComponent,canActivate:[loginGuard]},
+  { path: "workerByJob",component:WorkerByJobComponent,canActivate:[loginGuard]},
   { path: "jobs",component:JobListComponent,canActivate:[loginGuard]},
   { path: "Notification", component: NotificationComponent ,canActivate:[loginGuard]},
   { path: "Chat", component: ChatmessageComponent,canActivate:[loginGuard] },

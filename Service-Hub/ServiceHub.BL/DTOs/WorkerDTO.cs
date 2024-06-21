@@ -14,7 +14,7 @@ namespace ServiceHub.BL.DTOs
         public int? JobId { get; set; }
 
         public int? DistrictId { get; set; }
-        public int? Rating { get; set; } //average of ratings	
+        public int? Rating { get; set; } = 3;//average of ratings	
 
 
     }

@@ -18,7 +18,7 @@ import { JobService } from '../Services/job.service';
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule],
-templateUrl: './worker.component.html',
+  templateUrl: './worker.component.html',
   styleUrls: ['./worker.component.css']
 })
 export class WorkerComponent implements OnInit {
@@ -40,7 +40,7 @@ export class WorkerComponent implements OnInit {
     public notificationService: NotificationService,
     public orderService: OrderService,
     public accountService: AccountService,
-    public jobService:JobService
+   // public jobService:JobService
   ) {}
 
   ngOnInit() {
@@ -52,14 +52,10 @@ export class WorkerComponent implements OnInit {
       this.workers = data;
       this.filteredWorkers = data; // Initialize filteredWorkers with all workers
     });
-
     this.currentUserInfo = this.accountService.userInfo ;
-
-
-
-     this.selectedjobId=this.jobService.tempJobId;
-     console.log(this.selectedjobId);
-     this.filterWorkersByJobId(this.selectedjobId);
+    //  this.selectedjobId=this.jobService.tempJobId;
+    //  console.log(this.selectedjobId);
+    //  this.filterWorkersByJobId(this.selectedjobId);
   }
 
   onCityChange(event: Event) {
@@ -122,17 +118,15 @@ export class WorkerComponent implements OnInit {
       });
   }
     
-  public showWorkers(jobId: number): number {
-    return jobId;
-  }
-  filterWorkersByJobId(jobId:number|null) {
-    if (jobId == null || jobId == 0) {
-      this.filteredWorkers = this.workers;
-    } else {
-      this.filteredWorkers = this.workers.filter(worker => worker.jobId == jobId);
-      console.log(jobId);
+ 
+  // filterWorkersByJobId(jobId:number|null) {
+  //   if (jobId == null || jobId == 0) {
+  //     this.filteredWorkers = this.workers;
+  //   } else {
+  //     this.filteredWorkers = this.workers.filter(worker => worker.jobId == jobId);
+  //     console.log(jobId);
 
-    }
-  }
+  //   }
+  // }
     
 }
