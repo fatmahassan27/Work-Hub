@@ -7,15 +7,21 @@ import { City } from '../Models/City.model';
 import { CityService } from '../Services/city.service';
 import { District } from '../Models/District.model';
 import { DistrictService } from '../Services/district.service';
+import { NotificationService } from '../Services/notification.service';
+import { OrderService } from '../Services/order.service';
+import { AccountService } from '../Services/account.service';
+import { UserInfo } from '../interfaces/user-info';
+import { Role } from '../enums/role';
 
 @Component({
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './worker.component.html',
+templateUrl: './worker.component.html',
   styleUrls: ['./worker.component.css']
 })
 export class WorkerComponent implements OnInit {
+
   workers: Worker[] = [];
   cities: City[] = [];
   districts: District[] = [];
@@ -24,25 +30,29 @@ export class WorkerComponent implements OnInit {
   selectedCityId: number = 0;
   selectedDistrictId: number = 0;
 
-  
+  currentUserInfo : UserInfo | null  = {id:0,name:"",role:Role.User,email:"",jobId:'',districtId:''};
 
   constructor(
     public workerService: WorkerService,
     public cityServices: CityService,
-    public districtService: DistrictService
+    public districtService: DistrictService,
+    public notificationService: NotificationService,
+    public orderService: OrderService,
+    public accountService: AccountService
   ) {}
 
   ngOnInit() {
     this.cityServices.getAll().subscribe((data: City[]) => {
-      console.log(data);
       this.cities = data;
     });
 
     this.workerService.getAll().subscribe((data: Worker[]) => {
-      console.log(data);
       this.workers = data;
       this.filteredWorkers = data; // Initialize filteredWorkers with all workers
     });
+
+    this.currentUserInfo = this.accountService.userInfo ;
+
   }
 
   onCityChange(event: Event) {
@@ -75,4 +85,35 @@ export class WorkerComponent implements OnInit {
       this.filteredWorkers = this.workers.filter(worker => worker.districtId === districtId);
     }
   }
+
+  CreateOrder(workerId: number) {
+    console.log(this.currentUserInfo?.id!);
+    this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe(
+      {
+        next: () => {
+          console.log("Order created successfully");
+          console.log(this.currentUserInfo?.id!, workerId);
+          this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId)
+            .then(() => {
+              alert("Notification sent successfully");
+            })
+            .catch(err => {
+              console.error('Error while sending notification: ', err);
+              alert("Error sending notification" + err.message );
+            })
+            .finally(() => {
+              console.log("Send button clicked");
+            });
+        },
+        error: (e) => {
+          console.error(e);
+          alert("Error creating order");
+        },
+        complete: () => {
+          console.log("Order creation complete");
+        }
+      });
+  }
+  
+    
 }

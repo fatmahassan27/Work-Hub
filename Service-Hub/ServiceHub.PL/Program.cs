@@ -11,7 +11,6 @@ using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
 using ServiceHub.DAL.UnitOfWork;
 using ServiceHub.PL.Hubs;
-using NuGet.Protocol;
 
 namespace ServiceHub.PL
 {
@@ -21,18 +20,16 @@ namespace ServiceHub.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var ConnectionString = builder.Configuration.GetConnectionString("Service");
+            var connectionString = builder.Configuration.GetConnectionString("Service");
 
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
             builder.Services.AddLogging();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
@@ -45,7 +42,7 @@ namespace ServiceHub.PL
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IWorkerService, WorkerService>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
-            builder.Services.AddScoped<IChatMessageService,ChatMessageService>();
+            builder.Services.AddScoped<IChatMessageService, ChatMessageService>();
             builder.Services.AddScoped<IUserConnectionService, UserConnectionService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(opt =>
@@ -58,10 +55,13 @@ namespace ServiceHub.PL
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.AddAuthorization(x => { x.AddPolicy("Worker", po => po.RequireClaim(ClaimTypes.Role, "Worker")); });
-            builder.Services.AddAuthorization(x => { x.AddPolicy("User", po => po.RequireClaim(ClaimTypes.Role, "User")); });
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Worker", policy => policy.RequireClaim(ClaimTypes.Role, "Worker"));
+                options.AddPolicy("User", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
+            });
 
-            var key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!);
+            var key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]);
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,8 +74,8 @@ namespace ServiceHub.PL
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,     //
+                    ValidateAudience = false,       //
                     ValidateLifetime = true,
                     ValidAudience = builder.Configuration["JWT:ValidAudience"],
                     ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
@@ -85,13 +85,10 @@ namespace ServiceHub.PL
                 {
                     OnMessageReceived = context =>
                     {
-                        var accessToken = context.Request.Query["accesss-token"];
-                        // If the request is for our hub...
+                        var accessToken = context.Request.Query["access_token"];
                         var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) &&
-                            (path.StartsWithSegments("/notificationsHub")))
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationsHub"))
                         {
-                            // Read the token out of the query string
                             context.Token = accessToken;
                         }
                         return Task.CompletedTask;
@@ -112,7 +109,6 @@ namespace ServiceHub.PL
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -127,7 +123,6 @@ namespace ServiceHub.PL
 
             app.MapHub<NotificationsHub>("/notificationsHub");
             app.MapHub<ChatHub>("/chatHub");
-
 
             app.MapControllers();
 

@@ -26,7 +26,6 @@ namespace ServiceHub.PL.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error Creating Order : {ex}");
-
             }
         }
 

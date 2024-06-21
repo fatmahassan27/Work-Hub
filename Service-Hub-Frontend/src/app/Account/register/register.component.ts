@@ -11,6 +11,8 @@ import { AccountService } from '../../Services/account.service';
 import { DistrictService } from '../../Services/district.service';
 import { Role } from '../../enums/role';
 import { RegisterationDTO } from '../../Models/registration-dto';
+import { JobService } from '../../Services/job.service';
+import { Job } from '../../Models/job.model';
 
 
 @Component({
@@ -22,28 +24,34 @@ templateUrl: './register.component.html',
 })
 export class RegistrationFormComponent implements OnInit{
 
+  onJobChange(event: any) {
+    this.RegisterDTO.jobId = +event; // Convert the value to a number
+}
+onDistrictChange(event: any) {
+  this.RegisterDTO.districtId = +event; // Convert the value to a number
+}
+onRoleChange(event: any) {
+  this.RegisterDTO.role = +event; // Convert the value to a number
+}
+
   sub: Subscription | null = null;
   RegisterDTO: RegisterationDTO = new RegisterationDTO("", "", "", "", Role.User, 0,0);
   districts: District[] =[];
   selectedRole: Role = Role.User;
-  //jobs:
+  jobs : Job[] =[];
   
   constructor(
     private accountService: AccountService,
     public cityservice:CityService,
     public districtService:DistrictService,
-    public router:Router
-    //jobs
+    public router:Router,
+    public jobService:JobService
   ) { }
 
   ngOnInit(): void {
-    // this.cityservice.getAll().subscribe((c: City[]) => {
-    //   console.log(c);
-    //   this.cities = c;
-    // });
-
+    console.log("hi");
     this.loadDistricts();
-
+    this.loadJobs();
     // if (this.selectedCityId !== null) {
     //   this.loadDistricts(this.selectedCityId);
     // }
@@ -67,6 +75,13 @@ export class RegistrationFormComponent implements OnInit{
       console.log(data);
       this.districts = data;
     });
+  }
+
+  loadJobs():void {
+    this.jobService.getAll().subscribe((data:Job[])=>{
+      console.log(data);
+      this.jobs = data;
+    })
   }
 
   save(): void {

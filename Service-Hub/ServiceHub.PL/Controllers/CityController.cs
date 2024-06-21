@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHub.BL.DTOs;
 using ServiceHub.BL.Interfaces;
@@ -15,8 +15,9 @@ namespace ServiceHub.PL.Controllers
 		{
 			CityService = _cityService;
 		}
-	
+
 		[HttpGet]
+		[Authorize]
 		public async Task<ActionResult<IEnumerable<CityDTO>>> Getall()
 		{
 			try

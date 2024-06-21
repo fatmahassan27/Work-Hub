@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -10,12 +11,13 @@ using System.Security.Claims;
 
 namespace ServiceHub.PL.Hubs
 {
+    [Authorize]
     public class NotificationsHub : Hub
     {
         private readonly INotificationService notificationService;
         private readonly IUserConnectionService userConnectionService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<NotificationsHub> _logger;
+        private readonly ILogger<NotificationsHub> logger;
 
         public NotificationsHub(
             INotificationService notificationService,
@@ -26,176 +28,78 @@ namespace ServiceHub.PL.Hubs
             this.notificationService = notificationService;
             this.userConnectionService = userConnectionService;
             this.userManager = userManager;
-            this._logger = logger;
+            this.logger = logger;
         }
 
-        //public async override Task OnConnectedAsync()
-        //{
-
-        //    Console.WriteLine("Client connected: " + Context.ConnectionId);
-
-        //    Retrieve the current user ID from the identity system
-        //    add to db
-        //    var userConnection = new UserConnection() { UserId = userId, ConnectionId = Context.ConnectionId };
-        //    await userConnectionService.CreateAsync(userConnection);
-
-        //    await base.OnConnectedAsync();
-        //}
-
-        //public async override Task OnConnectedAsync()
-        //{
-        //    try
-        //    {
-        //        Console.WriteLine("Client connected: " + Context.ConnectionId);
-        //        var userId = Context.User?.FindFirst("id")?.Value;
-        //        //var user = userManager.
-        //        if (string.IsNullOrEmpty(userId))
-        //        {
-        //            _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
-        //            return;
-        //        }
-
-        //        var userConnection = new UserConnection
-        //        {
-        //            UserId = int.Parse(userId), // Ensure this matches your UserId type
-        //            ConnectionId = Context.ConnectionId
-        //        };
-
-        //        await userConnectionService.CreateAsync(userConnection);
-
-        //        _logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
-
-        //        await base.OnConnectedAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
-        //        throw; // Re-throw the exception to let SignalR handle the disconnection
-        //    }
-        //}
-
-
-
-        //public async override Task OnDisconnectedAsync(Exception? exception)
-        //    {
-        //        Console.WriteLine("Client disconnected: " + Context.ConnectionId);
-        //        var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
-        //        userConnectionService.RemoveAsync(userConn);
-        //        if (exception != null)
-        //        {
-        //            Console.WriteLine("Disconnection error: " + exception.Message);
-        //        }
-        //         base.OnDisconnectedAsync(exception);
-        //    }
-        //public async override Task OnDisconnectedAsync(Exception? exception)
-        //{
-        //    try
-        //    {
-        //        Console.WriteLine("Client disconnected: " + Context.ConnectionId);
-
-        //        var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
-        //        if (userConn != null)
-        //        {
-        //            await userConnectionService.RemoveAsync(userConn);
-        //            Console.WriteLine("Removed connection: " + Context.ConnectionId);
-        //        }
-
-        //        if (exception != null)
-        //        {
-        //            Console.WriteLine("Disconnection error: " + exception.Message);
-        //        }
-
-        //        await base.OnDisconnectedAsync(exception);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Error during disconnection: " + ex.Message);
-        //        throw; // Re-throw the exception to let SignalR handle any further cleanup
-        //    }
-        //}
-
-        public async override Task OnConnectedAsync()
-            {
-                try
-                {
-                    var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                    if (string.IsNullOrEmpty(userId))
-                    {
-                        _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
-                        return;
-                    }
-
-                    var userConnection = new UserConnection
-                    {
-                        UserId = int.Parse(userId), // Ensure this matches your UserId type
-                        ConnectionId = Context.ConnectionId
-                    };
-
-                    await userConnectionService.CreateAsync(userConnection);
-
-                    _logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
-
-                    await base.OnConnectedAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
-                    throw; // Re-throw the exception to let SignalR handle the disconnection
-                }
-            }
-
-        public async override Task OnDisconnectedAsync(Exception? exception)
-            {
-                try
-                {
-                    Console.WriteLine("Client disconnected: " + Context.ConnectionId);
-
-                    var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
-                    if (userConn != null)
-                    {
-                        await userConnectionService.RemoveAsync(userConn);
-                        Console.WriteLine("Removed connection: " + Context.ConnectionId);
-                    }
-
-                    if (exception != null)
-                    {
-                        Console.WriteLine("Disconnection error: " + exception.Message);
-                    }
-
-                    await base.OnDisconnectedAsync(exception);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error during disconnection: " + ex.Message);
-                    throw; // Re-throw the exception to let SignalR handle any further cleanup
-                }
-            }
-        
-        public async Task SendOrderCreatedNotification(int userId, int workerId)
+        public override async Task OnConnectedAsync()
         {
             try
             {
-                //var userIdd = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                //if (string.IsNullOrEmpty(userIdd))
-                //{
-                //    _logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
-                //    return;
-                //}
-                //*************************************************************************************************************
+                if (string.IsNullOrEmpty(userId))
+                {
+                    logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
+                    return;
+                }
+
+                var userConnection = new UserConnection
+                {
+                    UserId = int.Parse(userId),
+                    ConnectionId = Context.ConnectionId
+                };
+
+                await userConnectionService.CreateAsync(userConnection);
+
+                logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
+
+                await base.OnConnectedAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
+                throw; // Re-throw the exception to let SignalR handle the disconnection
+            }
+        }
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            try
+            {
+                logger.LogInformation("Client disconnected: {ConnectionId}", Context.ConnectionId);
+
+                var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
+                if (userConn != null)
+                {
+                    await userConnectionService.RemoveAsync(userConn);
+                    logger.LogInformation("Removed connection: {ConnectionId}", Context.ConnectionId);
+                }
+
+                if (exception != null)
+                {
+                    logger.LogError("Disconnection error: {Error}", exception.Message);
+                }
+
+                await base.OnDisconnectedAsync(exception);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error during disconnection: {ConnectionId}", Context.ConnectionId);
+                throw; // Re-throw the exception to let SignalR handle any further cleanup
+            }
+        }
+
+        public async Task sendordercreatednotification(int userId, int workerId)
+        {//triggered by user
+            try
+            {
                 var user = await userManager.FindByIdAsync(userId.ToString());
                 var worker = await userManager.FindByIdAsync(workerId.ToString());
 
                 if (user == null || worker == null)
                 {
-                    _logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
+                    logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
                     throw new ArgumentException("User or worker not found");
                 }
-
-                var userConnection = new UserConnection() { UserId = userId, ConnectionId = Context.ConnectionId };
-                await userConnectionService.CreateAsync(userConnection);
-                
 
                 var userNotificationDTO = new NotificationDTO
                 {
@@ -205,7 +109,6 @@ namespace ServiceHub.PL.Hubs
                     Content = "Order Created Successfully, wait for worker confirmation.",
                     CreatedDate = DateTime.Now,
                 };
-
                 var workerNotificationDTO = new NotificationDTO
                 {
                     IsRead = false,
@@ -218,24 +121,17 @@ namespace ServiceHub.PL.Hubs
                 await notificationService.CreateAsync(userNotificationDTO);
                 await notificationService.CreateAsync(workerNotificationDTO);
 
-                await Clients.All.SendAsync("NewNotification", userNotificationDTO);
-                //await Clients.User(userIdd).SendAsync("NewNotification", userNotificationDTO);
-
-
-                //await Clients.Caller.SendAsync("NewNotification", userNotificationDTO);
-
-                await Clients.User(user.Id.ToString()).SendAsync("NewNotification", userNotificationDTO);
-                await Clients.User(worker.Id.ToString()).SendAsync("NewNotification", workerNotificationDTO);
+                await Clients.Caller.SendAsync("NewNotification", userNotificationDTO);
+                await SendNotificationToUserAsync(workerNotificationDTO, workerId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in SendOrderCreatedNotification");
+                logger.LogError(ex, "Error in SendOrderCreatedNotification");
                 throw;
             }
         }
-
         public async Task SendOrderAcceptedNotification(int userId, int workerId)
-        {
+        {//triggered by worker
             try
             {
                 var user = await userManager.FindByIdAsync(userId.ToString());
@@ -243,7 +139,7 @@ namespace ServiceHub.PL.Hubs
 
                 if (user == null || worker == null)
                 {
-                    _logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
+                    logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
                     throw new ArgumentException("User or worker not found");
                 }
 
@@ -255,7 +151,6 @@ namespace ServiceHub.PL.Hubs
                     Content = $"The Worker {worker.UserName} accepted your offer. \n please rate the worker when the job is done.",
                     CreatedDate = DateTime.Now,
                 };
-
                 var workerNotificationDTO = new NotificationDTO
                 {
                     IsRead = false,
@@ -268,17 +163,17 @@ namespace ServiceHub.PL.Hubs
                 await notificationService.CreateAsync(userNotificationDTO);
                 await notificationService.CreateAsync(workerNotificationDTO);
 
-                await Clients.User(user.Id.ToString()).SendAsync("NewNotification", userNotificationDTO);
-                await Clients.User(worker.Id.ToString()).SendAsync("NewNotification", workerNotificationDTO);
-            }catch(Exception ex)
+                await SendNotificationToUserAsync(userNotificationDTO, userId);
+                await Clients.Caller.SendAsync("NewNotification", workerNotificationDTO);
+            }
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in SendOrderAcceptedNotification");
+                logger.LogError(ex, "Error in SendOrderAcceptedNotification");
                 throw;
             }
         }
-
         public async Task SendOrderDoneNotification(int userId, int workerId)
-        {
+        {//triggered by worker
             try
             {
                 var user = await userManager.FindByIdAsync(userId.ToString());
@@ -286,7 +181,7 @@ namespace ServiceHub.PL.Hubs
 
                 if (user == null || worker == null)
                 {
-                    _logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
+                    logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
                     throw new ArgumentException("User or worker not found");
                 }
 
@@ -311,19 +206,47 @@ namespace ServiceHub.PL.Hubs
                 await notificationService.CreateAsync(userNotificationDTO);
                 await notificationService.CreateAsync(workerNotificationDTO);
 
-                await Clients.User(user.Id.ToString()).SendAsync("NewNotification", userNotificationDTO);
-                await Clients.User(worker.Id.ToString()).SendAsync("NewNotification", workerNotificationDTO);
+                var userConnectionIds = await userConnectionService.GetRowsByUserId(userId);
+                var workerConnectionIds = await userConnectionService.GetRowsByUserId(workerId);
+
+                if (userConnectionIds != null && userConnectionIds.Any())
+                {
+                    foreach (var row in userConnectionIds)
+                    {
+                        try
+                        {
+                            await Clients.Client(row.ConnectionId).SendAsync("NewNotification", userNotificationDTO);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError(ex, $"Failed to send notification to connection {row.ConnectionId}");
+                        }
+                    }
+                }
+                if (workerConnectionIds != null && workerConnectionIds.Any())
+                {
+                    foreach (var row in workerConnectionIds)
+                    {
+                        try
+                        {
+                            await Clients.Client(row.ConnectionId).SendAsync("NewNotification", workerNotificationDTO);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError(ex, $"Failed to send notification to connection {row.ConnectionId}");
+                        }
+                    }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in SendOrderDoneNotification");
+                logger.LogError(ex, "Error in SendOrderDoneNotification");
                 throw;
             }
-           
-        }
 
+        }
         public async Task SendOrderCancelledNotification(int userId, int workerId)
-        {
+        {//triggered by user or worker
             try
             {
                 var user = await userManager.FindByIdAsync(userId.ToString());
@@ -331,7 +254,7 @@ namespace ServiceHub.PL.Hubs
 
                 if (user == null || worker == null)
                 {
-                    _logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
+                    logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
                     throw new ArgumentException("User or worker not found");
                 }
 
@@ -355,16 +278,39 @@ namespace ServiceHub.PL.Hubs
 
                 await notificationService.CreateAsync(userNotificationDTO);
                 await notificationService.CreateAsync(workerNotificationDTO);
+               
+                var userConnectionIds = await userConnectionService.GetRowsByUserId(userId);
+                var workerConnectionIds = await userConnectionService.GetRowsByUserId(workerId);
 
-                await Clients.User(user.Id.ToString()).SendAsync("NewNotification", userNotificationDTO);
-                await Clients.User(worker.Id.ToString()).SendAsync("NewNotification", workerNotificationDTO);
+                await SendNotificationToUserAsync(userNotificationDTO, userId);
+                await SendNotificationToUserAsync(workerNotificationDTO, workerId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in SendOrderCancelledNotification");
+                logger.LogError(ex, "Error in SendOrderCancelledNotification");
                 throw;
             }
-            
+
+        }
+
+        private async Task SendNotificationToUserAsync(NotificationDTO notificationDTO, int userId)
+        {
+            var userConnectionIds = await userConnectionService.GetRowsByUserId(userId);
+            if (userConnectionIds != null && userConnectionIds.Any())
+            {
+                foreach (var row in userConnectionIds)
+                {
+                    try
+                    {
+                        await Clients.Client(row.ConnectionId).SendAsync("NewNotification", notificationDTO);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, $"Failed to send notification to connection {row.ConnectionId}");
+                        // Handle or log the error as needed
+                    }
+                }
+            }
         }
     }
 }
