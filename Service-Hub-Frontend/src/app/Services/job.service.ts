@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-//import { HttpClient } from '@microsoft/signalr';
 import { Observable } from 'rxjs';
 import { Job } from '../Models/job.model';
 import { HttpClient } from '@angular/common/http';
@@ -9,8 +8,8 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class JobService {
-  private baseurl="http://localhost:5018/api/Jobs/";
-  
+  private baseurl="http://localhost:5018/api/Jobs";
+  public tempJobId : number =0;
   constructor(public http:HttpClient) { }
   
   getAll(): Observable<Job[]>
@@ -19,6 +18,7 @@ export class JobService {
   }
   getById(id:number):Observable<Job>
   {
-    return this.http.get<Job>(`${this.baseurl}${id}`);
+    return this.http.get<Job>(`${this.baseurl}/${id}`);
   }
+  
 }

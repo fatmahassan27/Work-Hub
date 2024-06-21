@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkerService } from '../Services/worker.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Worker } from '../Models/worker.model';
 import { City } from '../Models/City.model';
@@ -12,6 +12,7 @@ import { OrderService } from '../Services/order.service';
 import { AccountService } from '../Services/account.service';
 import { UserInfo } from '../interfaces/user-info';
 import { Role } from '../enums/role';
+import { JobService } from '../Services/job.service';
 
 @Component({
   selector: 'app-worker',
@@ -26,9 +27,9 @@ export class WorkerComponent implements OnInit {
   cities: City[] = [];
   districts: District[] = [];
   filteredWorkers: Worker[] = [];
-
   selectedCityId: number = 0;
   selectedDistrictId: number = 0;
+  selectedjobId: number |null = null; // Variable to hold the jobId as a number from jobService
 
   currentUserInfo : UserInfo | null  = {id:0,name:"",role:Role.User,email:"",jobId:'',districtId:''};
 
@@ -38,7 +39,8 @@ export class WorkerComponent implements OnInit {
     public districtService: DistrictService,
     public notificationService: NotificationService,
     public orderService: OrderService,
-    public accountService: AccountService
+    public accountService: AccountService,
+    public jobService:JobService
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,11 @@ export class WorkerComponent implements OnInit {
 
     this.currentUserInfo = this.accountService.userInfo ;
 
+
+
+     this.selectedjobId=this.jobService.tempJobId;
+     console.log(this.selectedjobId);
+     this.filterWorkersByJobId(this.selectedjobId);
   }
 
   onCityChange(event: Event) {
@@ -85,7 +92,7 @@ export class WorkerComponent implements OnInit {
       this.filteredWorkers = this.workers.filter(worker => worker.districtId === districtId);
     }
   }
-
+   
   CreateOrder(workerId: number) {
     console.log(this.currentUserInfo?.id!);
     this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe(
@@ -114,6 +121,18 @@ export class WorkerComponent implements OnInit {
         }
       });
   }
-  
+    
+  public showWorkers(jobId: number): number {
+    return jobId;
+  }
+  filterWorkersByJobId(jobId:number|null) {
+    if (jobId == null || jobId == 0) {
+      this.filteredWorkers = this.workers;
+    } else {
+      this.filteredWorkers = this.workers.filter(worker => worker.jobId == jobId);
+      console.log(jobId);
+
+    }
+  }
     
 }
