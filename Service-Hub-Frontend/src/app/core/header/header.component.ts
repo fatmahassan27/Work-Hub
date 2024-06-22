@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Route, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AccountService } from '../../Services/account.service';
 import { CommonModule } from '@angular/common';
+import { Role } from '../../enums/role';
 
 @Component({
   selector: 'app-header',
