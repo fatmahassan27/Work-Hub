@@ -1,15 +1,39 @@
-<p>worker-by-job works!</p>
-<div *ngFor="let item of filteredWorkers" class="row">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="card-title">Name: {{item.userName}}</h3>
-          <p class="card-text">Job: {{item.jobId}}</p>
-          <p class="card-text">District: {{item.districtId}}</p>
-          <p class="card-text">Rating: {{item.rating}}</p>
-         <!-- // <button class="btn" type="button" (click)="CreateOrder(item.id)">Order</button> -->
-          <button class="btn" type="button">Send message</button>
+
+  <body>
+    <div class="dropdown-container">
+      <label for="" class="form-label1">City</label>
+      <select title="city"
+              class="form-select city form-select-sm"
+              [(ngModel)]="selectedCityId"
+
+              >
+        <option class="op" value="0" selected>Select a city</option>
+        <option class="op" *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+      </select>
+
+      <label for="" class="form-label2">District</label>
+      <select  title="district"
+              class="form-select district form-select-sm"
+              [(ngModel)]="selectedDistrictId"
+              >
+        <option class="op" value="0" selected>Select a district</option>
+        <option class="op" *ngFor="let district of districts" [value]="district.id">{{district.name}}</option>
+      </select>
+    </div>
+
+    <div *ngFor="let item of filteredWorkers" class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <img src="./assets/images/worker.jpg" alt="worker">
+            <h3 class="card-title">Name: {{item.userName}}</h3>
+            <p class="card-text">Job: {{item.jobId}}</p>
+            <p class="card-text">District: {{item.districtId}}</p>
+            <p class="card-text">Rating: {{item.rating}}</p>
+            <button class="btn" type="button" (click)="CreateOrder(item.id)">Order</button>
+            <button class="btn" type="button">Send message</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    </body>
