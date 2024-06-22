@@ -79,10 +79,10 @@ background-color:rgba(231, 99, 66, 0.904);
   box-shadow: 0 4px 8px rgba(233, 233, 247, 0.363);
   transition: box-shadow 0.3s ease;
 }
-
 img
 {
   width: 200px;
   height: 200px;
   margin-left: 17px;
+  border-radius: 100px;
 }
