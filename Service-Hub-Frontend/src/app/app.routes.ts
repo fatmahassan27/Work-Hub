@@ -12,6 +12,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LogoutComponent } from './Account/logout/logout.component';
 import { JobListComponent } from './job/job.component';
 import { WorkerByJobComponent } from './worker-by-job/worker-by-job.component';
+import { OrderListComponent } from './Order/order-list/order-list.component';
+import { UpdateOrderComponent } from './Order/update-order/update-order.component';
+import { RateComponent } from './rate/rate.component';
 
 export const routes: Routes = [
   { path: "home", component: HomeComponent },
@@ -24,8 +27,10 @@ export const routes: Routes = [
   { path: "Chat", component: ChatmessageComponent,canActivate:[loginGuard] },
   { path: "login", component:LoginComponent},
   { path: "register", component: RegistrationFormComponent},
-  { path: "logout", component: LogoutComponent },
-  //{ path: "order", component: OrUserComponent},
+  { path: "logout", component: LogoutComponent,canActivate:[loginGuard]  },
+  { path: "orders", component: OrderListComponent,canActivate:[loginGuard] },
+  { path: "updateOrderStatus/:orderId", component: UpdateOrderComponent,canActivate:[loginGuard] },
+  { path: "addRate/:userId/:workerId", component: RateComponent,canActivate:[loginGuard] },
 
   //{path:"**" , component:NotFoundComponent}
 ];

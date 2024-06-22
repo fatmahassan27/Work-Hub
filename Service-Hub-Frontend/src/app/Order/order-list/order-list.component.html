@@ -1,0 +1,45 @@
+<p>order-list works!</p>
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>User ID</th>
+      <th>Worker ID</th>
+      <th>Status</th>
+      <th>Created Date</th>
+      <th>Operations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="orders.length === 0">
+      <td colspan="6">No orders...</td>
+    </tr>
+    <tr *ngFor="let order of orders; let i = index">
+      <td>{{ order.id }}</td>
+      <td>{{ order.userId }}</td>
+      <td>{{ order.workerId }}</td>
+      <td>{{  OrderStatus[order.status] }}</td>
+      <td>{{ order.createdDate | date }}</td>
+      <td>
+        <button
+          value="rate"
+          class="btn btn-primary"
+          (click)="addRate(order.userId, order.workerId)"
+          [disabled]="order.status !== 2"
+        >
+          Rate
+        </button>
+      </td>
+      <td>
+        <button
+          value="update"
+          class="btn btn-primary"
+          (click)="updateOrder(order.id)"
+        >
+          Update
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
