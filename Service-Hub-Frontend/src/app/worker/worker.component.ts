@@ -17,11 +17,10 @@ import { Role } from '../enums/role';
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './worker.component.html',
+  templateUrl:'./worker.component.html',
   styleUrls: ['./worker.component.css']
 })
 export class WorkerComponent implements OnInit {
-
   workers: Worker[] = [];
   cities: City[] = [];
   districts: District[] = [];

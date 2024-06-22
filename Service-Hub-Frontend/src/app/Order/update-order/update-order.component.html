@@ -1,0 +1,12 @@
+<p>update-order works!</p>
+
+<input type="number" disabled [(ngModel)]="orderId" placeholder="ORDER ID" />
+
+<select title="NEW ORDER STATUS" [(ngModel)]="newStatus" class="form-control" required="required">
+  <option *ngIf="currentUserRole.toString() === 'User'" [value]="OrderStatus.Done">Done</option>
+  <option *ngIf="currentUserRole.toString() === 'User'" [value]="OrderStatus.Canceled">Cancel</option>
+  <option *ngIf="currentUserRole.toString() === 'Worker'" [value]="OrderStatus.InProgress">InProgress</option>
+  <option *ngIf="currentUserRole.toString() === 'Worker'" [value]="OrderStatus.Canceled">Cancel</option>
+</select>
+
+<button type="button" class="btn btn-dark" (click)="Update()">Update</button>
