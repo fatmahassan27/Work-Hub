@@ -18,11 +18,10 @@ import { JobService } from '../Services/job.service';
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './worker.component.html',
+  templateUrl:'./worker.component.html',
   styleUrls: ['./worker.component.css']
 })
 export class WorkerComponent implements OnInit {
-
   workers: Worker[] = [];
   cities: City[] = [];
   districts: District[] = [];
@@ -68,7 +67,7 @@ export class WorkerComponent implements OnInit {
       console.log(this.filteredWorkers);
     }
   }
-  
+
   CreateOrder(workerId: number) {
     console.log(this.currentUserInfo?.id!);
     this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe(
@@ -97,8 +96,8 @@ export class WorkerComponent implements OnInit {
         }
       });
   }
-    
- 
+
+
   // filterWorkersByJobId(jobId:number|null) {
   //   if (jobId == null || jobId == 0) {
   //     this.filteredWorkers = this.workers;
@@ -108,5 +107,5 @@ export class WorkerComponent implements OnInit {
 
   //   }
   // }
-    
+
 }

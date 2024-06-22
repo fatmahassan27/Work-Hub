@@ -26,7 +26,7 @@ export class JobListComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching jobs', err);
       }
-    });   
+    });
     // Example usage of getById
     this.jobService.getById(1).subscribe({
       next: (data: Job) => {
@@ -40,10 +40,10 @@ export class JobListComponent implements OnInit {
   }
 
   }
-   public ShowWorkers(jobId:number) 
+   public ShowWorkers(jobId:number)
     {
        this.jobService.tempJobId=jobId;
        this.router.navigateByUrl("/workerByJob");
     }
-   
+
 }

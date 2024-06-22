@@ -12,6 +12,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LogoutComponent } from './Account/logout/logout.component';
 import { JobListComponent } from './job/job.component';
 import { WorkerByJobComponent } from './worker-by-job/worker-by-job.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   { path: "home", component: HomeComponent },
@@ -25,7 +26,10 @@ export const routes: Routes = [
   { path: "login", component:LoginComponent},
   { path: "register", component: RegistrationFormComponent},
   { path: "logout", component: LogoutComponent },
+  { path: "profile", component: ProfileComponent },
+
   //{ path: "order", component: OrUserComponent},
+
 
   //{path:"**" , component:NotFoundComponent}
 ];

@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+*
+{
+font-family: 'Montserrat';
+font-weight: bold;
+margin: 5px;
+padding: 7px;
+}
+.row
+{
+  width:90%;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-bottom: 30px;
+}
+.card
+{
+  border:0px;
+  padding: 6px;
+  color:rgb(83, 83, 83) ;
+  margin-bottom: 40px;
+  background-color:#85a3c250;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(60, 60, 105, 0.363);
+  transition: box-shadow 0.3s ease;
+}
+select
+{
+  width: 20%;
+  height: 40px;
+  border-radius: 12px;
+  font-weight: 500;
+  background-color: #a3b0be46;
+}
+select:hover,select:focus
+{
+  width: 20%;
+  height: 40px;
+  border-radius: 12px;
+  font-weight: 500;
+  background-color: #fcfcfc46;
+}
+.dropdown-container
+{
+  display: flex;
+  margin-left: 20%;
+}
+.op
+{
+  border-radius: 12px;
+}
+.btn
+{
+  padding: 5px;
+  margin: 5px;
+  color: white;
+background-color:rgb(231, 99, 66);
+}
+.btn:hover
+{
+  padding: 6px;
+  margin: 5px;
+  color: white;
+background-color:rgba(231, 99, 66, 0.904);
+}
+.form-label2
+{
+ margin-left: 120px;
+}
+.card:hover
+{
+  padding: 5px;
+  margin: 5px;
+  color:rgb(83, 83, 83) ;
+  margin-bottom: 40px;
+  background-color:#a3b0be75;
+  border-radius: 15px;
+  border: 0px;
+  box-shadow: 0 4px 8px rgba(233, 233, 247, 0.363);
+  transition: box-shadow 0.3s ease;
+}
+
+img
+{
+  width: 200px;
+  height: 200px;
+  margin-left: 17px;
+}
