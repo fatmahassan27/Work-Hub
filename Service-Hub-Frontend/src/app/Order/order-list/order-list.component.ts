@@ -19,7 +19,7 @@ export class OrderListComponent implements OnInit {
   userId: number = 0;
   userRole: Role = Role.User;
   OrderStatus = OrderStatus; // To use in the template
-
+Role = Role ;
   constructor(
     public accountService: AccountService,
     public orderService: OrderService,
@@ -60,8 +60,8 @@ export class OrderListComponent implements OnInit {
   //   }
   // }
   ngOnInit(): void {
-    this.userId = this.accountService.userInfo?.id!;
-    this.userRole = this.accountService.userInfo?.role!;
+    this.userId = this.accountService.currentUserValue?.id!;
+    this.userRole = this.accountService.currentUserValue?.role!;
 
     console.log('User ID:', this.userId);
     console.log('User Role:', this.userRole.toString());

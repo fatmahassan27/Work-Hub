@@ -25,8 +25,8 @@ export class NotificationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.accountService.userInfo?.id) {
-      this.currentUserId = this.accountService.userInfo?.id;
+    if (this.accountService.currentUserValue?.id) {
+      this.currentUserId = this.accountService.currentUserValue?.id;
       console.log(`${this.currentUserId} CURRENT USER ID`);
     }
 

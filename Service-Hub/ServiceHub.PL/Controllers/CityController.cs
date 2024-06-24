@@ -17,7 +17,6 @@ namespace ServiceHub.PL.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
 		public async Task<ActionResult<IEnumerable<CityDTO>>> Getall()
 		{
 			try

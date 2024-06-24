@@ -126,10 +126,10 @@
   <div class="form-container sign-up">
       <div class="form">
           <h1>Create Account</h1>
-          <input type="text" placeholder="FullName"  [(ngModel)]="RegisterDTO.fullName" id="name">
-          <input type="email" [(ngModel)]="RegisterDTO.email" placeholder="Email" id="email">
-          <input type="password" placeholder="Password"  [(ngModel)]="RegisterDTO.password" id="pass">
-          <input type="password" placeholder="Re-Password"  [(ngModel)]="RegisterDTO.confirmPassword" id="password">
+          <input name="fullname" type="text" placeholder="FullName"  [(ngModel)]="RegisterDTO.fullName" id="name">
+          <input name="email" type="email" [(ngModel)]="RegisterDTO.email" placeholder="Email" id="email">
+          <input name="password" type="password" placeholder="Password"  [(ngModel)]="RegisterDTO.password" id="pass">
+          <input name="Repassword" type="password" placeholder="Re-Password"  [(ngModel)]="RegisterDTO.confirmPassword" id="password">
         
           <div class="selection">
             <label for="roleSelect" class="form-label">Worker or User</label>
@@ -139,23 +139,31 @@
             </select>
           </div>
           
-          <div *ngIf="RegisterDTO.role == 1">
-            <div class="selection">
-              <label for="" class="form-label">District</label>
-              <br>
-              <select title="districtId" [(ngModel)]="RegisterDTO.districtId" (ngModelChange)="onDistrictChange($event)">
-                <option class="op" value="0" selected>Select one</option>
-                <option class="op" *ngFor="let item of districts" [value]="item.id">{{ item.name }}</option>
-              </select>
-            </div>
+          <div *ngIf="RegisterDTO.role == Role.Worker">
             <div class="selection">
               <label for="" class="form-label">Job</label>
               <br>
-              <select title="jobId" [(ngModel)]="RegisterDTO.jobId" (ngModelChange)="onJobChange($event)">
+              <select name="jobselect" title="jobId" [(ngModel)]="RegisterDTO.jobId" >
                 <option class="op" value="0" selected>Select one</option>
                 <option class="op" *ngFor="let item of jobs" [value]="item.id">{{ item.name }}</option>
               </select>
             </div>
+            <div class="selection">
+              <label for="" class="form-label">City</label>
+              <br>
+              <select name="cityselect" title="districtId" [(ngModel)]="selectedCityId" (change)="onCityChange($event)">
+                <option class="op" value="0" selected>Select City</option>
+                <option class="op" *ngFor="let item of cities" [value]="item.id">{{ item.name }}</option>
+              </select>
+            </div>
+            <div class="selection">
+              <label for="" class="form-label">District</label>
+              <br>
+              <select name="districtselect" title="districtId" [(ngModel)]="RegisterDTO.districtId" >
+                <option class="op" value="0" selected>Select one</option>
+                <option class="op" *ngFor="let item of districts" [value]="item.id">{{ item.name }}</option>
+              </select>
+            </div> 
           </div>
           <!-- <div class="selection">
             <label for="roleSelect" class="form-label">Worker or User</label>

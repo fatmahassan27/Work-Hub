@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { City } from '../../Models/City.model';
 import { Subscription } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
@@ -22,23 +22,16 @@ import { Job } from '../../Models/job.model';
 templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegistrationFormComponent implements OnInit{
-
-  onJobChange(event: any) {
-    this.RegisterDTO.jobId = +event; // Convert the value to a number
-}
-onDistrictChange(event: any) {
-  this.RegisterDTO.districtId = +event; // Convert the value to a number
-}
-onRoleChange(event: any) {
-  this.RegisterDTO.role = +event; // Convert the value to a number
-}
-
+export class RegistrationFormComponent implements OnInit,OnDestroy{
+  selectedCityId: number|null = null;
+  selectedDistrictId: number = 0;
   sub: Subscription | null = null;
   RegisterDTO: RegisterationDTO = new RegisterationDTO("", "", "", "", Role.User, 0,0);
+  cities: City[] = [];
   districts: District[] =[];
   selectedRole: Role = Role.User;
   jobs : Job[] =[];
+  Role=Role;
   
   constructor(
     private accountService: AccountService,
@@ -49,33 +42,22 @@ onRoleChange(event: any) {
   ) { }
 
   ngOnInit(): void {
-    console.log("hi");
-    this.loadDistricts();
-    this.loadJobs();
+    console.log("oninit");
     // if (this.selectedCityId !== null) {
     //   this.loadDistricts(this.selectedCityId);
     // }
   }
-
-  // onSelectCity(event: Event): void {
-  //   const selectElement = event.target as HTMLSelectElement;
-  //   this.selectedCityId = Number(selectElement.value);
-  //   if (this.selectedCityId !== null) {
-  //     this.loadDistricts(this.selectedCityId);
-  //   }
-  // }
-
-  // onSelectDistrict(event: Event): void {
-  //   const selectElement = event.target as HTMLSelectElement;
-  //   this.selectedDistrictId = Number(selectElement.value);
-  // }
-
-  loadDistricts(): void {
-    this.districtService.getAll().subscribe((data: District[]) => {
-      console.log(data);
-      this.districts = data;
-    });
-  }
+  onJobChange(event: any) {
+    this.RegisterDTO.jobId = +event; // Convert the value to a number
+}
+onDistrictChange(event: any) {
+  this.RegisterDTO.districtId = +event; // Convert the value to a number
+}
+onRoleChange(event: any) {
+  this.RegisterDTO.role = +event; // Convert the value to a number
+  this.loadJobs();
+  this.loadCities();
+}
 
   loadJobs():void {
     this.jobService.getAll().subscribe((data:Job[])=>{
@@ -84,14 +66,44 @@ onRoleChange(event: any) {
     })
   }
 
+  loadCities(): void {
+    this.cityservice.getAll().subscribe((data: City[]) => {
+      console.log(data);
+      this.cities = data;
+    });
+  }
+  onCityChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedCityId = Number(selectElement.value);
+    if (this.selectedCityId !== null) {
+      this.loadDistricts(this.selectedCityId);
+    }
+  }
+  loadDistricts(cityId : number): void {
+    this.districtService.getAllByCityId(cityId).subscribe((data: District[]) => {
+      console.log(data);
+      this.districts = data;
+    });
+  }
+  // onSelectDistrict(event: Event): void {
+  //   const selectElement = event.target as HTMLSelectElement;
+  //   this.selectedDistrictId = Number(selectElement.value);
+  // }
+
   save(): void {
     console.log(this.RegisterDTO);
     //if user
     this.sub = this.accountService.register(this.RegisterDTO).subscribe((data) => {
       console.log(data);
-      this.router.navigateByUrl("/Home");
-    });
-
+      alert(data);
+      this.accountService.login({email: this.RegisterDTO.email, password: this.RegisterDTO.password}).subscribe(
+          (data)=> console.log(data),
+          error => console.log(error),
+          () => this.router.navigateByUrl("/home")
+        );
+      },
+      error => console.log(error)
+    );
   }
 
   ngOnDestroy(): void {

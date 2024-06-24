@@ -35,6 +35,7 @@ namespace ServiceHub.PL.Hubs
         {
             try
             {
+               if(Context.User.Identity.IsAuthenticated) { await Console.Out.WriteLineAsync("on connected authenticated"); }
                 var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(userId))
