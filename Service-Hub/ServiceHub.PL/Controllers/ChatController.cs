@@ -10,11 +10,11 @@ namespace ServiceHub.PL.Controllers
     [ApiController]
     public class ChatController : ControllerBase
     {
-        private readonly IChatMessageService chatservice;
+        private readonly IChatMessageService chatService;
 
-        public ChatController(IChatMessageService chatservice)
+        public ChatController(IChatMessageService chatService)
         {
-            this.chatservice = chatservice;
+            this.chatService = chatService;
         }
 
     }

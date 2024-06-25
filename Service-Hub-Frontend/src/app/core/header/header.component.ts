@@ -15,13 +15,13 @@ export class HeaderComponent {
   [x: string]: any;
 
   selectedRole: Role = Role.User;
-  constructor(public accountService:AccountService ,public router: Router)
+  constructor(public accountService:AccountService ,public router: Router )
   {
-
+     console.log(accountService.userInfo);
   }
   logout()
   {
     this.accountService.logout();
   }
-
+    
 }

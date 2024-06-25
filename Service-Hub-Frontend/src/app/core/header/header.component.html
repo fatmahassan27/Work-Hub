@@ -1,105 +1,105 @@
 <body>
-<nav class="navbar navbar-expand-lg navbar-light ">
-  <a class="navbar-brand" routerLink="/home"><img alt="logo" src="./assets/images/Logo.PNG"
-      style="width: 55px; margin-left:5px"></a>
-  <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
-    aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
-  <div class="collapse navbar-collapse" id="collapsibleNavId">
-    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-      <li class="nav-item ">
-        <a class="nav-link " routerLink="/home" aria-current="page">Home <span
-            class="visually-hidden">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/About">About </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/Services">Services</a>
-      </li>
-
+  <nav class="navbar navbar-expand-lg navbar-light ">
+    <a class="navbar-brand" routerLink="/home"><img alt="logo" src="./assets/images/Logo.PNG"
+        style="width: 55px; margin-left:5px"></a>
+    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
+      aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item ">
+          <a class="nav-link " routerLink="/home" aria-current="page">Home <span
+              class="visually-hidden">(current)</span></a>
+        </li>
         <li class="nav-item">
+          <a class="nav-link" routerLink="/About">About </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/Services">Services</a>
+        </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/worker">workers</a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/jobs">jobs</a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/orders">orders</a>
+          </li>
+          
+        <!-- <li *ngIf="accountService.userInfo?.role === 2" class="nav-item">
           <a class="nav-link" routerLink="/worker">workers</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/jobs">jobs</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/profile">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/orders">orders</a>
-        </li>
-        
-      <!-- <li *ngIf="accountService.userInfo?.role === 2" class="nav-item">
-        <a class="nav-link" routerLink="/worker">workers</a>
-      </li> -->
-
-    </ul>
-    <form id="search" class="d-flex my-2 my-lg-0">
-      <div class="container mt-5">
-        <div class="input-group mb-5">
-            <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-              <button class="btn my-2 my-sm-0" type="submit">
-                <span > <li class="fa fa-search "></li></span>
-              </button>
-            </div>
-        </div>
-    </div>
-    </form>
-    <form class="noti d-flex my-2 my-lg-0">
-      <button class="btn my-2 my-sm-0 " type="button">
-      <li routerLink="/Notification" class="fa fa-bell"></li>
-      </button>
-    </form>
-    <!-- <form class="noti d-flex my-2 my-lg-0">
-      <button class="btn my-2 my-sm-0 " type="submit">
-      <li routerLink="/Order" class="fas fa-list"></li>
-      </button>
-    </form> -->
-    <form class="noti d-flex my-2 my-lg-0">
-      <button class="btn my-2 my-sm-0 " type="submit">
-      <li routerLink="/Chat" class="fa fa-comment"></li>
-      </button>
-    </form>
-
-
-
-        <!-- <div class="dropdown">
-          <a class="btn btn-secondary bg-white border-1 mt-0 dropdown-toggle" href="#" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="position-absolute top-0 left-10 translate-middle badge rounded-pill bg-light"></span>
-          </a>
-          <ul class="dropdown-menu">
+        </li> -->
+  
+      </ul>
+      <form id="search" class="d-flex my-2 my-lg-0">
+        <div class="container mt-5">
+          <div class="input-group mb-5">
+              <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+              <div class="input-group-append">
+                <button class="btn my-2 my-sm-0" type="submit">
+                  <span > <li class="fa fa-search "></li></span>
+                </button>
+              </div>
+          </div>
+      </div>
+      </form>
+      <form class="noti d-flex my-2 my-lg-0">
+        <button class="btn my-2 my-sm-0 " type="button">
+        <li routerLink="/Notification" class="fa fa-bell"></li>
+        </button>
+      </form>
+      <!-- <form class="noti d-flex my-2 my-lg-0">
+        <button class="btn my-2 my-sm-0 " type="submit">
+        <li routerLink="/Order" class="fas fa-list"></li>
+        </button>
+      </form> -->
+      <form class="noti d-flex my-2 my-lg-0">
+        <button class="btn my-2 my-sm-0 " type="submit">
+        <li routerLink="/Chat" class="fa fa-comment"></li>
+        </button>
+      </form>
+  
+  
+  
+          <!-- <div class="dropdown">
+            <a class="btn btn-secondary bg-white border-1 mt-0 dropdown-toggle" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="position-absolute top-0 left-10 translate-middle badge rounded-pill bg-light"></span>
+            </a>
+            <ul class="dropdown-menu">
+              @if(!accountService.isAuthenticated)
+              {
+                <li><a class="nav-link m-2" routerLink="/Login">Login</a></li>
+              }
+              @else
+              {
+                <li><a (click)="logout()">Logout</a></li>
+              }
+              <li><a class="nav-link m-2" routerLink="/Register">Register</a></li>
+            </ul>
+          </div> -->
+          <form class="noti d-flex my-2 my-lg-0">
+  
             @if(!accountService.isAuthenticated)
             {
-              <li><a class="nav-link m-2" routerLink="/Login">Login</a></li>
+              <button class="btn my-2 my-sm-0 " type="submit">
+              <a class="login" routerLink="/login">Login/register</a>
+            </button>
             }
             @else
             {
-              <li><a (click)="logout()">Logout</a></li>
+              <button class="fas fa-arrow-right-from-bracket btn my-2 my-sm-0 logout" type="submit"><a (click)="logout()">Logout</a></button>
             }
-            <li><a class="nav-link m-2" routerLink="/Register">Register</a></li>
-          </ul>
-        </div> -->
-        <form class="noti d-flex my-2 my-lg-0">
-
-          @if(!accountService.isAuthenticated)
-          {
-            <button class="btn my-2 my-sm-0 " type="submit">
-            <a class="login" routerLink="/login">Login/register</a>
-          </button>
-          }
-          @else
-          {
-            <button class="fas fa-arrow-right-from-bracket btn my-2 my-sm-0 logout" type="submit"><a (click)="logout()">Logout</a></button>
-          }
-
-    </form>
-
-  </div>
-</nav>
-
-</body>
+  
+      </form>
+  
+    </div>
+  </nav>
+  
+  </body>

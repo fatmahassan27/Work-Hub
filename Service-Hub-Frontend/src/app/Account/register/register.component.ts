@@ -69,7 +69,7 @@ onRoleChange(event: any) {
   //   const selectElement = event.target as HTMLSelectElement;
   //   this.selectedDistrictId = Number(selectElement.value);
   // }
-
+  
   loadDistricts(): void {
     this.districtService.getAll().subscribe((data: District[]) => {
       console.log(data);
@@ -85,6 +85,7 @@ onRoleChange(event: any) {
   }
 
   save(): void {
+    debugger;
     console.log(this.RegisterDTO);
     //if user
     this.sub = this.accountService.register(this.RegisterDTO).subscribe((data) => {

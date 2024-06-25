@@ -30,6 +30,9 @@ export class AccountService {
       localStorage.setItem("token",token);
       this.userInfo=jwtdecode.jwtDecode<UserInfo>(token);
       console.log(this.userInfo);
+      console.log(this.userInfo.role);
+
+      
 
       this.router.navigateByUrl("/home");
     })
