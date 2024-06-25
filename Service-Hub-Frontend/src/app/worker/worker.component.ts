@@ -37,7 +37,10 @@ export class WorkerComponent implements OnInit {
     public districtService: DistrictService,
     public notificationService: NotificationService,
     public orderService: OrderService,
-    public accountService: AccountService
+    public accountService: AccountService,
+    //get all jobs
+    //filter jobs by ids from workers
+    //map workers with job name and price instead of job id
   ) { }
 
   ngOnInit() {
@@ -52,7 +55,8 @@ export class WorkerComponent implements OnInit {
       console.log('Workers:', this.workers); // Debug logging
     });
 
-    this.currentUserInfo = this.accountService.userInfo;
+    this.currentUserInfo = this.accountService.currentUserValue;
+    console.log(this.currentUserInfo);
   }
 
   onCityChange(event: any) {
@@ -80,6 +84,7 @@ export class WorkerComponent implements OnInit {
   }
 
   CreateOrder(workerId: number) {
+    debugger;
     console.log(this.currentUserInfo?.id!);
     this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe({
       next: () => {

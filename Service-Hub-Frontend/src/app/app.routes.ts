@@ -37,6 +37,6 @@ export const routes: Routes = [
   { path: "updateOrderStatus/:orderId", component: UpdateOrderComponent,canActivate:[loginGuard] },
   { path: "addRate/:userId/:workerId", component: RateComponent,canActivate:[loginGuard] },
 
-
-  //{path:"**" , component:NotFoundComponent}
+  {path:'',redirectTo:'home',pathMatch:'full',title:'home'}, 
+  {path:'**',component:NotFoundComponent,title:'NOT FOUND'}
 ];

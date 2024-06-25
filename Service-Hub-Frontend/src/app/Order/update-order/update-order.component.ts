@@ -28,7 +28,7 @@ export class UpdateOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.currentUserRole = this.accountService.userInfo?.role!;
+    this.currentUserRole = this.accountService.currentUserValue?.role!;
     console.log('Current User Role:', this.currentUserRole);
 
     this.activatedRoute.params.subscribe({

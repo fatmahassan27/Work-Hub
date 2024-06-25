@@ -85,32 +85,33 @@
   </div>
 </div> -->
 <div class="container" id="container">
-      <div class="form-container sign-in">
+    <div class="form-container sign-in">
         <div class="form">
-          <br>
-          <br>
-            <h1>Sign In</h1>
-          <br>
-          <br>
-          <br>
+            <br>
+            <br>
+              <h1>Sign In</h1>
+            <br>
+            <br>
+            <br>
 
-            <input type="email" placeholder="Email" [(ngModel)]="user.email" id="loginemail">
-            <input type="password" placeholder="Password" [(ngModel)]="user.password" id="loginpassword">
-            <a href="#">Forget Your Password?</a>
+            <input name="email" type="email" placeholder="Email" [(ngModel)]="user.email" id="loginemail">
+            <input name="password" type="password" placeholder="Password" [(ngModel)]="user.password" id="loginpassword">
+            <!-- <a href="#">Forget Your Password?</a> -->
+            <br>
             <div class="massage" id="massege2"></div>
-            <button style="color: azure;" id="SignInData"  (click)="login()"> Sign In</button>
+            <button style="color: azure;" id="SignInData" type="button"  (click)="login()"> Sign In</button>
         <div class="form">
     </div>
     <div class="toggle-container">
         <div class="toggle">
-            <div class="toggle-panel toggle-left">
-                <h1>Welcome Back!</h1>
-                <p>Enter your personal details to use all of site features</p>
-                <button class="hidden" id="login">Sign In</button>
-            </div>
-            <div class="toggle-panel toggle-right">
+            <!-- <div class="toggle-panel toggle-left">
                 <h1>Hello, Friend!</h1>
                 <p>Register with your personal details to use all of site features</p>
+                <button class="hidden" id="login">Sign In</button>
+            </div> -->
+            <div class="toggle-panel toggle-right">
+                <h1>Welcome Back!</h1>
+                <p>Enter your personal details to use all of site features</p>
                 <button  class="hidden" routerLink="/register" id="register">Sign Up</button>
             </div>
         </div>

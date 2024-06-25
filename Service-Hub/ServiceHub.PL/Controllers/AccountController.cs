@@ -56,7 +56,6 @@ namespace ServiceHub.PL.Controllers
                     Email = model.Email,
                     SecurityStamp = Guid.NewGuid().ToString()
                 };
-
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

@@ -26,7 +26,7 @@ export class RateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.currentUserId = this.accountService.userInfo?.id!;
+    this.currentUserId = this.accountService.currentUserValue?.id!;
     console.log('Current User ID:', this.currentUserId);
 
     this.activatedRoute.params.subscribe({
