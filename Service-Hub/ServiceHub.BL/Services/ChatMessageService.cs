@@ -27,6 +27,12 @@ namespace ServiceHub.BL.Services
             await unitOfWork.ChatMessageRepo.CreateAsync(data);
             await unitOfWork.saveAsync();
         }
-      
+
+        public async Task<IEnumerable<ChatDTO>> GetAllMessageByAnId(int id)
+        {
+            var messages= await unitOfWork.ChatMessageRepo.GetAllMessageByAnId(id);
+            var messageDTO = mapper.Map<IEnumerable<ChatDTO>>(messages);
+            return messageDTO;
+        }
     }
 }

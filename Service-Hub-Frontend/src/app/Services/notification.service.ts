@@ -34,7 +34,7 @@ export class NotificationService {
         console.warn('SignalR connection closed');
       }
     });
-
+   
     this.hubConnection.on('NewNotification', (notification: NotificationDTO) => {
       this.notificationSubject.next(notification);
       console.log('New notification received:', notification);
@@ -64,7 +64,7 @@ export class NotificationService {
     }
     return this.connectionPromise;
   }
-
+ 
   sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
     return this.ensureConnection().then(() => {
       console.log(`${userId} --- ${workerId}`);
@@ -91,4 +91,5 @@ export class NotificationService {
   getNotificationsHttp(ownerId: number): Observable<NotificationDTO[]> {
     return this.http.get<NotificationDTO[]>(`${this.apiUrl}notifications/${ownerId}`);
   }
+  
 }

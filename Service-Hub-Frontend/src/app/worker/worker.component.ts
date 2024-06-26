@@ -12,11 +12,13 @@ import { OrderService } from '../Services/order.service';
 import { AccountService } from '../Services/account.service';
 import { UserInfo } from '../interfaces/user-info';
 import { Role } from '../enums/role';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-worker',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterLink],
   templateUrl:'./worker.component.html',
   styleUrls: ['./worker.component.css']
 })
@@ -38,6 +40,7 @@ export class WorkerComponent implements OnInit {
     public notificationService: NotificationService,
     public orderService: OrderService,
     public accountService: AccountService,
+
     //get all jobs
     //filter jobs by ids from workers
     //map workers with job name and price instead of job id

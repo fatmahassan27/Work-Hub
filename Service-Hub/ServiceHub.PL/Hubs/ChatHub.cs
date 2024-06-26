@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using NuGet.Protocol;
@@ -12,6 +13,7 @@ using System.Security.Claims;
 
 namespace ServiceHub.PL.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly IChatMessageService chatMessageService;
@@ -83,28 +85,27 @@ namespace ServiceHub.PL.Hubs
                 throw; // Re-throw the exception to let SignalR handle any further cleanup
             }
         }
-        public async Task sendmessage(int userId, int workerId)//path
+
+        public async Task SendMessage(ChatDTO chatMessage)
         {
             try
             {
-                var user = await userManager.FindByIdAsync(userId.ToString());
-                var worker = await userManager.FindByIdAsync(workerId.ToString());
-                 if (user == null || worker == null)
+                //var user = await userManager.FindByIdAsync(userId.ToString());
+                //var worker = await userManager.FindByIdAsync(workerId.ToString());
+                 if (chatMessage.SenderId == null || chatMessage.ReceiverId == null)
                  {
-                    logger.LogError($"User or worker not found: userId={userId}, workerId={workerId}");
+                    logger.LogError($"User or worker not found: userId={chatMessage.SenderId}, workerId={chatMessage.ReceiverId}");
                     throw new ArgumentException("User or worker not found");
                  }
-                var chatMessage = new ChatDTO
-                {
-
-                    SenderId = userId,
-                    ReceiverId = workerId,
-                    Message = "HELLO WORLD",
-                    IsSeen = false,
-                    createdDate = DateTime.Now
-                };
                 await chatMessageService.CreateMessage(chatMessage);
-                await Clients.Caller.SendAsync("SendMessage", chatMessage);
+
+                var userconList = await userConnectionService.GetRowsByUserId(chatMessage.ReceiverId);
+                foreach (var row in userconList)
+                {
+                    await Clients.Client(row.ConnectionId).SendAsync("newmessage", chatMessage);
+                    
+                }
+                await Clients.Caller.SendAsync("newmessage", chatMessage);
 
             }
             catch (Exception ex)

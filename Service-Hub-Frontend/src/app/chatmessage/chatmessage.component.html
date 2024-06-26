@@ -1,1 +1,11 @@
-<p>chatmessage works!</p>
+<div>
+    <input type="text" [(ngModel)]="messageText" placeholder="Enter your message" />
+    <button type="button" (click)="send()">Send</button>
+  </div>
+
+<div *ngFor="let msg of messages">
+    <div>
+      <strong>{{ msg.SenderId === senderId ? 'You' : msg.SenderId }}:</strong> {{ msg.Message }}
+    </div>
+    <div><small>{{ msg.createdDate | date: 'short' }}</small></div>
+  </div>

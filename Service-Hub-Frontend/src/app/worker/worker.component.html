@@ -29,7 +29,7 @@
         <p class="card-text">District: {{item.districtId}}</p>
         <p class="card-text">Rating: {{item.rating}}</p>
         <button class="btn" type="button" (click)="CreateOrder(item.id)">Order</button>
-        <button class="btn" type="button">Send message</button>
+        <button class="btn" type="button" [routerLink]="['/Chat', item.id]">Send message</button>
       </div>
     </div>
   </div>

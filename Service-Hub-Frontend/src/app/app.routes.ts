@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: "workerByJob",component:WorkerByJobComponent,canActivate:[loginGuard]},
   { path: "jobs",component:JobListComponent,canActivate:[loginGuard]},
   { path: "Notification", component: NotificationComponent ,canActivate:[loginGuard]},
-  { path: "Chat", component: ChatmessageComponent,canActivate:[loginGuard] },
+  { path: "Chat/:id", component: ChatmessageComponent,canActivate:[loginGuard] },
   { path: "login", component:LoginComponent},
   { path: "register", component: RegistrationFormComponent},
   { path: "logout", component: LogoutComponent },
