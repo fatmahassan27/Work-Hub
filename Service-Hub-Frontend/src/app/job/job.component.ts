@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   styleUrl: './job.component.css'
 })
 export class JobListComponent implements OnInit {
+
   jobs!: Job[];
   job!: Job;
   constructor(private jobService: JobService, public router:Router) { }
@@ -42,7 +43,6 @@ export class JobListComponent implements OnInit {
   
    public ShowWorkers(jobId:number)
     {
-       this.jobService.tempJobId=jobId;
        this.router.navigateByUrl("/workerByJob");
     }
 

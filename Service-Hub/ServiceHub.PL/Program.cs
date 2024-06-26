@@ -24,6 +24,15 @@ namespace ServiceHub.PL
 
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder => builder
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials()
+            //        .SetIsOriginAllowed(hostName => true));
+            //});
             builder.Services.AddLogging();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -87,13 +96,15 @@ namespace ServiceHub.PL
                     {
                         var accessToken = context.Request.Query["access_token"];
                         var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationsHub"))
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                           (path.StartsWithSegments("/notificationsHub") || path.StartsWithSegments("/chatHub")))
                         {
                             context.Token = accessToken;
                         }
                         return Task.CompletedTask;
                     }
                 };
+               
             });
 
             builder.Services.AddCors(options =>

@@ -11,6 +11,10 @@ namespace ServiceHub.BL.Interfaces
     public interface IChatMessageService
     {
         Task CreateMessage(ChatDTO obj);
+
+        Task<IEnumerable<ChatDTO>> GetAllMessageByAnId(int id);
+
+
         
     }
 }

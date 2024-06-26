@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using NuGet.Protocol;
@@ -8,62 +9,114 @@ using ServiceHub.DAL.DataBase;
 using ServiceHub.DAL.Entities;
 using ServiceHub.DAL.Helper;
 using System.Collections.Concurrent;
+using System.Security.Claims;
 
 namespace ServiceHub.PL.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly IChatMessageService chatMessageService;
         private readonly IUserConnectionService userConnectionService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<ChatMessage> _logger;
+        private readonly ILogger<ChatMessage> logger;
 
-        public ChatHub(IChatMessageService chatMessageService, IUserConnectionService userConnectionService, UserManager<ApplicationUser> userManager, ILogger<ChatMessage> _logger)
+        public ChatHub(IChatMessageService chatMessageService, IUserConnectionService userConnectionService, UserManager<ApplicationUser> userManager, ILogger<ChatMessage> logger)
         {
             this.chatMessageService = chatMessageService; 
             this.userConnectionService= userConnectionService;
             this.userManager = userManager; 
-            this._logger = _logger;
+            this.logger = logger;
         }
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-            Console.WriteLine("Client Connected: " + Context.ConnectionId);
+            try
+            {
+                var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //string id = db.UserConnections.id;
-            return base.OnConnectedAsync();
+                if (string.IsNullOrEmpty(userId))
+                {
+                    logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
+                    return ;
+                }
+
+                var userConnection = new UserConnection
+                {
+                    UserId = int.Parse(userId),
+                    ConnectionId = Context.ConnectionId
+                };
+
+                await userConnectionService.CreateAsync(userConnection);
+
+                logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
+
+                await base.OnConnectedAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred while connecting: {ConnectionId}", Context.ConnectionId);
+                throw; // Re-throw the exception to let SignalR handle the disconnection
+            }
         }
-        public override Task OnDisconnectedAsync(Exception? exception)
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            Console.WriteLine("Client DisConnected: " + Context.ConnectionId);
+            try
+            {
+                logger.LogInformation("Client disconnected: {ConnectionId}", Context.ConnectionId);
 
-            return base.OnDisconnectedAsync(exception);
+                var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
+                if (userConn != null)
+                {
+                    await userConnectionService.RemoveAsync(userConn);
+                    logger.LogInformation("Removed connection: {ConnectionId}", Context.ConnectionId);
+                }
+
+                if (exception != null)
+                {
+                    logger.LogError("Disconnection error: {Error}", exception.Message);
+                }
+
+                await base.OnDisconnectedAsync(exception);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error during disconnection: {ConnectionId}", Context.ConnectionId);
+                throw; // Re-throw the exception to let SignalR handle any further cleanup
+            }
         }
-        public async Task sendmessage(ChatDTO chatDto)//path
+
+        public async Task SendMessage(ChatDTO chatMessage)
         {
-            //save db
-           await chatMessageService.CreateMessage(chatDto);
+            try
+            {
+                //var user = await userManager.FindByIdAsync(userId.ToString());
+                //var worker = await userManager.FindByIdAsync(workerId.ToString());
+                 if (chatMessage.SenderId == null || chatMessage.ReceiverId == null)
+                 {
+                    logger.LogError($"User or worker not found: userId={chatMessage.SenderId}, workerId={chatMessage.ReceiverId}");
+                    throw new ArgumentException("User or worker not found");
+                 }
+                await chatMessageService.CreateMessage(chatMessage);
 
-            //ChatMessage _message = new ChatMessage()
-            //{
-            //    Message = message,
-            //    SenderId = senderId,
-            //    ReceiverId = reciverId
+                var userconList = await userConnectionService.GetRowsByUserId(chatMessage.ReceiverId);
+                foreach (var row in userconList)
+                {
+                    await Clients.Client(row.ConnectionId).SendAsync("newmessage", chatMessage);
+                    
+                }
+                await Clients.Caller.SendAsync("newmessage", chatMessage);
 
-            //};
-            //db.ChatMessage.Add(_message);
-            //db.SaveChanges();
-            Clients.User(chatDto.ReceiverId.ToString()).SendAsync("newmessage", chatDto.Message , chatDto.SenderId);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error in SendOrderCreatedNotification");
+                throw;
+            }
+          
 
         }
 
-        //public async Task SendMessageToUser(string userId, string message)
-        //{
-        //    if (UserConnections.TryGetValue(userId, out string connectionId))
-        //    {
-        //        string sender = Context.User.Identity.Name;
-        //        await Clients.Client(connectionId).SendAsync("ReceiveMessage", sender, message);
-        //    }
-        //}
+   
     }
 }
