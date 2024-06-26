@@ -48,6 +48,7 @@ export class NotificationService {
   }
 
   private startConnection(): Promise<void> {
+    console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
     return this.hubConnection
       .start()
       .then(() => console.log('SignalR connection started'))
@@ -66,9 +67,10 @@ export class NotificationService {
   }
 
   sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
+    debugger;
     return this.ensureConnection().then(() => {
       console.log(`${userId} --- ${workerId}`);
-      return this.hubConnection.invoke('sendordercreatednotification', userId, workerId)
+      return this.hubConnection.invoke('sendOrderCreatedNotification', userId, workerId)
         .then(() => console.log('Service: Notification sent successfully'))
         .catch(err => {
           console.error('Service: Error while sending notification:', err);
@@ -76,6 +78,7 @@ export class NotificationService {
         });
     });
   }
+  
 
   sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
     return this.ensureConnection().then(() => {

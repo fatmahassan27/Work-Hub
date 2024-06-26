@@ -89,10 +89,11 @@ namespace ServiceHub.PL.Hubs
             }
         }
 
-        public async Task sendordercreatednotification(int userId, int workerId)
+        public async Task sendOrderCreatedNotification(int userId, int workerId)
         {//triggered by user
             try
             {
+                await Console.Out.WriteLineAsync("hi");
                 var user = await userManager.FindByIdAsync(userId.ToString());
                 var worker = await userManager.FindByIdAsync(workerId.ToString());
 

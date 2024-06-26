@@ -40,7 +40,7 @@ export class WorkerComponent implements OnInit {
     public accountService: AccountService,
     //get all jobs
     //filter jobs by ids from workers
-    //map workers with job name and price instead of job id
+    //map workers with job name and price instead of job 
   ) { }
 
   ngOnInit() {
@@ -84,7 +84,7 @@ export class WorkerComponent implements OnInit {
   }
 
   CreateOrder(workerId: number) {
-    debugger;
+    //debugger;
     console.log(this.currentUserInfo?.id!);
     this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe({
       next: () => {
@@ -111,4 +111,5 @@ export class WorkerComponent implements OnInit {
       }
     });
   }
+  
 }
