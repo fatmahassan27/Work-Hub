@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ChatmessageComponent implements OnInit {
    
-  public messages: ChatMessage[] = [];
+  public chatmessages: ChatMessage[] = [];
   // public messageText: string='';
   // public username: string=''; // Assuming username is used for displaying purposes
   // public senderId: number=0; // Set this to the current user's ID
@@ -29,14 +29,14 @@ export class ChatmessageComponent implements OnInit {
 
   ngOnInit(): void {
       this.chatservice.addMessageListener((message: ChatMessage) => {
-          this.messages.push(message);
+          this.chatmessages.push(message);
       });
 
     if (this.accountService.currentUserValue?.id) {
       this.currentUserId = this.accountService.currentUserValue?.id;
-      this.senderId=this.currentUserId;
+      this.chatmessage.SenderId=this.currentUserId;
       console.log(`${this.currentUserId} CURRENT USER ID`);
-      console.log(this.senderId);
+      console.log(this.chatmessage.SenderId);
     }
 
     this.activatedroute.params.subscribe((p)=>{
@@ -46,11 +46,10 @@ export class ChatmessageComponent implements OnInit {
   }
   
   public send(): void {
-    this.messages.push(this.chatmessage);
+    this.chatmessages.push(new ChatMessage(this.chatmessage.Id , this.chatmessage.SenderId,this.chatmessage.ReceiverId,this.chatmessage.Message,this.chatmessage.IsSeen,this.chatmessage.createdDate));
     if (this.chatmessage) {
-      //const message = new ChatMessage(0, this.senderId, this.receiverId, this.messageText, false, new Date());
       this.chatservice.sendMessage(this.chatmessage);
-      this.chatmessage.Message = '';
+      this.chatmessage.Message="";
     }
   }
 }

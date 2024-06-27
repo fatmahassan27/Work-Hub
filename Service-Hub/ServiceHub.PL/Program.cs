@@ -24,15 +24,7 @@ namespace ServiceHub.PL
 
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
-            //builder.Services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials()
-            //        .SetIsOriginAllowed(hostName => true));
-            //});
+       
             builder.Services.AddLogging();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -104,7 +96,7 @@ namespace ServiceHub.PL
                         return Task.CompletedTask;
                     }
                 };
-               
+
             });
 
             builder.Services.AddCors(options =>
@@ -112,33 +104,47 @@ namespace ServiceHub.PL
                 options.AddPolicy("AllowLocalhost4200", builder =>
                 {
                     builder.WithOrigins("http://localhost:4200")
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
                       .AllowCredentials()
                       .SetIsOriginAllowed((host) => true);// Ensure credentials are allowed if using authentication
+
                 });
+
             });
 
-            var app = builder.Build();
+             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                    app.UseDeveloperExceptionPage();
 
-            app.UseRouting();
+                }
 
-            app.UseCors("AllowLocalhost4200");
-            app.UseAuthentication();
-            app.UseAuthorization();
+                app.UseRouting();
 
-            app.MapHub<NotificationsHub>("/notificationsHub");
-            app.MapHub<ChatHub>("/chatHub");
+                app.UseCors("AllowLocalhost4200");
+                app.UseAuthentication();
+                app.UseAuthorization();
 
-            app.MapControllers();
+                app.MapHub<NotificationsHub>("/notificationsHub");
+                app.MapHub<ChatHub>("/chatHub");
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapHub<ChatHub>("/chatHub");
 
-            app.Run();
+                });
+
+                app.MapControllers();
+
+                app.Run();
+            
+
+
+
         }
+
     }
 }

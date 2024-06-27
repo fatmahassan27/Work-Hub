@@ -34,7 +34,8 @@ export class ChatService {
     .catch(err => console.error('Error while starting connection: ' + err));
       
     this.hubConnection.on('newmessage', (chatMessage: ChatMessage) => {
-      console.log(chatMessage);
+      this.chatSubject.next(chatMessage);
+      console.log('New message received:', chatMessage);
     });
 
 
@@ -47,12 +48,6 @@ export class ChatService {
     //   }
     // });
   
-     
-    // this.hubConnection.on('NewMessage', (chatMessage: ChatMessage) => {
-    //   this.chatSubject.next(chatMessage);
-    //   console.log('New Message Recived:', chatMessage);
-    // });
-    // this.connectionPromise = this.startConnection();
   }
 
   public addMessageListener(callback: (message: ChatMessage) => void): void {
@@ -60,8 +55,12 @@ export class ChatService {
   }
 
   public sendMessage(chatMessage: ChatMessage): void {
-    this.hubConnection.invoke('SendMessage', chatMessage)
-      .catch(err => console.error(err.toString()));
+    console.log('Sending message:', chatMessage);
+    this.hubConnection.invoke<any>("SendMessage", chatMessage)
+     .then(() => console.log('Message sent successfully!'))
+     .catch(err => console.error(err.toString()));
   }
-
+  public getChatObservable(): Observable<ChatMessage> {
+    return this.chatSubject.asObservable();
+  }
 }
