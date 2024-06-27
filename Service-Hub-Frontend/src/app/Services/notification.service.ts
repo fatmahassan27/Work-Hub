@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { NotificationDTO } from '../Models/notification.model';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Task } from 'zone.js/lib/zone-impl';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class NotificationService {
     this.token = localStorage.getItem("token");
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.signalrUrl, {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets,
+        //skipNegotiation: true,
+        //transport: signalR.HttpTransportType.WebSockets,
         accessTokenFactory: () => this.token ? this.token : ''
       })
       .build();
@@ -35,7 +36,7 @@ export class NotificationService {
       }
     });
    
-    this.hubConnection.on('NewNotification', (notification: NotificationDTO) => {
+    this.hubConnection.on('NewNotification', (notification) => {
       this.notificationSubject.next(notification);
       console.log('New notification received:', notification);
     });
@@ -46,12 +47,18 @@ export class NotificationService {
   invokeOnNewNotification(): Observable<NotificationDTO> {
     return this.notificationSubject.asObservable();
   }
+  public addNotificationListener(callback: (notification: NotificationDTO) => void): void {
+    this.hubConnection.on('NewNotification', callback);
+  }
 
   private startConnection(): Promise<void> {
     console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
     return this.hubConnection
       .start()
-      .then(() => console.log('SignalR connection started'))
+      .then(() => {console.log('SignalR connection started');
+        console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
+      }
+      )
       .catch(err => {
         console.error('Error while starting SignalR connection:', err);
         setTimeout(() => this.startConnection(), 5000); // Retry connection after 5 seconds
@@ -61,16 +68,17 @@ export class NotificationService {
 
   private ensureConnection(): Promise<void> {
     if (this.hubConnection.state === signalR.HubConnectionState.Disconnected) {
+      console.log("hub connenction state: ",this.hubConnection.state);
       this.connectionPromise = this.startConnection();
     }
     return this.connectionPromise;
   }
  
   sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
-    debugger;
+    //debugger;
     return this.ensureConnection().then(() => {
       console.log(`${userId} --- ${workerId}`);
-      return this.hubConnection.invoke('sendOrderCreatedNotification', userId, workerId)
+      return this.hubConnection.invoke('sendordercreatednotification', userId, workerId)
         .then(() => console.log('Service: Notification sent successfully'))
         .catch(err => {
           console.error('Service: Error while sending notification:', err);
@@ -80,16 +88,16 @@ export class NotificationService {
   }
   
 
-  sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
-    return this.ensureConnection().then(() => {
-      return this.hubConnection.invoke('SendOrderAcceptedNotification', userId, workerId)
-        .then(() => console.log('Service: Notification sent successfully'))
-        .catch(err => {
-          console.error('Service: Error while sending notification:', err);
-          throw err;
-        });
-    });
-  }
+  // sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
+  //   return this.ensureConnection().then(() => {
+  //     return this.hubConnection.invoke('SendOrderAcceptedNotification', userId, workerId)
+  //       .then(() => console.log('Service: Notification sent successfully'))
+  //       .catch(err => {
+  //         console.error('Service: Error while sending notification:', err);
+  //         throw err;
+  //       });
+  //   });
+  // }
 
   getNotificationsHttp(ownerId: number): Observable<NotificationDTO[]> {
     return this.http.get<NotificationDTO[]>(`${this.apiUrl}notifications/${ownerId}`);

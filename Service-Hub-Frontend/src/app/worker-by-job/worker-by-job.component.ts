@@ -77,17 +77,17 @@ export class WorkerByJobComponent  implements OnInit {
         next: () => {
           console.log("Order created successfully");
           console.log(this.currentUserInfo?.id!, workerId);
-          this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId)
-            .then(() => {
-              alert("Notification sent successfully");
-            })
-            .catch((err) => {
-              console.error('Error while sending notification: ', err);
-              alert("Error sending notification" + err.message );
-            })
-            .finally(() => {
-              console.log("Order made");
-            });
+          // this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId)
+          //   .then(() => {
+          //     alert("Notification sent successfully");
+          //   })
+          //   .catch((err) => {
+          //     console.error('Error while sending notification: ', err);
+          //     alert("Error sending notification" + err.message );
+          //   })
+          //   .finally(() => {
+          //     console.log("Order made");
+          //   });
         },
         error: (e) => {
           console.error(e);

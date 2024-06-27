@@ -13,6 +13,7 @@ import { AccountService } from '../Services/account.service';
 import { UserInfo } from '../interfaces/user-info';
 import { Role } from '../enums/role';
 import { RouterLink } from '@angular/router';
+import { HubConnection } from '@microsoft/signalr';
 
 
 @Component({
@@ -86,24 +87,22 @@ export class WorkerComponent implements OnInit {
     console.log('Filtered Workers:', this.filteredWorkers); // Debug logging
   }
 
-  CreateOrder(workerId: number) {
+  async CreateOrder(workerId: number) {
     //debugger;
-    console.log(this.currentUserInfo?.id!);
     this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe({
       next: () => {
-        console.log("Order created successfully");
-        console.log(this.currentUserInfo?.id!, workerId);
-        this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId)
-          .then(() => {
-            alert("Notification sent successfully");
-          })
-          .catch(err => {
-            console.error('Error while sending notification: ', err);
-            alert("Error sending notification" + err.message);
-          })
-          .finally(() => {
-            console.log("Order made");
-          });
+        console.log("Order created successfully."+`user id: ${this.currentUserInfo?.id!} , worker id: ${workerId}`);
+        this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId) ;
+          // .then(() => {
+          //   alert("Notification sent successfully");
+          // })
+          // .catch(err => {
+          //   console.error('Error while sending notification: ', err);
+          //   alert("Error sending notification" + err.message);
+          // })
+          // .finally(() => {
+          //   console.log("Order made");
+          // });
       },
       error: (e) => {
         console.error(e);
@@ -113,6 +112,18 @@ export class WorkerComponent implements OnInit {
         console.log("Order creation complete");
       }
     });
+    var uId = this.currentUserInfo?.id! ;
+    //await this.sendNotification(uId, workerId!);
+    console.log("notification created successfully."+`user id: ${uId} , worker id: ${workerId}`);
+
   }
-  
+
+  // async sendNotification(userId:number,workerId:number){
+  //   await this.notificationService.hubConnection.invoke("sendordercreatednotification", userId, workerId)
+  //       .then(() => console.log('Service: Notification sent successfully'))
+  //       .catch(err => {
+  //         console.error('Service: Error while sending notification:', err);
+  //         throw err;
+  //       })
+  // }
 }

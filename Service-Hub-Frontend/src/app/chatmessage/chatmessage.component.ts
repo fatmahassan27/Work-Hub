@@ -16,36 +16,41 @@ import { ActivatedRoute } from '@angular/router';
 export class ChatmessageComponent implements OnInit {
    
   public messages: ChatMessage[] = [];
-  public messageText: string='';
-  public username: string=''; // Assuming username is used for displaying purposes
-  public senderId: number=0; // Set this to the current user's ID
-  public receiverId: number=0; //
+  // public messageText: string='';
+  // public username: string=''; // Assuming username is used for displaying purposes
+  // public senderId: number=0; // Set this to the current user's ID
+  // public receiverId: number=0; //
 
   ///////////////////////////
-  chatmessage:ChatMessage=new ChatMessage(0,this.senderId,0,"",false,new Date());
+  chatmessage:ChatMessage=new ChatMessage(0,0,0,"",false,new Date());
   currentUserId: number = 0;
   constructor(public chatservice:ChatService ,public accountService:AccountService,public activatedroute:ActivatedRoute)
   {}
 
   ngOnInit(): void {
       this.chatservice.addMessageListener((message: ChatMessage) => {
-      this.messages.push(message);
-    });
+          this.messages.push(message);
+      });
 
     if (this.accountService.currentUserValue?.id) {
       this.currentUserId = this.accountService.currentUserValue?.id;
       console.log(`${this.currentUserId} CURRENT USER ID`);
+      this.chatmessage.SenderId = this.currentUserId;
+      
     }
+
+    this.activatedroute.params.subscribe((p)=>{
+      console.log(p['id']);
+      this.chatmessage.ReceiverId = p['id'] ;
+    })
   }
   
   public send(): void {
-    console.log("hiiiiii");
-    alert("senntttttttt");
-    if (this.messageText && this.senderId && this.receiverId) {
-      const message = new ChatMessage(0, this.senderId, this.receiverId, this.messageText, false, new Date());
-      this.chatservice.sendMessage(message);
-  
-      this.messageText = '';
+    this.messages.push(this.chatmessage);
+    if (this.chatmessage) {
+      //const message = new ChatMessage(0, this.senderId, this.receiverId, this.messageText, false, new Date());
+      this.chatservice.sendMessage(this.chatmessage);
+      this.chatmessage.Message = '';
     }
   }
 }

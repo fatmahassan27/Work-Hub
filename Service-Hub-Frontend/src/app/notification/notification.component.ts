@@ -50,6 +50,11 @@ export class NotificationComponent implements OnInit {
         console.error('Component: Error receiving new notification: ', err);
       }
     });
+
+    this.notificationService.addNotificationListener((notification: NotificationDTO) => {
+      this.notifications.push(notification);
+      console.log('Component: New notification added:', notification);
+    })
   }
 }
 
