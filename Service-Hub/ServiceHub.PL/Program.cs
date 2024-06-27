@@ -114,7 +114,8 @@ namespace ServiceHub.PL
                     builder.WithOrigins("http://localhost:4200")
                            .AllowAnyMethod()
                            .AllowAnyHeader()
-                           .AllowCredentials(); // Ensure credentials are allowed if using authentication
+                      .AllowCredentials()
+                      .SetIsOriginAllowed((host) => true);// Ensure credentials are allowed if using authentication
                 });
             });
 
