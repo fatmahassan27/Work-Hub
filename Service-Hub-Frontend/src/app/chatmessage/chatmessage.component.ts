@@ -34,7 +34,9 @@ export class ChatmessageComponent implements OnInit {
 
     if (this.accountService.currentUserValue?.id) {
       this.currentUserId = this.accountService.currentUserValue?.id;
+      this.senderId=this.currentUserId;
       console.log(`${this.currentUserId} CURRENT USER ID`);
+      console.log(this.senderId);
     }
   }
   
