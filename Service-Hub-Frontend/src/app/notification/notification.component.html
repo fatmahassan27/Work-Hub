@@ -1,6 +1,6 @@
 <p>Notification works!</p>
 
-<div *ngFor="let notification of notifications; let i=index ;">
+<div *ngFor="let notification of notifications; let i=index ; ">
   <div class="notification">
     <h4>{{i+1}} : {{ notification.title }}</h4>
     <p>{{ notification.content }}</p>

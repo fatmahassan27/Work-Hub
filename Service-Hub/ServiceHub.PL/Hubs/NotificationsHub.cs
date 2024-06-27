@@ -7,6 +7,7 @@ using ServiceHub.BL.DTOs;
 using ServiceHub.BL.Interfaces;
 using ServiceHub.DAL.Entities;
 using ServiceHub.DAL.Helper;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace ServiceHub.PL.Hubs
@@ -35,25 +36,26 @@ namespace ServiceHub.PL.Hubs
         {
             try
             {
-               if(Context.User.Identity.IsAuthenticated) { await Console.Out.WriteLineAsync("on connected authenticated"); }
-                var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                if (string.IsNullOrEmpty(userId))
+                if (Context.User.Identity.IsAuthenticated)
                 {
-                    logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
-                    return;
+                    var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        logger.LogWarning("User ID not found for connection ID: {ConnectionId}", Context.ConnectionId);
+                        return;
+                    }
+
+                    var userConnection = new UserConnection
+                    {
+                        UserId = int.Parse(userId),
+                        ConnectionId = Context.ConnectionId
+                    };
+
+                    await userConnectionService.CreateAsync(userConnection);
+
+                    logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
                 }
-
-                var userConnection = new UserConnection
-                {
-                    UserId = int.Parse(userId),
-                    ConnectionId = Context.ConnectionId
-                };
-
-                await userConnectionService.CreateAsync(userConnection);
-
-                logger.LogInformation("Client connected: {ConnectionId}, UserId: {UserId}", Context.ConnectionId, userId);
-
                 await base.OnConnectedAsync();
             }
             catch (Exception ex)
@@ -66,8 +68,6 @@ namespace ServiceHub.PL.Hubs
         {
             try
             {
-                logger.LogInformation("Client disconnected: {ConnectionId}", Context.ConnectionId);
-
                 var userConn = await userConnectionService.GetRowByConnectionId(Context.ConnectionId);
                 if (userConn != null)
                 {
@@ -88,11 +88,12 @@ namespace ServiceHub.PL.Hubs
                 throw; // Re-throw the exception to let SignalR handle any further cleanup
             }
         }
-
+       
         public async Task sendordercreatednotification(int userId, int workerId)
         {//triggered by user
             try
             {
+                await Console.Out.WriteLineAsync("hi");
                 var user = await userManager.FindByIdAsync(userId.ToString());
                 var worker = await userManager.FindByIdAsync(workerId.ToString());
 

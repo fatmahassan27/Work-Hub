@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <input type="text" [(ngModel)]="messageText" placeholder="Enter your message" />
     <button type="button" (click)="send()">Send</button>
   </div>
@@ -8,4 +8,21 @@
       <strong>{{ msg.SenderId === senderId ? 'You' : msg.SenderId }}:</strong> {{ msg.Message }}
     </div>
     <div><small>{{ msg.createdDate | date: 'short' }}</small></div>
+  </div> -->
+
+  <div>
+    <h1>bbb</h1>
+    <input type="text" [(ngModel)]="chatmessage.SenderId" placeholder="Enter your username" />
+    <input type="text" [(ngModel)]="chatmessage.Message" placeholder="Enter your message" />
+    <button type="button" (click)="send()">Send</button>
+  </div>
+
+  <div id="id">
+    <h1>Messages</h1>
+    <div *ngFor="let msg of messages">
+      <div>
+        <strong>{{ msg.ReceiverId === currentUserId ? 'You' : msg.SenderId }}:</strong> {{ msg.Message }}
+      </div>
+      <div><small>{{ msg.createdDate | date: 'short' }}</small></div>
+    </div>
   </div>
