@@ -25,8 +25,8 @@
       <div class="card-body">
         <img src="./assets/images/worker.jpg" alt="worker">
         <h3 class="card-title">Name: {{item.userName}}</h3>
-        <p class="card-text">Job: {{item.jobId}}</p>
-        <p class="card-text">District: {{item.districtId}}</p>
+        <p class="card-text">Job: {{item.job.name}}</p>
+        <p class="card-text">District: {{item.district.name}}</p>
         <p class="card-text">Rating: {{item.rating}}</p>
         <button class="btn" type="button" (click)="CreateOrder(item.id)">Order</button>
         <button class="btn" type="button" [routerLink]="['/Chat', item.id]">Send message</button>
