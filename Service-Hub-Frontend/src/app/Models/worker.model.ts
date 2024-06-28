@@ -1,3 +1,5 @@
+import { Job } from "./job.model";
+
 export class Worker {
   constructor(
     public id:number,
@@ -5,7 +7,8 @@ export class Worker {
     public email:string,
     public jobId:number,
     public districtId:number,
-    public rating:number
+    public rating:number,
+    public job:Job
   ) {}
 }
 

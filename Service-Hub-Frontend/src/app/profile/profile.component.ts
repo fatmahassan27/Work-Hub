@@ -5,6 +5,7 @@ import { AccountService } from '../Services/account.service';
 import { Worker } from '../Models/worker.model'; // Adjust the import path as needed
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Job } from '../Models/job.model';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 export class ProfileComponent implements OnInit 
 {
   workerId=this.accountservice.currentUserValue?.id
-  woker  = new Worker(7, "Fatma", "fatma@gmail.com", 1, 2, 1);
+  woker  = new Worker(7, "Fatma", "fatma@gmail.com", 1, 2, 1,new Job(0,"",200));
   constructor( public wokerService:WorkerService,public accountservice:AccountService)
  {
  
