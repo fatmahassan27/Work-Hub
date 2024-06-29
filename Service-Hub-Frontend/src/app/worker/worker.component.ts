@@ -84,8 +84,8 @@ export class WorkerComponent implements OnInit {
   filterWorkersByDistrict(districtId: number) {
     console.log('Filtering workers by District ID:', districtId); // Debug logging
     this.filteredWorkers = this.workers.filter(worker => {
-      console.log('Worker District ID:', worker.districtId); // Debug logging
-      return worker.districtId === districtId;
+      console.log('Worker District ID:', worker.district.id); // Debug logging
+      return worker.district.id === districtId;
     });
     console.log('Filtered Workers:', this.filteredWorkers); // Debug logging
   }

@@ -1,4 +1,5 @@
 ﻿
+using ServiceHub.DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceHub.BL.DTOs
@@ -11,9 +12,9 @@ namespace ServiceHub.BL.DTOs
         [EmailAddress]
         public string? Email { get; set; }
 
-        public int? JobId { get; set; }
+        public JobDTO job { get; set; }
+        public DistrictDTO district { get; set; }
 
-        public int? DistrictId { get; set; }
         public int? Rating { get; set; } = 3;//average of ratings	
 
 

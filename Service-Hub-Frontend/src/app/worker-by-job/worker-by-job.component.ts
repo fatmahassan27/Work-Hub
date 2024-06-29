@@ -54,7 +54,7 @@ export class WorkerByJobComponent  implements OnInit {
       // If no district selected, show all workers
       this.filteredWorkers = this.workers;
     } else {
-      this.filteredWorkers = this.workers.filter(worker => worker.districtId === districtId);
+      this.filteredWorkers = this.workers.filter(worker => worker.district.id === districtId);
       console.log(this.workers);
       console.log(this.filteredWorkers);
     }
@@ -64,7 +64,7 @@ export class WorkerByJobComponent  implements OnInit {
     if (jobId == null || jobId == 0) {
       this.filteredWorkers = this.workers;
     } else {
-      this.filteredWorkers = this.workers.filter(worker => worker.jobId == jobId);
+      this.filteredWorkers = this.workers.filter(worker => worker.job.id == jobId);
       console.log(jobId);
 
     }

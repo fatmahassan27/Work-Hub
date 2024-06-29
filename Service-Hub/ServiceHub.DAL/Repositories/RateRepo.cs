@@ -29,18 +29,21 @@ namespace ServiceHub.DAL.Repositories
 
         public async Task<double> getAverageWorkerRating(int workerId)
         {
-            //double average = await db.Ratings
-            //               .Where(a => a.ToUserId == workerId)
-            //               .AverageAsync(a => a.Value);
-
-            //var worker =  await userManager.FindByIdAsync(workerId.ToString());
-            //worker.Rating= (int)average;
-            //await userManager.UpdateAsync(worker);
-            //return average;
+           
 
             var TotalRatings = await db.Ratings.Where(x => x.ToUserId == workerId).CountAsync();
             var SumRatings = await db.Ratings.Where(x => x.ToUserId == workerId).SumAsync(x => x.Value);
-            double avrg = (double)SumRatings / TotalRatings;
+            double avrg = 0;
+
+            if (TotalRatings==0)
+            {
+                avrg = 3;
+            }else
+            {
+                avrg = (SumRatings * 1.0) / TotalRatings;
+
+            }
+
             return avrg;
 
         }
