@@ -11,6 +11,7 @@ using ServiceHub.BL.Services;
 using ServiceHub.BL.Mapper;
 using ServiceHub.DAL.UnitOfWork;
 using ServiceHub.PL.Hubs;
+using Microsoft.AspNetCore.Http.Connections;
 
 namespace ServiceHub.PL
 {
@@ -23,8 +24,9 @@ namespace ServiceHub.PL
             var connectionString = builder.Configuration.GetConnectionString("Service");
 
             builder.Services.AddControllers();
+
             builder.Services.AddSignalR();
-       
+
             builder.Services.AddLogging();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -78,7 +80,7 @@ namespace ServiceHub.PL
                     ValidateIssuer = false,     //
                     ValidateAudience = false,       //
                     ValidateLifetime = true,
-                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"], 
                     ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
@@ -129,13 +131,19 @@ namespace ServiceHub.PL
                 app.UseAuthentication();
                 app.UseAuthorization();
 
-                app.MapHub<NotificationsHub>("/notificationsHub");
-                app.MapHub<ChatHub>("/chatHub");
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapHub<ChatHub>("/chatHub");
 
-                });
+            app.MapHub<NotificationsHub>("/notificationsHub", options =>
+            {
+                options.Transports = HttpTransportType.WebSockets;
+            });
+            //app.MapHub<NotificationsHub>("/notificationsHub");
+          
+            app.MapHub<ChatHub>("/chatHub");
+                //app.UseEndpoints(endpoints =>
+                //{
+                //    endpoints.MapHub<ChatHub>("/chatHub");
+
+                //});
 
                 app.MapControllers();
 

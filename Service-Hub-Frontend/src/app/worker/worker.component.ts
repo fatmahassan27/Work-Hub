@@ -14,13 +14,15 @@ import { UserInfo } from '../interfaces/user-info';
 import { Role } from '../enums/role';
 import { RouterLink } from '@angular/router';
 import { HubConnection } from '@microsoft/signalr';
+import { Job } from '../Models/job.model';
+import { JobService } from '../Services/job.service';
 
 
 @Component({
   selector: 'app-worker',
   standalone: true,
   imports: [CommonModule, FormsModule,RouterLink],
-  templateUrl:'./worker.component.html',
+templateUrl:'./worker.component.html',
   styleUrls: ['./worker.component.css']
 })
 export class WorkerComponent implements OnInit {
@@ -50,17 +52,18 @@ export class WorkerComponent implements OnInit {
   ngOnInit() {
     this.cityServices.getAll().subscribe((data: City[]) => {
       this.cities = data;
-      console.log('Cities:', this.cities); // Debug logging
+      //console.log('Cities:', this.cities); // Debug logging
     });
 
     this.workerService.getAll().subscribe((data: Worker[]) => {
       this.workers = data;
       this.filteredWorkers = data;
-      console.log('Workers:', this.workers); // Debug logging
+      //console.log('Workers:', this.workers); // Debug logging
     });
 
     this.currentUserInfo = this.accountService.currentUserValue;
     console.log(this.currentUserInfo);
+    this.notificationService.startConnection();
   }
 
   onCityChange(event: any) {
@@ -92,17 +95,21 @@ export class WorkerComponent implements OnInit {
     this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe({
       next: () => {
         console.log("Order created successfully."+`user id: ${this.currentUserInfo?.id!} , worker id: ${workerId}`);
-        this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId) ;
-          // .then(() => {
-          //   alert("Notification sent successfully");
-          // })
-          // .catch(err => {
-          //   console.error('Error while sending notification: ', err);
-          //   alert("Error sending notification" + err.message);
-          // })
-          // .finally(() => {
-          //   console.log("Order made");
-          // });
+        
+        this.notificationService.startConnection();
+        this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId);
+        // this.notificationService.hubConnection.invoke("sendordercreatednotification",this.currentUserInfo?.id!, workerId)
+        //   .then(() => {
+        //     alert("Notification sent successfully");
+        //   })
+        //   .catch(err => {
+        //     console.error('Error while sending notification: ', err);
+        //     alert("Error sending notification" + err.message);
+        //   })
+        //   .finally(() => {
+        //     console.log("Order made");
+        //   });
+
       },
       error: (e) => {
         console.error(e);
@@ -114,7 +121,7 @@ export class WorkerComponent implements OnInit {
     });
     var uId = this.currentUserInfo?.id! ;
     //await this.sendNotification(uId, workerId!);
-    console.log("notification created successfully."+`user id: ${uId} , worker id: ${workerId}`);
+    //console.log("notification created successfully."+`user id: ${uId} , worker id: ${workerId}`);
 
   }
 

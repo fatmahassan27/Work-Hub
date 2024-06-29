@@ -41,15 +41,16 @@ export class NotificationComponent implements OnInit {
       }
     });
 
-    this.notificationService.invokeOnNewNotification().subscribe({
-      next: (notification: NotificationDTO) => {
-        this.notifications.push(notification);
-        console.log('Component: New notification added:', notification);
-      },
-      error: (err) => {
-        console.error('Component: Error receiving new notification: ', err);
-      }
-    });
+    // this.notificationService.invokeOnNewNotification().subscribe({
+    //   next: (notification: NotificationDTO) => {
+    //     this.notifications.push(notification);
+    //     console.log('Component: New notification added:', notification);
+    //   },
+    //   error: (err) => {
+    //     console.error('Component: Error receiving new notification: ', err);
+    //   }
+    // });
+    this.notificationService.startConnection();
 
     this.notificationService.addNotificationListener((notification: NotificationDTO) => {
       this.notifications.push(notification);

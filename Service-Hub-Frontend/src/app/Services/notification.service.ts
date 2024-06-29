@@ -14,18 +14,21 @@ export class NotificationService {
   private signalrUrl = `http://localhost:5018/notificationsHub`;
 
   private hubConnection: signalR.HubConnection;
-  private notificationSubject = new Subject<NotificationDTO>();
-  private connectionPromise: Promise<void>;
+  //private notificationSubject = new Subject<NotificationDTO>();
+  //private connectionPromise: Promise<void>;
   private token: string | null = '';
 
   constructor(private http: HttpClient) {
+
     this.token = localStorage.getItem("token");
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.signalrUrl, {
-        //skipNegotiation: true,
-        //transport: signalR.HttpTransportType.WebSockets,
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets,
         accessTokenFactory: () => this.token ? this.token : ''
       })
+      .configureLogging(signalR.LogLevel.Information)
       .build();
 
     this.hubConnection.onclose(error => {
@@ -36,56 +39,67 @@ export class NotificationService {
       }
     });
    
-    this.hubConnection.on('NewNotification', (notification) => {
-      this.notificationSubject.next(notification);
-      console.log('New notification received:', notification);
-    });
+    //this.startConnection();
+    // this.hubConnection.on('NewNotification', (notification) => {
+    //   this.notificationSubject.next(notification);
+    //   console.log('New notification received:', notification);
+    // });
 
-    this.connectionPromise = this.startConnection();
+    //this.connectionPromise = this.startConnection();
   }
 
-  invokeOnNewNotification(): Observable<NotificationDTO> {
-    return this.notificationSubject.asObservable();
-  }
-  public addNotificationListener(callback: (notification: NotificationDTO) => void): void {
+  // invokeOnNewNotification(): Observable<NotificationDTO> {
+  //   return this.notificationSubject.asObservable();
+  // }
+
+  addNotificationListener(callback: (notification: NotificationDTO) => void): void {
     this.hubConnection.on('NewNotification', callback);
   }
-
-  private startConnection(): Promise<void> {
-    console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
-    return this.hubConnection
-      .start()
-      .then(() => {console.log('SignalR connection started');
-        console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
-      }
-      )
-      .catch(err => {
-        console.error('Error while starting SignalR connection:', err);
-        setTimeout(() => this.startConnection(), 5000); // Retry connection after 5 seconds
-        throw err;
-      });
+  startConnection() {
+    this.hubConnection.start()
+      .then(() => console.log('Connection started'))
+      .catch(err => console.log('Error while starting connection: ' + err));
   }
-
-  private ensureConnection(): Promise<void> {
-    if (this.hubConnection.state === signalR.HubConnectionState.Disconnected) {
-      console.log("hub connenction state: ",this.hubConnection.state);
-      this.connectionPromise = this.startConnection();
-    }
-    return this.connectionPromise;
+  sendOrderCreatedNotification(userId: number, workerId: number) {
+    this.hubConnection.invoke('sendordercreatednotification', userId, workerId)
+      .catch(err => console.error(err));
   }
+  // private startConnection() {
+  //   console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
+  //   return this.hubConnection
+  //     .start()
+  //     .then(() => {console.log('SignalR connection started');
+  //       console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
+  //     }
+  //     )
+  //     .catch(err => {
+  //       console.error('Error while starting SignalR connection:', err);
+  //       setTimeout(() => this.startConnection(), 5000); // Retry connection after 5 seconds
+  //       throw err;
+  //     });
+  // }
+
+  // private ensureConnection(): Promise<void> {
+  //   if (this.hubConnection.state === signalR.HubConnectionState.Disconnected) {
+  //     console.log("hub connenction state: ",this.hubConnection.state);
+  //     this.connectionPromise = this.startConnection();
+  //   }
+  //   return this.connectionPromise;
+  // }
  
-  sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
-    //debugger;
-    return this.ensureConnection().then(() => {
-      console.log(`${userId} --- ${workerId}`);
-      return this.hubConnection.invoke('sendordercreatednotification', userId, workerId)
-        .then(() => console.log('Service: Notification sent successfully'))
-        .catch(err => {
-          console.error('Service: Error while sending notification:', err);
-          throw err;
-        });
-    });
-  }
+  
+  // sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
+  //   //debugger;
+  //   return this.ensureConnection().then(() => {
+  //     console.log(`${userId} --- ${workerId}`);
+  //     return this.hubConnection.invoke('sendordercreatednotification', userId, workerId)
+  //       .then(() => console.log('Service: Notification sent successfully'))
+  //       .catch(err => {
+  //         console.error('Service: Error while sending notification:', err);
+  //         throw err;
+  //       });
+  //   });
+  // }
   
 
   // sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
