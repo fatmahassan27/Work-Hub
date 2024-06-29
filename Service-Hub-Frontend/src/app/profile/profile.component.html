@@ -4,12 +4,26 @@
     <div class="card">
       <div class="card-body">
         <img src="./assets/images/worker.jpg" alt="worker">
-        <h3 class="card-text" > Name: </h3> 
-        <!-- [(ngModel)]="woker.userName" name="name" -->
-        <p class="card-text">Job:</p>
-        <p class="card-text">District:</p>
-        <p class="card-text">Rating:</p>
+        <h3 class="card-text"  > Name: {{worker.userName}} </h3> 
+         <p class="card-text">Job: {{worker.job.name}}</p>
+        <p class="card-text">District : {{worker.district.name}}</p>
+        <p class="card-text">Rating: {{worker.rating}}</p>
       </div>
     </div>
   </div>
-</div>
+</div>   
+<!-- <div *ngIf="worker">
+  <form>
+    <div>
+      <label for="name">Name:</label>
+      <input id="name" type="text" [(ngModel)]="worker.userName" name="name" />
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input id="email" type="email" [(ngModel)]="worker.email" name="email" />
+    </div>
+     Add other form fields as necessary -->
+  <!-- </form>
+</div> -->
+
+
