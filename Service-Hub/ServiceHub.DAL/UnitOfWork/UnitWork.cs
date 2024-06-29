@@ -49,7 +49,7 @@ namespace ServiceHub.BL.Interfaces
         {
             get
             {
-                return orderRepo ??= new OrderRepo(db);
+                return orderRepo ??= new OrderRepo(db,userManager);
             }
         }
 

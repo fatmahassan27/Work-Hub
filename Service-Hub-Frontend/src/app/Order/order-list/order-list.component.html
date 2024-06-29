@@ -17,15 +17,15 @@
     </tr>
     <tr *ngFor="let order of orders; let i = index">
       <td>{{ order.id }}</td>
-      <td>{{ order.userId }}</td>
-      <td>{{ order.workerId }}</td>
+      <td>{{ order.user.userName }}</td>
+      <td>{{ order.worker.userName }}</td>
       <td>{{  OrderStatus[order.status] }}</td>
       <td>{{ order.createdDate | date }}</td>
       <td>
         <button
           value="rate"
           class="btn btn-primary"
-          (click)="addRate(order.userId, order.workerId)"
+          (click)="addRate(order.user.id, order.worker.id)"
           [disabled]="order.status !== 2"
         >
           Rate
