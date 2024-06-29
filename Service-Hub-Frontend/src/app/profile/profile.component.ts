@@ -18,13 +18,28 @@ import { District } from '../Models/District.model';
 })
 export class ProfileComponent implements OnInit 
 {
-  workerId=this.accountservice.currentUserValue?.id
-  woker  = new Worker(7, "Fatma", "fatma@gmail.com",1,new Job(0,"",200),new District("",0));
-  constructor( public wokerService:WorkerService,public accountservice:AccountService)
- {
- 
- }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  workerId:number|null=this.accountservice.currentUserValue?.id ||null;
+  worker: Worker = new Worker(0, "", "", 0, new Job(0, "", 0), new District("", 0)); // Initialize with default values
+  constructor( public wokerService:WorkerService,
+    public accountservice:AccountService)
+ {}
+ ngOnInit(): void {
+  if (this.workerId) {
+    console.log(this.workerId);
+    this.wokerService.getWorkerById(this.workerId).subscribe({
+      next: (data) => {
+        this.worker = data;
+        console.log('Worker data fetched:', this.worker); // Debug logging
+      },
+      error: (err) => {
+        console.error('Error fetching worker data:', err);
+      }
+    });
+  } else {
+    console.error('No worker ID found.');
   }
 }
+
+
+}
+

@@ -26,18 +26,13 @@ export class WorkerService {
   getAllByJobId(id: number): Observable<Worker[]> {
     return this.http.get<Worker[]>(this.baseurl+"job/"+ id);
   }
+  getWorkerById(id:number)
+  {
+    return this.http.get<Worker>(this.baseurl+id)
+  }
 
   ngOnInit() {
-    // this.workerService.getAll().subscribe((data: Worker[]) => {
-    //   console.log(data);
-    //   this.workers = data;
-    // })
-
-    //   this.cityServices.getAll().subscribe((c: City[]) => {
-    //     console.log(c);
-    //     this.cities = c;
-    //   })
-      
+    
     }
     
 
