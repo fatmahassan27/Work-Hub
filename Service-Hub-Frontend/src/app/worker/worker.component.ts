@@ -42,11 +42,7 @@ export class WorkerComponent implements OnInit {
     public districtService: DistrictService,
     public notificationService: NotificationService,
     public orderService: OrderService,
-    public accountService: AccountService,
-
-    //get all jobs
-    //filter jobs by ids from workers
-    //map workers with job name and price instead of job 
+    public accountService: AccountService
   ) { }
 
   ngOnInit() {
@@ -64,6 +60,7 @@ export class WorkerComponent implements OnInit {
     this.currentUserInfo = this.accountService.currentUserValue;
     console.log(this.currentUserInfo);
     this.notificationService.startConnection();
+    this.notificationService
   }
 
   onCityChange(event: any) {
@@ -92,13 +89,24 @@ export class WorkerComponent implements OnInit {
 
   async CreateOrder(workerId: number) {
     //debugger;
-    this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe({
-      next: () => {
-        console.log("Order created successfully."+`user id: ${this.currentUserInfo?.id!} , worker id: ${workerId}`);
-        
-        this.notificationService.startConnection();
-        this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId);
-        // this.notificationService.hubConnection.invoke("sendordercreatednotification",this.currentUserInfo?.id!, workerId)
+    // this.orderService.createOrder(this.currentUserInfo?.id!, workerId).subscribe({
+    //   next: () => {
+    //     console.log("Order created successfully."+`user id: ${this.currentUserInfo?.id!} , worker id: ${workerId}`);
+    //   },
+    //   error: (e) => {
+    //     console.error(e);
+    //     alert("Error creating order");
+    //   },
+    //   complete: () => {
+    //     console.log("Order creation complete");
+    //   }
+    // });
+    this.notificationService.sendOrderCreatedNotification(this.currentUserInfo?.id!, workerId);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // this.notificationService.hubConnection.invoke("sendordercreatednotification",this.currentUserInfo?.id!, workerId)
         //   .then(() => {
         //     alert("Notification sent successfully");
         //   })
@@ -110,22 +118,10 @@ export class WorkerComponent implements OnInit {
         //     console.log("Order made");
         //   });
 
-      },
-      error: (e) => {
-        console.error(e);
-        alert("Error creating order");
-      },
-      complete: () => {
-        console.log("Order creation complete");
-      }
-    });
-    var uId = this.currentUserInfo?.id! ;
-    //await this.sendNotification(uId, workerId!);
+            //await this.sendNotification(uId, workerId!);
     //console.log("notification created successfully."+`user id: ${uId} , worker id: ${workerId}`);
 
-  }
-
-  // async sendNotification(userId:number,workerId:number){
+      // async sendNotification(userId:number,workerId:number){
   //   await this.notificationService.hubConnection.invoke("sendordercreatednotification", userId, workerId)
   //       .then(() => console.log('Service: Notification sent successfully'))
   //       .catch(err => {
@@ -133,4 +129,3 @@ export class WorkerComponent implements OnInit {
   //         throw err;
   //       })
   // }
-}

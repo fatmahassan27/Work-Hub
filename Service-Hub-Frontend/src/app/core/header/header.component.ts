@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AccountService } from '../../Services/account.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Role } from '../../enums/role';
 
 @Component({
   selector: 'app-header',

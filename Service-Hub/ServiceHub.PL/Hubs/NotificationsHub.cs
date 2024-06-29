@@ -89,7 +89,7 @@ namespace ServiceHub.PL.Hubs
             }
         }
        
-        public async Task sendordercreatednotification(int userId, int workerId)
+        public async Task SendOrderCreatedNotification(int userId, int workerId)
         {//triggered by user
             try
             {

@@ -15,8 +15,8 @@ import { NotificationDTO } from '../Models/notification.model';
 export class NotificationComponent implements OnInit {
 
   notifications: NotificationDTO[] = [];
-  userId: number = 0; // Assuming you have userId
-  workerId: number = 0; // Assuming you have workerId
+  userId: number = 0; 
+  workerId: number = 0;
   currentUserId: number = 0;
 
   constructor(
@@ -41,15 +41,6 @@ export class NotificationComponent implements OnInit {
       }
     });
 
-    // this.notificationService.invokeOnNewNotification().subscribe({
-    //   next: (notification: NotificationDTO) => {
-    //     this.notifications.push(notification);
-    //     console.log('Component: New notification added:', notification);
-    //   },
-    //   error: (err) => {
-    //     console.error('Component: Error receiving new notification: ', err);
-    //   }
-    // });
     this.notificationService.startConnection();
 
     this.notificationService.addNotificationListener((notification: NotificationDTO) => {
@@ -59,6 +50,15 @@ export class NotificationComponent implements OnInit {
   }
 }
 
+    // this.notificationService.invokeOnNewNotification().subscribe({
+    //   next: (notification: NotificationDTO) => {
+    //     this.notifications.push(notification);
+    //     console.log('Component: New notification added:', notification);
+    //   },
+    //   error: (err) => {
+    //     console.error('Component: Error receiving new notification: ', err);
+    //   }
+    // });
 
   // reload(){
   //   console.log("reloading... ownerId: ",this.currentUserId);
