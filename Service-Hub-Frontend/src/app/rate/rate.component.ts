@@ -58,7 +58,11 @@ export class RateComponent implements OnInit {
         alert("Thanks for The Rating!");
         this.router.navigateByUrl('/jobs');
       },
-      error: (e) => console.log(e),
+      error: (e) => {
+        console.log(e);
+        alert("Rate addding error.");
+        this.router.navigateByUrl('/orders');
+      },
       complete: () => console.log('Add rate request complete')
     });
   }

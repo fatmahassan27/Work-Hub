@@ -1,14 +1,14 @@
-<p>order-list works!</p>
+<h1 class="text-black-50 text-sm-center">orders list</h1>
 
 <table class="table table-hover table-bordered">
   <thead>
     <tr>
       <th>Order ID</th>
-      <th>User ID</th>
-      <th>Worker ID</th>
+      <th>User</th>
+      <th>Worker</th>
       <th>Status</th>
       <th>Created Date</th>
-      <th>Operations</th>
+      <th colspan="2" style="text-align: center;">Operations</th>
     </tr>
   </thead>
   <tbody>
@@ -23,21 +23,21 @@
       <td>{{ order.createdDate | date }}</td>
       <td>
         <button
-          value="rate"
-          class="btn btn-primary"
-          (click)="addRate(order.user.id, order.worker.id)"
-          [disabled]="order.status !== 2"
-        >
-          Rate
-        </button>
-      </td>
-      <td>
-        <button
           value="update"
           class="btn btn-primary"
           (click)="updateOrder(order.id)"
         >
           Update
+        </button>
+      </td>
+      <td>
+        <button
+          value="rate"
+          class="btn btn-secondary"
+          (click)="addRate(order.user.id, order.worker.id)"
+          [disabled]="order.status !== 2"
+        >
+          Rate
         </button>
       </td>
     </tr>

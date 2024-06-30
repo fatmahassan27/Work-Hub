@@ -39,7 +39,6 @@ export class ChatService {
     });
 
 
-
     // this.hubConnection.onclose(error => {
     //   if (error) {
     //     console.error('SignalR connection closed due to error:', error);
@@ -55,7 +54,12 @@ export class ChatService {
   }
 
   public sendMessage(chatMessage: ChatMessage): void {
+
+    chatMessage.SenderId = Number.isInteger(chatMessage.SenderId) ? chatMessage.SenderId : parseInt(chatMessage.SenderId.toString(), 10);
+    chatMessage.ReceiverId = Number.isInteger(chatMessage.ReceiverId) ? chatMessage.ReceiverId : parseInt(chatMessage.ReceiverId.toString(), 10);
+
     console.log('Sending message:', chatMessage);
+
     this.hubConnection.invoke<any>("SendMessage", chatMessage)
      .then(() => console.log('Message sent successfully!'))
      .catch(err => console.error(err.toString()));

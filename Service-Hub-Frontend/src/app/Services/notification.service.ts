@@ -3,7 +3,6 @@ import * as signalR from '@microsoft/signalr';
 import { NotificationDTO } from '../Models/notification.model';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Task } from 'zone.js/lib/zone-impl';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,8 @@ export class NotificationService {
   private signalrUrl = `http://localhost:5018/notificationsHub`;
   private hubConnection: signalR.HubConnection;
   private token: string | null = '';
+  private notificationSubject = new Subject<NotificationDTO>();
+  private connectionPromise: Promise<void> | null = null;
 
   constructor(private http: HttpClient) {
     this.token = localStorage.getItem("token");
@@ -25,111 +26,94 @@ export class NotificationService {
       })
       .configureLogging(signalR.LogLevel.Information)
       .build();
-      
-      this.hubConnection.onclose((e) => {
-        console.log('Connection closed'+e? e:"success");
-        // Reconnect logic if needed
+
+    this.hubConnection.onclose((error) => {
+      console.log('Connection closed', error ? error : "success");
+    });
+
+    this.hubConnection.onreconnecting((error) => {
+      console.log('Reconnecting...', error ? error : "success");
+    });
+
+    this.hubConnection.onreconnected((connectionId) => {
+      console.log('Reconnected with Connection ID:', connectionId);
+    });
+
+    this.hubConnection.on('NewNotification', (notification) => {
+      this.notificationSubject.next(notification);
+      console.log('New notification received:', notification);
+    });
+
+    this.startConnection();
+  }
+
+  private startConnection(): void {
+    console.log(this.hubConnection.baseUrl, this.hubConnection.connectionId, this.hubConnection.state);
+    this.hubConnection
+      .start()
+      .then(() => {
+        console.log('SignalR connection started');
+        console.log(this.hubConnection.baseUrl, this.hubConnection.connectionId, this.hubConnection.state);
+      })
+      .catch(err => {
+        console.error('Error while starting SignalR connection:', err);
+        setTimeout(() => this.startConnection(), 5000); // Retry connection after 5 seconds
       });
-      
-      this.hubConnection.onreconnecting((e) => {
-        console.log('Reconnecting...'+e? e:"success");
-      });
-      
-      this.hubConnection.onreconnected((connectionId) => {
-        console.log('Reconnected with Connection ID:', connectionId);
-      });
-      
   }
 
-  addNotificationListener(callback: (notification: NotificationDTO) => void): void {
-    this.hubConnection.on('NewNotification', callback);
+  private ensureConnection(): Promise<void> {
+    if (this.hubConnection.state === signalR.HubConnectionState.Disconnected) {
+      console.log("hub connection state: ", this.hubConnection.state);
+      this.connectionPromise = this.hubConnection.start();
+    }
+    if (this.connectionPromise === null) {
+      this.connectionPromise = Promise.resolve();
+    }
+    return this.connectionPromise;
   }
 
-  startConnection() {
-    this.hubConnection.start()
-      .then(() => console.log('Connection started'))
-      .catch(err => console.log('Error while starting connection: ' + err));
+  public async sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
+    // Ensure the connection is established
+    await this.ensureConnection();
+  
+    // Validate and convert userId and workerId to integers
+    const userIdInt = Number.isInteger(userId) ? userId : parseInt(userId.toString(), 10);
+    const workerIdInt = Number.isInteger(workerId) ? workerId : parseInt(workerId.toString(), 10);
+  
+    // Log the values of userId and workerId
+    console.log('Invoking SendOrderCreatedNotification with:');
+    console.log('UserID:', userIdInt);
+    console.log('WorkerID:', workerIdInt);
+  
+    // Perform the invocation and return the result
+    try {
+      await this.hubConnection!.invoke('SendOrderCreatedNotification', userIdInt, workerIdInt);
+      console.log('Service: Notification sent successfully');
+    } catch (err) {
+      console.error('Service: Error while sending notification:', err);
+      throw err; // Ensure error is propagated
+    }
+  }
+  
+  
+  
+
+  public sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
+    return this.ensureConnection().then(() => {
+      return this.hubConnection.invoke('SendOrderAcceptedNotification', userId, workerId)
+        .then(() => console.log('Service: Notification sent successfully'))
+        .catch(err => {
+          console.error('Service: Error while sending notification:', err);
+          throw err;
+        });
+    });
   }
 
-  async sendOrderCreatedNotification(userId: number, workerId: number) {
-    debugger
-    await this.hubConnection.invoke('SendOrderCreatedNotification', userId, workerId).then(()=>console.log("invoke success"))
-      .catch(err => console.error(err));
-  }
-
-  // sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
-  //   return this.ensureConnection().then(() => {
-  //     return this.hubConnection.invoke('SendOrderAcceptedNotification', userId, workerId)
-  //       .then(() => console.log('Service: Notification sent successfully'))
-  //       .catch(err => {
-  //         console.error('Service: Error while sending notification:', err);
-  //         throw err;
-  //       });
-  //   });
-  // }
-
-  getNotificationsHttp(ownerId: number): Observable<NotificationDTO[]> {
+  public getNotifications(ownerId: number): Observable<NotificationDTO[]> {
     return this.http.get<NotificationDTO[]>(`${this.apiUrl}notifications/${ownerId}`);
   }
-  
+
+  public onNewNotification(): Observable<NotificationDTO> {
+    return this.notificationSubject.asObservable();
+  }
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //private notificationSubject = new Subject<NotificationDTO>();
-  //private connectionPromise: Promise<void>;
-
-      //this.startConnection();
-    // this.hubConnection.on('NewNotification', (notification) => {
-    //   this.notificationSubject.next(notification);
-    //   console.log('New notification received:', notification);
-    // });
-
-    //this.connectionPromise = this.startConnection();
-
-      // this.hubConnection.onclose(error => {
-    //   if (error) {
-    //     console.error('SignalR connection closed due to error:', error);
-    //   } else {
-    //     console.warn('SignalR connection closed');
-    //   }
-    // });
-
-  // invokeOnNewNotification(): Observable<NotificationDTO> {
-  //   return this.notificationSubject.asObservable();
-  // }
-
-    // private startConnection() {
-  //   console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
-  //   return this.hubConnection
-  //     .start()
-  //     .then(() => {console.log('SignalR connection started');
-  //       console.log(this.hubConnection.baseUrl,this.hubConnection.connectionId,this.hubConnection.state);
-  //     }
-  //     )
-  //     .catch(err => {
-  //       console.error('Error while starting SignalR connection:', err);
-  //       setTimeout(() => this.startConnection(), 5000); // Retry connection after 5 seconds
-  //       throw err;
-  //     });
-  // }
-
-  // private ensureConnection(): Promise<void> {
-  //   if (this.hubConnection.state === signalR.HubConnectionState.Disconnected) {
-  //     console.log("hub connenction state: ",this.hubConnection.state);
-  //     this.connectionPromise = this.startConnection();
-  //   }
-  //   return this.connectionPromise;
-  // }
- 
-  
-  // sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
-  //   //debugger;
-  //   return this.ensureConnection().then(() => {
-  //     console.log(`${userId} --- ${workerId}`);
-  //     return this.hubConnection.invoke('sendordercreatednotification', userId, workerId)
-  //       .then(() => console.log('Service: Notification sent successfully'))
-  //       .catch(err => {
-  //         console.error('Service: Error while sending notification:', err);
-  //         throw err;
-  //       });
-  //   });
-  // }

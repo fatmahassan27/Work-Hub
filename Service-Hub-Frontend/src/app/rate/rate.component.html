@@ -1,5 +1,7 @@
-<p>rate works!</p>
-
+<div>
+<h1>Add Rating and Review</h1>
+<h5 class="text-black-50">You can rate once</h5>
+<h2>Rate</h2>
 <select title="RATE" [(ngModel)]="rate.Value" class="form-control">
   <option value="1">1</option>
   <option value="2">2</option>
@@ -8,12 +10,15 @@
   <option value="5">5</option>
 </select>
 
+<h2>Review</h2>
+
 <!-- Input for the review text -->
 <input placeholder="Review" type="text" [(ngModel)]="rate.Review" class="form-control" />
 
 <!-- Disabled inputs to show FromUserId and ToUserId -->
-<input disabled placeholder="FromUser" [(ngModel)]="rate.FromUserId" class="form-control" />
-<input disabled placeholder="ToUser" [(ngModel)]="rate.ToUserId" class="form-control" />
+<!-- <input disabled placeholder="FromUser" [(ngModel)]="rate.FromUserId" class="form-control" />
+<input disabled placeholder="ToUser" [(ngModel)]="rate.ToUserId" class="form-control" /> -->
 
 <!-- Button to trigger addRate function -->
 <button class="btn btn-success" (click)="addRate()">Add</button>
+</div>
