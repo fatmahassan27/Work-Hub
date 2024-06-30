@@ -1,5 +1,6 @@
-<div class="container">
-    <div *ngFor="let item of jobs" class="card2">
+<h1 style="font-weight: bolder;text-align:center;padding-top:30px;margin-bottom:5px;">All Services</h1>
+<div  class="container row row-cols-4 row-cols-md-6 g-4">
+    <div  *ngFor="let item of jobs | paginate: { itemsPerPage: 9, currentPage: p }" class="card2">
         <div class="face face1">
             <div class="content">
                 <div class="icon">
@@ -20,4 +21,5 @@
             </div>
         </div>
     </div>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>

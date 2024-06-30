@@ -15,6 +15,7 @@ export class NotificationService {
   private token: string | null = '';
   private notificationSubject = new Subject<NotificationDTO>();
   private connectionPromise: Promise<void> | null = null;
+  notificationCount$: any;
 
   constructor(private http: HttpClient) {
     this.token = localStorage.getItem("token");
@@ -75,16 +76,16 @@ export class NotificationService {
   public async sendOrderCreatedNotification(userId: number, workerId: number): Promise<void> {
     // Ensure the connection is established
     await this.ensureConnection();
-  
+
     // Validate and convert userId and workerId to integers
     const userIdInt = Number.isInteger(userId) ? userId : parseInt(userId.toString(), 10);
     const workerIdInt = Number.isInteger(workerId) ? workerId : parseInt(workerId.toString(), 10);
-  
+
     // Log the values of userId and workerId
     console.log('Invoking SendOrderCreatedNotification with:');
     console.log('UserID:', userIdInt);
     console.log('WorkerID:', workerIdInt);
-  
+
     // Perform the invocation and return the result
     try {
       await this.hubConnection!.invoke('SendOrderCreatedNotification', userIdInt, workerIdInt);
@@ -94,9 +95,9 @@ export class NotificationService {
       throw err; // Ensure error is propagated
     }
   }
-  
-  
-  
+
+
+
 
   public sendOrderAcceptedNotification(userId: number, workerId: number): Promise<void> {
     return this.ensureConnection().then(() => {

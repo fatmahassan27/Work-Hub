@@ -19,9 +19,10 @@
   </select>
 </div>
 
-<div *ngFor="let item of filteredWorkers" class="row">
-  <div class="col-md-3">
-    <div class="card">
+
+<div  class="row row-cols-1 row-cols-md-3 g-4">
+
+    <div   *ngFor="let item of filteredWorkers" class="card">
       <div class="card-body">
         <img src="./assets/images/worker.jpg" alt="worker">
         <h3 class="card-title">Name: {{item.userName}}</h3>
@@ -33,7 +34,6 @@
       </div>
     </div>
   </div>
-</div>
 </body>
 
 <!-- <p>worker works!</p>

@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './chatmessage.component.css'
 })
 export class ChatmessageComponent implements OnInit {
-   
+
   public chatmessages: ChatMessage[] = [];
   // public messageText: string='';
   // public username: string=''; // Assuming username is used for displaying purposes
@@ -44,12 +44,12 @@ export class ChatmessageComponent implements OnInit {
       this.chatmessage.ReceiverId = p['id'] ;
     })
   }
-  
+
   public send(): void {
     this.chatmessages.push(new ChatMessage(this.chatmessage.Id , this.chatmessage.SenderId,this.chatmessage.ReceiverId,this.chatmessage.Message,this.chatmessage.IsSeen,this.chatmessage.createdDate));
     if (this.chatmessage) {
       this.chatservice.sendMessage(this.chatmessage);
-      this.chatmessage.Message="";
+      this.chatmessage.Message = '';
     }
   }
 }

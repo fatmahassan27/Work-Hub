@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { addTokenInterceptor } from './Interceptors/add-token.interceptor';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes),provideHttpClient(withInterceptors([addTokenInterceptor]))]

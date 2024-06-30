@@ -5,6 +5,7 @@ export class NotificationDTO {
       public ownerId: number,
       public title: string,
       public content: string,
-      public createdDate: Date
+      public createdDate: Date,
+      public ownername:string
   ) {}
 }

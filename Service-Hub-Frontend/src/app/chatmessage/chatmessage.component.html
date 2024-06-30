@@ -9,20 +9,55 @@
     </div>
     <div><small>{{ msg.createdDate | date: 'short' }}</small></div>
   </div> -->
-
-  <div>
-    <h1>bbb</h1>
-    <input type="text" [(ngModel)]="chatmessage.SenderId" placeholder="Enter your username" />
-    <input type="text" [(ngModel)]="chatmessage.Message" placeholder="Enter your message" />
-    <button type="button" (click)="send()">Send</button>
-  </div>
-
+  <h1 type="text" [(ngModel)]="chatmessage.SenderId" placeholder="Enter your username" ><h1></h1>
   <div id="id">
-    <h1>Messages</h1>
-    <div *ngFor="let msg of chatmessages">
+    <h1 style="text-align: center;font-size:42px;font-weight: bolder;">Messages</h1>
+    <!-- <div *ngFor="let msg of chatmessages">
       <div>
         <strong>{{ msg.SenderId === currentUserId ? 'You' : msg.ReceiverId }}:</strong> {{ msg.Message }}
       </div>
       <div><small>{{ msg.createdDate | date: 'short' }}</small></div>
+    </div> -->
+  </div>
+
+<div *ngIf="!accountService.isWorker()" >
+  <div class="box">
+    <div *ngFor="let msg of chatmessages" class="card text-start">
+      <div class="card-body">
+        <p class="card-text">
+          <div>
+            <strong>{{ msg.SenderId === currentUserId ? 'You' : msg.ReceiverId }}:</strong> {{ msg.Message }}
+          </div>
+        <br>
+
+            <small style="font-size: 8px; color:rgb(243, 243, 243)">{{ msg.createdDate | date: 'short' }}</small>
+
+      </div>
     </div>
   </div>
+    <input type="text" [(ngModel)]="chatmessage.Message" (keydown.enter)="send()" placeholder="Enter your message" />
+    <button type="button" class="btn btn-primary" (click)="send()">
+    Send
+    </button>
+  </div>
+  <!-- worker chat -->
+  <div *ngIf="accountService.isWorker()">
+    <div class="wbox">
+      <div *ngFor="let msg of chatmessages" class="card text-start worker">
+        <img src="./assets/images/worker.jpg">
+        <div class="card-body">
+          <p class="card-text">
+            <div>
+              <strong>{{ msg.SenderId === currentUserId ? 'You' : msg.ReceiverId }}:</strong> {{ msg.Message }}
+            </div>
+        <br>
+            <small style="font-size: 8px; color:rgba(0, 0, 0, 0.562)">{{ msg.createdDate | date: 'short' }}</small>
+
+      </div>
+    </div>
+  </div>
+       <input type="text" [(ngModel)]="chatmessage.Message" (keydown.enter)="send()" placeholder="Enter your message" />
+      <button type="button" class="btn btn-primary" (click)="send()">
+      Send
+      </button>
+    </div>

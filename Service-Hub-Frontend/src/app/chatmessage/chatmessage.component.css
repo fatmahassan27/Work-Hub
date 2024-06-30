@@ -1,4 +1,4 @@
-/* 
+/*
     body {
         font-family: Arial, sans-serif;
         background-color: #f0f0f0;
@@ -57,3 +57,139 @@
     border: 1px solid ;
     width: 70%;
 } */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+  box-sizing:border-box;
+  font-family: montserrat;
+  font-size: medium;
+}
+.box{
+  padding-top: 5px;
+  width:45%;
+  height: 400px;
+  background-color: rgba(156, 177, 204, 0.356);
+  border-radius: 25px;
+  margin: 20px;
+  margin-bottom: 0px;
+  margin-left: 350px;
+  height: 400px; /* Adjust this height as needed */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+.card
+{
+width: 90%;
+border-radius: 30px;
+font-size: small;
+size: 20px;
+margin: 10px;
+background:rgba(48, 90, 145, 0.664);
+color: #f8f8f8;
+margin-top: 20px;
+border: 0px;
+}
+.icon{
+  --size:55px;
+  background-position:center;
+  background-size:cover;
+  border-radius:20px;
+  margin-right:.8em;
+  position:relative;
+}
+img{
+  width: 60px;
+  border-radius: 40px;
+  margin-bottom: 0px;
+}
+.tools
+{
+  margin-top: 0px;
+  height:0px;
+  margin-bottom: 100px;
+}
+
+input[_ngcontent-ng-c2074348308] {
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.356);
+  border: 2px;
+  height: 40px;
+  width:40%;
+  margin-left: 350px;
+  border-color: rgba(124, 151, 224, 0.521);
+  border-style: solid;
+  padding: 5px;
+  margin-top: 10px;
+}
+input:focus
+{
+  border:0px;
+  box-shadow: none;
+  border-style: none;
+  border-color: rgba(124, 151, 224, 0.521);
+}
+button
+{
+margin-left:20px;
+background-color: rgb(228, 98, 24);
+border: 0px;
+}
+button:hover
+{
+margin-left:20px;
+background-color: rgb(22, 59, 114);
+border: 0px;
+}
+.wbox{
+  padding-top: 5px;
+  width:45%;
+  height: 400px;
+  background-color:  rgba(156, 177, 204, 0.356);;
+  border-radius: 25px;
+  margin: 20px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  margin-left: 350px;
+}
+.worker
+{
+  width: 90%;
+  border-radius: 30px;
+  font-size: small;
+  size: 20px;
+  margin: 10px;
+  background:rgba(255, 255, 255, 0.993);
+  color: #070707;
+  margin-top: 20px;
+  border: 0px;
+}
+input{
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.356);
+  border: 2px;
+  height: 40px;
+  width:40%;
+  margin-left: 350px;
+  border-color: rgba(124, 151, 224, 0.521);
+  border-style: solid;
+  padding: 5px;
+  margin-top: 10px;
+}
+input:focus
+{
+  border:0px;
+  box-shadow: none;
+  border-style: none;
+  border-color: rgba(124, 151, 224, 0.521);
+}
+button
+{
+margin-left:20px;
+background-color: rgb(228, 98, 24);
+border: 0px;
+}
+button:hover
+{
+margin-left:20px;
+background-color: rgb(22, 59, 114);
+border: 0px;
+}

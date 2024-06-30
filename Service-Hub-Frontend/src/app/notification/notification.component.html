@@ -1,5 +1,20 @@
-<p>Notification works!</p>
+<h1>Notifications</h1>
+<div *ngFor="let notification of notifications; let i=index ; " class="card text-start">
 
+  <div class="card-body">
+    <h4 class="card-title">{{i+1}} : {{ notification.title }}
+      <p>{{notification.content }}</p>
+    </h4>
+    <p class="card-text">
+      <h6>Owner Name:</h6> <p>{{ notification.ownername }}</p>
+      <h6>IsRead:</h6> <p>{{ notification.isRead }}</p>
+      <small>{{ notification.createdDate | date: 'short' }}</small>
+</div>
+<hr>
+</div>
+
+
+<!--
 <div *ngFor="let notification of notifications; let i=index ; ">
   <div class="notification">
     <h4>{{i+1}} : {{ notification.title }}</h4>
@@ -9,7 +24,7 @@
     <p>isRead: {{ notification.isRead }}</p>
     <small>{{ notification.createdDate | date: 'short' }}</small>
   </div>
-</div>
+</div> -->
 <!-- <input type="button" value="reload" (click)="reload()">
 
 <br>

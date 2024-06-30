@@ -5,11 +5,12 @@ import { Job } from '../Models/job.model';
 import { CommonModule } from '@angular/common';
 import { WorkerService } from '../Services/worker.service';
 import { Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-job',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule,NgxPaginationModule],
   templateUrl: './job.component.html',
   styleUrl: './job.component.css'
 })
@@ -17,6 +18,7 @@ export class JobListComponent implements OnInit {
 
   jobs!: Job[];
   job!: Job;
+  p: number = 1;
   constructor(private jobService: JobService, public router:Router) { }
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class JobListComponent implements OnInit {
     });
   }
 
-  
+
    public ShowWorkers(jobId:number)
     {
        this.router.navigateByUrl("/workerByJob");

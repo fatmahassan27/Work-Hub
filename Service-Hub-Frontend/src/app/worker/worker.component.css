@@ -10,11 +10,12 @@ padding: 7px;
 {
   width:90%;
   margin-top: 5%;
-  margin-left: 5%;
+  margin-left: 10%;
   margin-bottom: 30px;
 }
 .card
 {
+  width: 30%;
   border:0px;
   padding: 6px;
   color:rgb(83, 83, 83) ;
@@ -23,6 +24,11 @@ padding: 7px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(60, 60, 105, 0.363);
   transition: box-shadow 0.3s ease;
+  text-align: center;
+
+}
+.card-body {
+  text-align: center;
 }
 select
 {

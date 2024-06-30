@@ -7,31 +7,30 @@
       aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
       <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-        <li class="nav-item">
+        <li *ngIf="!accountService.isWorker()" class="nav-item">
           <a class="nav-link" routerLink="/home" aria-current="page">Home <span class="visually-hidden">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!accountService.isWorker()" class="nav-item">
           <a class="nav-link" routerLink="/About">About</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/Services">Services</a>
-        </li>
-  
+
         <!-- Use Angular *ngIf for conditional rendering -->
         <li *ngIf="!accountService.isWorker()" class="nav-item" >
           <a class="nav-link" routerLink="/worker">Workers</a>
         </li>
         <li *ngIf="!accountService.isWorker()" class="nav-item">
-          <a class="nav-link" routerLink="/jobs">Jobs</a>
+          <a class="nav-link" routerLink="/jobs">Services</a>
         </li>
+
         <li class="nav-item" *ngIf="accountService.isWorker()">
           <a class="nav-link" routerLink="/profile">Profile</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" routerLink="/orders">Orders</a>
         </li>
       </ul>
-  
+
       <!-- Search form -->
       <form id="search" class="d-flex my-2 my-lg-0">
         <div class="container mt-5">
@@ -45,21 +44,24 @@
           </div>
         </div>
       </form>
-  
+
       <!-- Notification button -->
       <form class="noti d-flex my-2 my-lg-0">
         <button class="btn my-2 my-sm-0" type="button" title="Notifications" routerLink="/Notification">
           <i class="fa fa-bell"></i>
+          <!-- <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill text-light">
+            {{notificationCount}}
+          </span> -->
         </button>
       </form>
-  
+
       <!-- Chat button -->
       <form class="noti d-flex my-2 my-lg-0">
         <button class="btn my-2 my-sm-0" type="button" title="Chat" routerLink="/Chat">
           <i class="fa fa-comment"></i>
         </button>
       </form>
-  
+
       <!-- Authentication buttons -->
       <form class="noti d-flex my-2 my-lg-0">
         <ng-container *ngIf="!accountService.isAuthenticated(); else loggedIn">
@@ -76,4 +78,3 @@
     </div>
   </nav>
   </body>
-  

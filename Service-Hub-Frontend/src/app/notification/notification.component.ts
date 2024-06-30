@@ -16,6 +16,7 @@ export class NotificationComponent implements OnInit {
 
   notifications: NotificationDTO[] = [];
   currentUserId: number = 0;
+  currentUserName: string = '';
 
   constructor(
     private notificationService: NotificationService,
@@ -26,6 +27,8 @@ export class NotificationComponent implements OnInit {
     if (this.accountService.currentUserValue?.id) {
       this.currentUserId = this.accountService.currentUserValue.id;
       console.log(`${this.currentUserId} CURRENT USER ID`);
+      this.currentUserName = this.accountService.currentUserValue.name // Assuming the name property is available
+      console.log(`${this.currentUserName} CURRENT USER NAME`);
     }
 
     this.notificationService.getNotifications(this.currentUserId).subscribe({
