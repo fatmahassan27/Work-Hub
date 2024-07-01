@@ -28,11 +28,11 @@ namespace ServiceHub.BL.Services
             await unitOfWork.saveAsync();
         }
 
-        public async Task<IEnumerable<ChatDTO>> GetAllMessageByAnId(int id)
+        public async Task<IEnumerable<ChatDTO>> GetAllMessages(int senderId, int receiverId)
         {
-            var messages= await unitOfWork.ChatMessageRepo.GetAllMessageByAnId(id);
-            var messageDTO = mapper.Map<IEnumerable<ChatDTO>>(messages);
-            return messageDTO;
+            var messages= await unitOfWork.ChatMessageRepo.GetAllMessages(senderId,receiverId);
+            var messageDTOs = mapper.Map<IEnumerable<ChatDTO>>(messages);
+            return messageDTOs;
         }
     }
 }

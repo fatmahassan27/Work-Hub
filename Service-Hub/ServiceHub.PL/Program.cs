@@ -136,14 +136,9 @@ namespace ServiceHub.PL
             {
                 options.Transports = HttpTransportType.WebSockets;
             });
-            //app.MapHub<NotificationsHub>("/notificationsHub");
           
             app.MapHub<ChatHub>("/chatHub");
-                //app.UseEndpoints(endpoints =>
-                //{
-                //    endpoints.MapHub<ChatHub>("/chatHub");
 
-                //});
 
                 app.MapControllers();
 

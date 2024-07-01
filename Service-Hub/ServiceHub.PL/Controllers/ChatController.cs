@@ -17,18 +17,42 @@ namespace ServiceHub.PL.Controllers
         {
             this.chatService = chatService;
         }
-        [HttpGet("{id:int}")]//userId
-        public async Task<IActionResult> GetAllMessages(int id)
+        [HttpGet("{senderId:int}/{receiverId:int}")]
+        public async Task<IActionResult> GetAllMessages(int senderId, int receiverId)
         {
             try
             {
-                 var data =chatService.GetAllMessageByAnId(id);
+                var data = await chatService.GetAllMessages(senderId,receiverId);
+                if(data==null)
+                {
+                    return NotFound("No messages found");
+                }
+                Console.WriteLine("sdfghjkl",data);
                  return Ok(data);
 
             } catch (Exception ex)
             {
-                await Console.Out.WriteLineAsync("error get messages: " + ex.Message);
-                return BadRequest(ex.Message);
+                Console.Error.WriteLine("Error getting messages: " + ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateMessage([FromBody] ChatDTO chatMessage)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await chatService.CreateMessage(chatMessage);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("Error creating message: " + ex.Message);
+                return StatusCode(500, "Internal server error");
             }
         }
 

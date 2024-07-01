@@ -38,14 +38,6 @@ export class ChatService {
       console.log('New message received:', chatMessage);
     });
 
-
-    // this.hubConnection.onclose(error => {
-    //   if (error) {
-    //     console.error('SignalR connection closed due to error:', error);
-    //   } else {
-    //     console.warn('SignalR connection closed');
-    //   }
-    // });
   
   }
 
@@ -66,5 +58,8 @@ export class ChatService {
   }
   public getChatObservable(): Observable<ChatMessage> {
     return this.chatSubject.asObservable();
+  }
+  public getChatHistory(senderId: number, receiverId: number): Observable<ChatMessage[]> {
+    return this.http.get<ChatMessage[]>(`${this.baseurl}/${senderId}/${receiverId}`);
   }
 }

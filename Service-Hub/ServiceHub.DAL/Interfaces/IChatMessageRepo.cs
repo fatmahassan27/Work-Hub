@@ -10,7 +10,7 @@ namespace ServiceHub.DAL.Interfaces
 {
     public interface IChatMessageRepo : IGenericRepo<ChatMessage>
     {
-        Task<IEnumerable<ChatMessage>> GetAllMessageByAnId(int id);
+        Task<IEnumerable<ChatMessage>> GetAllMessages(int senderId,int receiverId);
 
     }
 }

@@ -12,7 +12,7 @@ namespace ServiceHub.BL.Interfaces
     {
         Task CreateMessage(ChatDTO obj);
 
-        Task<IEnumerable<ChatDTO>> GetAllMessageByAnId(int id);
+        Task<IEnumerable<ChatDTO>> GetAllMessages(int senderId,int receiverId);
 
 
         

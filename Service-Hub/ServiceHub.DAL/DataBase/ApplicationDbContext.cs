@@ -147,9 +147,14 @@ namespace ServiceHub.DAL.DataBase
                     .WithMany()
                     .HasForeignKey(cm => cm.ReceiverId)
                     .OnDelete(DeleteBehavior.Restrict);
-                //---------------------------------------------------------------------
-                // Configure City-District relationship
-                modelBuilder.Entity<City>()
+            modelBuilder.Entity<ChatMessage>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.createdDate).HasColumnName("createdDate");
+            });
+            //---------------------------------------------------------------------
+            // Configure City-District relationship
+            modelBuilder.Entity<City>()
                     .HasMany(c => c.Districtlist)
                     .WithOne(d => d.City)
                     .HasForeignKey(d => d.CityId)
