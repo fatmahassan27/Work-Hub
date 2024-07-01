@@ -1,4 +1,50 @@
 div{
     width: 40%;
-    border: 1px solid blue;
+    margin:90px;
+    margin-left:30%;
+    background-color: rgba(28, 72, 107, 0.822);
+    border-radius: 30px;
+    padding: 20px;
+    color: white;
+}
+select
+{
+  width:20%;
+  height:35px;
+  border-radius: 20px;
+  display: inline;
+  font-size: larger;
+}
+.fa
+{
+  color:gold;
+  font-size: 25px;
+  margin: 5px;
+}
+input
+{
+  width:50%;
+  border-radius: 15px;
+}
+button
+{
+  margin-top:15px;
+  background-color: rgba(236, 86, 32, 0.815);
+  width:50px;
+  border-radius: 20px;
+  border: none;
+  color:white;
+  margin: 8px;
+  padding: 6px;
+}
+button:hover
+{
+  margin-top:15px;
+  background-color: rgb(236, 86, 32);
+  width:50px;
+  border-radius: 20px;
+  border: none;
+  color:white;
+  margin:8px;
+  padding:8px;
 }

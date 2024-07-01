@@ -1,0 +1,17 @@
+/* .star-rating {
+  display: flex;
+}
+
+.star-rating .fa {
+  cursor: pointer;
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+.star-rating .fas {
+  color: gold; /* Gold color for selected stars */
+/* }
+
+.star-rating .far {
+  color: gray; /* Gray color for unselected stars }*/
+

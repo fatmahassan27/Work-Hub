@@ -1,0 +1,6 @@
+<div class="star-rating">
+  <i class="fa" *ngFor="let star of stars; let i = index"
+    [ngClass]="{'fas fa-star': star, 'far fa-star': !star}"
+    (click)="setRate(i + 1)">
+  </i>
+</div>

@@ -5,6 +5,7 @@ import { FooterComponent } from './core/footer/footer.component';
 import { AccountService } from './Services/account.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
