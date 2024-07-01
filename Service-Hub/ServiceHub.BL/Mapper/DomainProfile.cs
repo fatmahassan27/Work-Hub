@@ -34,8 +34,9 @@ namespace ServiceHub.BL.Mapper
             CreateMap<Notification, NotificationDTO>();
             CreateMap<NotificationDTO, Notification>();
             //--------------------------------------------
-            CreateMap<ChatMessage, ChatDTO>();
             CreateMap<ChatDTO, ChatMessage>();
+            CreateMap<ChatMessage, ChatDTO>()
+          .ForMember(dest => dest.createdDate, opt => opt.MapFrom(src => src.createdDate));
         }
     }
 }

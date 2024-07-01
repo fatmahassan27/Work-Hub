@@ -204,7 +204,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("ChatMessage");
+                    b.ToTable("ChatMessage", (string)null);
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Entities.City", b =>
@@ -221,7 +221,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
 
                     b.HasData(
                         new
@@ -335,7 +335,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Districts");
+                    b.ToTable("Districts", (string)null);
 
                     b.HasData(
                         new
@@ -771,7 +771,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("Jobs", (string)null);
 
                     b.HasData(
                         new
@@ -1091,7 +1091,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Entities.Order", b =>
@@ -1120,7 +1120,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Entities.Rate", b =>
@@ -1155,7 +1155,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasIndex("ToUserId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Entities.UserConnection", b =>
@@ -1170,7 +1170,7 @@ namespace ServiceHub.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserConnections");
+                    b.ToTable("UserConnections", (string)null);
                 });
 
             modelBuilder.Entity("ServiceHub.DAL.Helper.ApplicationUser", b =>

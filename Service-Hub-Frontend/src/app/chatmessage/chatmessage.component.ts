@@ -16,12 +16,6 @@ import { ActivatedRoute } from '@angular/router';
 export class ChatmessageComponent implements OnInit {
 
   public chatmessages: ChatMessage[] = [];
-  // public messageText: string='';
-  // public username: string=''; // Assuming username is used for displaying purposes
-  // public senderId: number=0; // Set this to the current user's ID
-  // public receiverId: number=0; //
-
-  ///////////////////////////
   chatmessage:ChatMessage=new ChatMessage(0,0,0,"",false,new Date());
   currentUserId: number = 0;
   constructor(public chatservice:ChatService ,public accountService:AccountService,public activatedroute:ActivatedRoute)
@@ -42,7 +36,11 @@ export class ChatmessageComponent implements OnInit {
     this.activatedroute.params.subscribe((p)=>{
       console.log(p['id']);
       this.chatmessage.ReceiverId = p['id'] ;
-    })
+    });
+    this.activatedroute.params.subscribe((params) => {
+      this.chatmessage.ReceiverId = +params['id'];
+      this.loadMessages();
+    });
   }
 
   public send(): void {
@@ -51,5 +49,15 @@ export class ChatmessageComponent implements OnInit {
       this.chatservice.sendMessage(this.chatmessage);
       this.chatmessage.Message = '';
     }
+  }
+  private loadMessages(): void {
+    this.chatservice.getChatHistory(this.currentUserId, this.chatmessage.ReceiverId).subscribe(
+      (messages: ChatMessage[]) => {
+        this.chatmessages = messages;
+      },
+      (error) => {
+        console.error('Error fetching messages', error);
+      }
+    );
   }
 }
